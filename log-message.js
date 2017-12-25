@@ -13,7 +13,7 @@ module.exports = function(RED) {
 
         console.log(this.device);
 
-        ctnApiClient = new CtnApiClient(this.device.deviceID, this.device.apiAccessSecret, {
+        ctnApiClient = new CtnApiClient(this.device.deviceid, this.device.apiaccesssecret, {
                 environment: 'beta'
             });
 

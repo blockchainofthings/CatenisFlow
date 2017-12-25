@@ -10,5 +10,5 @@ module.exports = function(RED) {
         this.deviceid = config.deviceid;
         this.apiaccesssecret = config.apiaccesssecret;
     }
-    RED.nodes.registerType("catenis-device", CatenisDevice);
+    RED.nodes.registerType("catenis device", CatenisDevice);
 }

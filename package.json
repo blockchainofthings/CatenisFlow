@@ -8,7 +8,7 @@
   "node-red": {
     "nodes": {
       "log message": "log-message.js",
-      "catenis-device": "catenis-device.js"
+      "catenis device": "catenis-device.js"
     }
   },
   "author": "",
