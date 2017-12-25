@@ -1,0 +1,34 @@
+<script type="text/javascript">
+    RED.nodes.registerType('catenis-device', {
+        category: 'config',
+        defaults: {
+            name: { value: "", required: true },
+            deviceid: { value: "" },
+            apiaccesssecret: { value: "" }
+        },
+        inputs: 0,
+        outputs: 0,
+        label: function () {
+            return this.name || "unnamed catenis device";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="catenis-device">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-deviceid"><i class="fa fa-tag"></i> Device ID</label>
+        <input type="text" id="node-config-input-deviceid">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-apiaccesssecret"><i class="fa fa-tag"></i> API secret</label>
+        <input type="text" id="node-config-input-apiaccesssecret">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="catenis-device">
+   <p>This configuration node creates a Catenis device.</p>
+</script>
