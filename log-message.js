@@ -3,22 +3,16 @@
 * @Date:   2017-12-23 22:02:03
 */
 
-const CtnApiClient = require('catenis-api-client');
-
 module.exports = function(RED) {
     function LogMessageNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
         this.device = RED.nodes.getNode(config.device);
-
-        console.log(this.device);
-
-        ctnApiClient = new CtnApiClient(this.device.deviceid, this.device.apiaccesssecret, {
-                environment: 'beta'
-            });
+        let ctnApiClient = this.device.ctnApiClient;
 
         node.on('input', function(msg) {
-        	ctnApiClient.logMessage(msg.payload, {
+
+            ctnApiClient.logMessage(msg.payload, {
         	    encoding: config.encoding,
         	    encrypt: config.encrypt,
         	    storage: config.storage
