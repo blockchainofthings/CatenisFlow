@@ -11,7 +11,6 @@ module.exports = function(RED) {
         let ctnApiClient = this.device.ctnApiClient;
 
         node.on('input', function(msg) {
-
             ctnApiClient.logMessage(msg.payload, {
         	    encoding: config.encoding,
         	    encrypt: config.encrypt,
