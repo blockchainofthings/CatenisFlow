@@ -4,7 +4,11 @@
         defaults: {
             name: { value: "", required: true },
             deviceid: { value: "" },
-            apiaccesssecret: { value: "" }
+            apiaccesssecret: { value: "" },
+            host: { value: "catenis.io" },
+            environment: { value: "beta" },
+            secure: { value: true },
+            version: { value: "0.5" }
         },
         inputs: 0,
         outputs: 0,
@@ -25,7 +29,26 @@
     </div>
     <div class="form-row">
         <label for="node-config-input-apiaccesssecret"><i class="fa fa-tag"></i> API secret</label>
-        <input type="text" id="node-config-input-apiaccesssecret">
+        <input type="password" id="node-config-input-apiaccesssecret">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-host"><i class="fa fa-tag"></i> Host</label>
+        <input type="text" id="node-config-input-host">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-environment"><i class="fa fa-tag"></i> Environment</label>
+        <select id="node-config-input-environment">
+            <option value="production" selected>Production</option>
+            <option value="beta">Beta</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-secure"><i class="fa fa-tag"></i> Secure</label>
+        <input type="checkbox" id="node-config-input-secure">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-version"><i class="fa fa-tag"></i> Version</label>
+        <input type="text" id="node-config-input-version">
     </div>
 </script>
 

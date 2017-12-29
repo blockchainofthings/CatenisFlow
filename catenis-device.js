@@ -8,12 +8,13 @@ const CtnApiClient = require('catenis-api-client');
 module.exports = function(RED) {
     function CatenisDevice(config) {
         RED.nodes.createNode(this, config);
-        this.name = config.name;
-        this.deviceid = config.deviceid;
-        this.apiaccesssecret = config.apiaccesssecret;
-        this.ctnApiClient = new CtnApiClient(this.deviceid, this.apiaccesssecret, {
-            environment: 'beta'
-        });
+        var options = {
+        	host: config.host,
+        	environment: config.environment,
+        	secure: config.secure,
+        	version: config.version
+        }
+        this.ctnApiClient = new CtnApiClient(config.deviceid, config.apiaccesssecret, options);
     }
     RED.nodes.registerType("catenis device", CatenisDevice);
 }

@@ -8,21 +8,23 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
         this.device = RED.nodes.getNode(config.device);
-        let ctnApiClient = this.device.ctnApiClient;
+        var ctnApiClient = this.device.ctnApiClient;
 
         node.on('input', function(msg) {
             ctnApiClient.logMessage(msg.payload, {
-        	    encoding: config.encoding,
-        	    encrypt: config.encrypt,
-        	    storage: config.storage
-        	}, function (err, data) {
-        		let lastMsgId;
-        		if (!err && typeof data.data === 'object' && data.data !== null && typeof data.data.messageId === 'string') {
-        		    lastMsgId = data.data.messageId;
-        		}
-        		msg.payload = lastMsgId;
-        		node.send(msg);
-        	});
+                encoding: config.encoding,
+                encrypt: config.encrypt,
+                storage: config.storage
+            }, function (err, data) {
+                if (err || data.status !== 'success') {
+                    // Do error handling
+                }
+            else {
+                // Success. Retrieve returned data
+                msg.payload = data.data;
+                node.send(msg);
+            }
+            });
         });
     }
     RED.nodes.registerType("log message", LogMessageNode);

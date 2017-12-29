@@ -8,10 +8,10 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
         this.device = RED.nodes.getNode(config.device);
-        let ctnApiClient = this.device.ctnApiClient;
+        var ctnApiClient = this.device.ctnApiClient;
 
         node.on('input', function(msg) {
-            ctnApiClient.readMessage(msg.payload, config.encoding, function (err, data) {
+            ctnApiClient.readMessage(msg.payload.messageId, config.encoding, function (err, data) {
             	console.log(data);
         		if (!err && typeof data.data === 'object' && data.data !== null) {
         		    msg.payload = data.data;
