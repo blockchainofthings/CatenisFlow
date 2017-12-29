@@ -3,28 +3,21 @@
 * @Date:   2017-12-23 22:02:03
 */
 
+var responseHandler = require('./util/catenis-api-response-handler.js');
+
 module.exports = function(RED) {
     function LogMessageNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
-        this.device = RED.nodes.getNode(config.device);
-        var ctnApiClient = this.device.ctnApiClient;
+        var device = RED.nodes.getNode(config.device);
+        var ctnApiClient = device.ctnApiClient;
 
         node.on('input', function(msg) {
             ctnApiClient.logMessage(msg.payload, {
                 encoding: config.encoding,
                 encrypt: config.encrypt,
                 storage: config.storage
-            }, function (err, data) {
-                if (err || data.status !== 'success') {
-                    // Do error handling
-                }
-            else {
-                // Success. Retrieve returned data
-                msg.payload = data.data;
-                node.send(msg);
-            }
-            });
+            }, responseHandler.bind(undefined, node, msg));
         });
     }
     RED.nodes.registerType("log message", LogMessageNode);

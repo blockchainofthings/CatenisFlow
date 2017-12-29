@@ -3,6 +3,8 @@
 * @Date:   2017-12-26 18:03:50
 */
 
+var responseHandler = require('./util/catenis-api-response-handler.js');
+
 module.exports = function(RED) {
     function RetrieveMessageNode(config) {
         RED.nodes.createNode(this, config);
@@ -11,13 +13,7 @@ module.exports = function(RED) {
         var ctnApiClient = this.device.ctnApiClient;
 
         node.on('input', function(msg) {
-            ctnApiClient.readMessage(msg.payload.messageId, config.encoding, function (err, data) {
-            	console.log(data);
-        		if (!err && typeof data.data === 'object' && data.data !== null) {
-        		    msg.payload = data.data;
-        		}
-        		node.send(msg);
-        	});
+            ctnApiClient.readMessage(msg.payload.messageId, config.encoding, responseHandler.bind(undefined, node, msg));
         });
     }
     RED.nodes.registerType("retrieve message", RetrieveMessageNode);
