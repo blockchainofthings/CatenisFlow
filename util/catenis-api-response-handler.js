@@ -5,7 +5,11 @@
 
 exports = module.exports = function (node, msg, err, data) {
 	if (err) {
-	    return node.error(err.message, msg);
+		if (err.apiError) {
+			return node.error(err.apiError.message, msg);
+		} else {
+			return node.error(err.clientError.message, msg);
+		}
 	}
 	if (data.status !== 'success') {
 	    return node.error(data, msg);
