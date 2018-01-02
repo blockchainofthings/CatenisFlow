@@ -11,9 +11,6 @@ exports = module.exports = function (node, msg, err, data) {
 			return node.error(err.clientError.message, msg);
 		}
 	}
-	if (data.status !== 'success') {
-	    return node.error(data, msg);
-	}
 	// Success. Retrieve returned data
 	msg.payload = data.data;
 	node.send(msg);
