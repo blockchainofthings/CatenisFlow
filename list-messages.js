@@ -45,7 +45,6 @@ module.exports = function(RED) {
         var device = RED.nodes.getNode(config.device);
 
         node.on('input', function(msg) {
-            msg = {};
             var ctnApiClient = device.ctnApiClient;
             ctnApiClient.listMessages({
                 action: config.action,
