@@ -1,0 +1,71 @@
+<script type="text/javascript">
+    RED.nodes.registerType('list messages', {
+        category: 'catenis',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device"},
+            action: { value: "any" },
+            direction: { value: "any" },
+            fromDeviceIds: { value: "" },
+            toDeviceIds: { value: "" },
+            fromDeviceProdUniqueIds: { value: "" },
+            toDeviceProdUniqueIds: { value: "" },
+            readState: { value: "any" },
+            startDate: { value: "" },
+            endDate: { value: "" }
+        },
+        inputs:1,
+        outputs:1,
+        /*button: {
+            enabled: true
+        },*/
+        icon: "file.png",
+        label: function () {
+            return this.name || "list messages";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="list messages">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="fa fa-font"></i> Action</label>
+        <select id="node-input-action">
+            <option value="any" selected>Any</option>
+            <option value="log">Log</option>
+            <option value="send">Send</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-direction"><i class="fa fa-archive"></i> Direction</label>
+        <select id="node-input-storage">
+            <option value="any" selected>Auto</option>
+            <option value="inbound">Inbound</option>
+            <option value="outbound">Outbound</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-fromDeviceIds"><i class="fa fa-user-secret"></i> From devices</label>
+        <input type="text" id="node-input-fromDeviceIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-toDeviceIds"><i class="fa fa-user-secret"></i> To devices</label>
+        <input type="text" id="node-input-toDeviceIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-fromDeviceProdUniqueIds"><i class="fa fa-user-secret"></i> From devices (Product unique ID)</label>
+        <input type="text" id="node-input-fromDeviceProdUniqueIds">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="list messages">
+    <p>A node that lists messages sent via Catenis</p>
+</script>

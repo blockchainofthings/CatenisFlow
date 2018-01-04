@@ -14,7 +14,7 @@ module.exports = function(RED) {
         	secure: config.secure,
         	version: config.version
         }
-        this.ctnApiClient = new CtnApiClient(config.deviceid, config.apiaccesssecret, options);
+        this.ctnApiClient = new CtnApiClient(config.deviceId, config.apiAccessSecret, options);
     }
     RED.nodes.registerType("catenis device", CatenisDevice);
 }

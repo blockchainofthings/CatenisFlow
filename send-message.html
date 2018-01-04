@@ -1,31 +1,42 @@
 <script type="text/javascript">
-    RED.nodes.registerType('log message', {
+    RED.nodes.registerType('send message', {
         category: 'catenis',
         color: '#a6bbcf',
         defaults: {
             name: { value: "" },
-            device: { value: "", type: "catenis device" },
+            fromDevice: { value: "", type: "catenis device" },
+            toDeviceId: { value: "" },
+            isProdUniqueId: { value: false },
             encoding: { value: "utf8" },
+            storage: { value: "auto" },
             encrypt: { value: true },
-            storage: { value: "auto" }
+            readConfirmation: { value: false }
         },
         inputs:1,
         outputs:1,
         icon: "file.png",
         label: function () {
-            return this.name || "log message";
+            return this.name || "send message";
         }
     });
 </script>
 
-<script type="text/x-red" data-template-name="log message">
+<script type="text/x-red" data-template-name="send message">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
-        <input type="text" id="node-input-device">
+        <label for="node-input-fromDevice"><i class="fa fa-microchip"></i> From device</label>
+        <input type="text" id="node-input-fromDevice">
+    </div>
+    <div class="form-row">
+        <label for="node-input-toDeviceId"><i class="fa fa-microchip"></i> To device</label>
+        <input type="text" id="node-input-toDeviceId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-isProdUniqueId"><i class="fa fa-tag"></i> Product unique ID</label>
+        <input type="checkbox" id="node-input-isProdUniqueId">
     </div>
     <div class="form-row">
         <label for="node-input-encoding"><i class="fa fa-font"></i> Encoding</label>
@@ -47,8 +58,12 @@
         <label for="node-input-encrypt"><i class="fa fa-user-secret"></i> Encrypt</label>
         <input type="checkbox" id="node-input-encrypt">
     </div>
+    <div class="form-row">
+        <label for="node-input-readConfirmation"><i class="fa fa-envelope"></i> Read confirmation</label>
+        <input type="checkbox" id="node-input-readConfirmation">
+    </div>
 </script>
 
-<script type="text/x-red" data-help-name="log message">
-    <p>A node that logs a message to blockchain</p>
+<script type="text/x-red" data-help-name="send message">
+    <p>A node that sends a message to another device</p>
 </script>
