@@ -10,9 +10,9 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
         var device = RED.nodes.getNode(config.device);
-        var ctnApiClient = device.ctnApiClient;
 
         node.on('input', function(msg) {
+            var ctnApiClient = device.ctnApiClient;
             ctnApiClient.logMessage(msg.payload, {
                 encoding: config.encoding,
                 encrypt: config.encrypt,

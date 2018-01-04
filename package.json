@@ -10,9 +10,14 @@
       "log message": "log-message.js",
       "catenis device": "catenis-device.js",
       "retrieve message container": "retrieve-message-container.js",
-      "retrieve message": "retrieve-message.js"
+      "retrieve message": "retrieve-message.js",
+      "send message": "send-message.js",
+      "list messages": "list-messages.js"
     }
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.20.1"
+  }
 }
