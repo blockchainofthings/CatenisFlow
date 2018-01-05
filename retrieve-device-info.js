@@ -15,7 +15,7 @@ module.exports = function(RED) {
 
         node.on('input', function(msg) {
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.retrieveDeviceIdentificationInfo(deviceId, isProdUniqueId, responseHandler.bind(undefined, node, msg));
+            ctnApiClient.retrieveDeviceIdentificationInfo(deviceId, isProdUniqueId, responseHandler.bind(node, msg, 'Error retrieveing device info'));
         });
     }
     RED.nodes.registerType("retrieve device info", retrieveDeviceInfoNode);

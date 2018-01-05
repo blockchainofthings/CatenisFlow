@@ -13,7 +13,7 @@ module.exports = function(RED) {
         var ctnApiClient = this.device.ctnApiClient;
 
         node.on('input', function(msg) {
-        	ctnApiClient.retrieveMessageContainer(msg.payload.messageId, responseHandler.bind(undefined, node, msg));
+        	ctnApiClient.retrieveMessageContainer(msg.payload.messageId, responseHandler.bind(node, msg, 'Error retrieving message container'));
         });
     }
     RED.nodes.registerType("retrieve message container", RetrieveMessageContainerNode);
