@@ -17,7 +17,7 @@ module.exports = function(RED) {
                 encoding: config.encoding,
                 encrypt: config.encrypt,
                 storage: config.storage
-            }, responseHandler.bind(undefined, node, msg));
+            }, responseHandler.bind(node, msg, 'Error logging message'));
         });
     }
     RED.nodes.registerType("log message", LogMessageNode);
