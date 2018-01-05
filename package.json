@@ -12,7 +12,8 @@
       "retrieve message container": "retrieve-message-container.js",
       "retrieve message": "retrieve-message.js",
       "send message": "send-message.js",
-      "list messages": "list-messages.js"
+      "list messages": "list-messages.js",
+      "retrieve device info": "retrieve-device-info.js"
     }
   },
   "author": "",

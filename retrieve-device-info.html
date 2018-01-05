@@ -1,0 +1,41 @@
+<script type="text/javascript">
+    RED.nodes.registerType('retrieve device info', {
+        category: 'catenis',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device" },
+            deviceId: { value: "" },
+            isProdUniqueId: { value: false }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function () {
+            return this.name || "retrieve device info";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="retrieve device info">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-deviceId"><i class="fa fa-microchip"></i> Device ID</label>
+        <input type="text" id="node-input-deviceId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-isProdUniqueId"><i class="fa fa-tag"></i> Product unique ID</label>
+        <input type="checkbox" id="node-input-isProdUniqueId">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="retrieve device info">
+    <p>A node that gets the identification info given a Catenis device's ID</p>
+</script>

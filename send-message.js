@@ -10,13 +10,13 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
         var fromDevice = RED.nodes.getNode(config.fromDevice);
-        var toDeviceID = config.toDeviceId;
+        var toDeviceId = config.toDeviceId;
         var isProdUniqueId = config.isProdUniqueId;
 
         node.on('input', function(msg) {
             var ctnApiClient = fromDevice.ctnApiClient;
             ctnApiClient.sendMessage({
-                id: toDeviceID,
+                id: toDeviceId,
                 isProdUniqueId: isProdUniqueId
             }, msg.payload, {
                 encoding: config.encoding,
