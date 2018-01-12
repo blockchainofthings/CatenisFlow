@@ -3,7 +3,7 @@
 * @Date:   2018-01-05 19:46:47
 */
 
-var responseHandler = require('./util/catenis-api-response-handler.js');
+var responseHandler = require('../../util/catenis-api-response-handler.js');
 
 module.exports = function(RED) {
     function retrieveDeviceInfoNode(config) {

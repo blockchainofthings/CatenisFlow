@@ -3,7 +3,7 @@
 * @Date:   2017-12-23 22:02:03
 */
 
-var responseHandler = require('./util/catenis-api-response-handler.js');
+var responseHandler = require('../../util/catenis-api-response-handler.js');
 
 module.exports = function(RED) {
     function LogMessageNode(config) {

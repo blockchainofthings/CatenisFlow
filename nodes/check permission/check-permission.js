@@ -3,7 +3,7 @@
 * @Date:   2018-01-12 19:54:14
 */
 
-var responseHandler = require('./util/catenis-api-response-handler.js');
+var responseHandler = require('../../util/catenis-api-response-handler.js');
 
 module.exports = function(RED) {
     function CheckPermissionNode(config) {

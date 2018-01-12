@@ -23,17 +23,17 @@
                     url: "catenis.checkpermission/" + this.id,
                     type:"POST",
                     success: function(resp) {
-                        RED.notify(node._("inject.success"), "success");
+                        RED.notify("Success", "success");
                     },
                     error: function(jqXHR,textStatus,errorThrown) {
                         if (jqXHR.status == 404) {
-                            RED.notify(node._("common.notification.error", { message: node._("common.notification.errors.not-deployed") }), "error");
+                            RED.notify("Error - please deploy", "error");
                         } else if (jqXHR.status == 500) {
-                            RED.notify(node._("common.notification.error", { message: node._("inject.errors.failed") }), "error");
+                            RED.notify("Error - server error", "error");
                         } else if (jqXHR.status == 0) {
-                            RED.notify(node._("common.notification.error", { message: node._("common.notification.errors.no-response") }), "error");
+                            RED.notify("Error - no response", "error");
                         } else {
-                            RED.notify(node._("common.notification.error", { message: node._("common.notification.errors.unexpected", { status:jqXHR.status,message:textStatus }) }), "error");
+                            RED.notify("Error - unexpected response", "error");
                         }
                     }
                 });

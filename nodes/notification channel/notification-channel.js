@@ -3,7 +3,7 @@
 * @Date:   2018-01-09 19:29:59
 */
 
-var responseHandler = require('./util/catenis-api-response-handler.js');
+var responseHandler = require('../../util/catenis-api-response-handler.js');
 
 module.exports = function(RED) {
     function NotificationChannelNode(config) {

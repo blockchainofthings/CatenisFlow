@@ -3,7 +3,7 @@
 * @Date:   2018-01-02 23:01:37
 */
 
-var responseHandler = require('./util/catenis-api-response-handler.js');
+var responseHandler = require('../../util/catenis-api-response-handler.js');
 var moment = require('moment');
 
 function formatDate(value) {
