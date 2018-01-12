@@ -3,14 +3,14 @@
 * @Date:   2017-12-29 12:22:56
 */
 
-exports = module.exports = function (msg, errMsg, err, data) {
+var util = require('util');
+
+exports = module.exports = function (msg, err, data) {
 	var node = this;
 	if (err) {
 		if (err.apiError) {
-			return node.error(errMsg, {
-				returnedError: err,
-				originalMsg: msg
-			});
+			var errMsg = err.clientError ? err.clientError.toString() : util.format('[%d] - %s', err.apiError.httpStatusCode, err.apiError.message);
+			return node.error(errMsg, msg);
 		} else {
 			return node.error(err.clientError.message, err);
 		}

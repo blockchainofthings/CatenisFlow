@@ -8,6 +8,9 @@ const CtnApiClient = require('catenis-api-client');
 module.exports = function(RED) {
     function CatenisDevice(config) {
         RED.nodes.createNode(this, config);
+        var node = this;
+        // var globalContext = this.context().global;
+        // globalContext.set('notificationEvents', ["new-msg-received", "sent-msg-read"]);
         var options = {
         	host: config.host,
         	environment: config.environment,

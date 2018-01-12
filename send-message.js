@@ -23,7 +23,7 @@ module.exports = function(RED) {
                 encrypt: config.encrypt,
                 storage: config.storage,
                 readConfirmation: config.readConfirmation
-            }, responseHandler.bind(node, msg, 'Error sending message'));
+            }, responseHandler.bind(node, msg));
         });
     }
     RED.nodes.registerType("send message", SendMessageNode);

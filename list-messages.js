@@ -56,7 +56,7 @@ module.exports = function(RED) {
 	            readState: config.readState,
 	            startDate: formatDate(config.startDate),
 	            endDate: formatDate(config.endDate),
-            }, responseHandler.bind(node, msg, 'Error listing messages'));
+            }, responseHandler.bind(node, msg));
         });
     }
     RED.nodes.registerType("list messages", ListMessagesNode);
