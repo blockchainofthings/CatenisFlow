@@ -17,21 +17,35 @@
         oneditprepare: function () {
             var node = this;
             var eventSelect = $("#node-input-event");
-            let events = {
-                "new-msg-received": "A new message has been received",
-                "sent-msg-read": "Previously sent message has been read by intended receiver (target device)"
-            };
-            eventSelect.empty();
-            var event;
-            var option;
-            for (var eventID in events) {
-                if (node.event === eventID) {
-                    option = $('<option value="' + eventID + '" selected>' + events[eventID] + '</option>');
-                } else {
-                    option = $('<option value="' + eventID + '">' + events[eventID] + '</option>');
+            $.ajax({
+                url: "catenis.notificationevents",
+                type: "GET",
+                success: function(data) {
+                    events = data;
+                    eventSelect.empty();
+                    var event;
+                    var option;
+                    for (var eventID in events) {
+                        if (node.event === eventID) {
+                            option = $('<option value="' + eventID + '" selected>' + events[eventID] + '</option>');
+                        } else {
+                            option = $('<option value="' + eventID + '">' + events[eventID] + '</option>');
+                        }
+                        option.appendTo(eventSelect);
+                    }
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                    if (jqXHR.status == 404) {
+                        RED.notify("Error - please deploy", "error");
+                    } else if (jqXHR.status == 500) {
+                        RED.notify("Error - server error", "error");
+                    } else if (jqXHR.status == 0) {
+                        RED.notify("Error - no response", "error");
+                    } else {
+                        RED.notify("Error - unexpected response", "error");
+                    }
                 }
-                option.appendTo(eventSelect);
-            }
+            });
         }
     });
 </script>

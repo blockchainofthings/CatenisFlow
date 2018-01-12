@@ -22,18 +22,18 @@ module.exports = function(RED) {
 
     RED.nodes.registerType("check permission", CheckPermissionNode);
 
-    RED.httpAdmin.post("/catenis.checkpermission/:id", RED.auth.needsPermission("catenis.checkpermission"), function(req,res) {
-            var node = RED.nodes.getNode(req.params.id);
-            if (node != null) {
-                try {
-                    node.receive();
-                    res.sendStatus(200);
-                } catch(err) {
-                    res.sendStatus(500);
-                    node.error(RED._("catenis.checkpermission.failed", { error: err.toString() }));
-                }
-            } else {
-                res.sendStatus(404);
+    RED.httpAdmin.post("/catenis.checkpermission/:id", RED.auth.needsPermission("catenis.checkpermission"), function(req, res) {
+        var node = RED.nodes.getNode(req.params.id);
+        if (node != null) {
+            try {
+                node.receive();
+                res.sendStatus(200);
+            } catch(err) {
+                res.sendStatus(500);
+                node.error(RED._("catenis.checkpermission.failed", { error: err.toString() }));
             }
-        });
+        } else {
+            res.sendStatus(404);
+        }
+    });
 }

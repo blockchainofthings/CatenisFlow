@@ -47,5 +47,6 @@ module.exports = function(RED) {
             }
         });
     }
+
     RED.nodes.registerType("notification channel", NotificationChannelNode);
 }
