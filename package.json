@@ -14,7 +14,8 @@
       "send message": "send-message.js",
       "list messages": "list-messages.js",
       "retrieve device info": "retrieve-device-info.js",
-      "notification channel": "notification-channel.js"
+      "notification channel": "notification-channel.js",
+      "check permission": "check-permission.js"
     }
   },
   "author": "",
