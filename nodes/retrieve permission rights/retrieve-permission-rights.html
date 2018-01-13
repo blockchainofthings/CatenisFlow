@@ -1,26 +1,24 @@
 <script type="text/javascript">
-    RED.nodes.registerType('check permission', {
+    RED.nodes.registerType('retrieve permission right', {
         category: 'catenis',
         color: '#a6bbcf',
         defaults: {
             name: { value: "" },
             device: { value: "", type: "catenis device" },
-            deviceId: { value: "" },
-            isProdUniqueId: { value: false },
             event: { value: "" }
         },
         inputs:0,
         outputs:1,
         icon: "file.png",
         label: function () {
-            return this.name || "check permission";
+            return this.name || "retrieve permission right";
         },
         button: {
             enabled: true,
             onclick: function() {
                 var node = this;
                 $.ajax({
-                    url: "catenis.checkpermission/" + this.id,
+                    url: "catenis.retrievepermissionright/" + this.id,
                     type:"POST",
                     success: function(resp) {
                         RED.notify("Success", "success");
@@ -75,7 +73,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="check permission">
+<script type="text/x-red" data-template-name="retrieve permission right">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -99,6 +97,6 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="check permission">
+<script type="text/x-red" data-help-name="retrieve permission right">
     <p>Check effective permission for a device</p>
 </script>
