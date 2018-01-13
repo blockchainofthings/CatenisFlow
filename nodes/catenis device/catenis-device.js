@@ -26,7 +26,14 @@ module.exports = function(RED) {
             } else {
                 node.notificationEvents = data.data;
             }
-        })
+        });
+        this.ctnApiClient.listPermissionEvents(function (err, data) {
+            if (err) {
+                node.error('Error retrieving permission events', {});
+            } else {
+                node.permissionEvents = data.data;
+            }
+        });
     }
 
     RED.nodes.registerType("catenis device", CatenisDevice);
@@ -38,6 +45,19 @@ module.exports = function(RED) {
             } catch(err) {
                 res.sendStatus(500);
                 node.error(RED._("catenis.notificationevents.failed", { error: err.toString() }));
+            }
+        } else {
+            res.sendStatus(406);
+        }
+    });
+
+    RED.httpAdmin.get("/catenis.permissionevents", RED.auth.needsPermission("catenis.permissionevents"), function(req, res) {
+        if (node != null) {
+            try {
+                res.json(node.permissionEvents);
+            } catch(err) {
+                res.sendStatus(500);
+                node.error(RED._("catenis.permissionevents.failed", { error: err.toString() }));
             }
         } else {
             res.sendStatus(406);

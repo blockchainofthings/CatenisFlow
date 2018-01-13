@@ -42,25 +42,43 @@
         oneditprepare: function () {
             var node = this;
             var eventSelect = $("#node-input-event");
-            let events = {
+            /*let events = {
                 "receive-notify-new-msg": "Receive notification of new message from a device",
                 "receive-notify-msg-read": "Receive notification of message read by a device",
                 "send-read-msg-confirm": "Send read message confirmation to a device",
                 "receive-msg": "Receive message from a device",
                 "disclose-main-props": "Disclose device's main properties (name, product unique ID) to a device",
                 "disclose-identity-info": "Disclose device's basic identification information to a device"
-            };
-            eventSelect.empty();
-            var event;
-            var option;
-            for (var eventID in events) {
-                if (node.event === eventID) {
-                    option = $('<option value="' + eventID + '" selected>' + events[eventID] + '</option>');
-                } else {
-                    option = $('<option value="' + eventID + '">' + events[eventID] + '</option>');
+            };*/
+            $.ajax({
+                url: "catenis.permissionevents",
+                type: "GET",
+                success: function(data) {
+                    events = data;
+                    eventSelect.empty();
+                    var event;
+                    var option;
+                    for (var eventID in events) {
+                        if (node.event === eventID) {
+                            option = $('<option value="' + eventID + '" selected>' + events[eventID] + '</option>');
+                        } else {
+                            option = $('<option value="' + eventID + '">' + events[eventID] + '</option>');
+                        }
+                        option.appendTo(eventSelect);
+                    }
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                    if (jqXHR.status == 404) {
+                        RED.notify("Error - please deploy", "error");
+                    } else if (jqXHR.status == 500) {
+                        RED.notify("Error - server error", "error");
+                    } else if (jqXHR.status == 0) {
+                        RED.notify("Error - no response", "error");
+                    } else {
+                        RED.notify("Error - unexpected response", "error");
+                    }
                 }
-                option.appendTo(eventSelect);
-            }
+            });
         }
     });
 </script>
