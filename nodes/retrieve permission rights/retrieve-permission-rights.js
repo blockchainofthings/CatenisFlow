@@ -6,7 +6,7 @@
 var responseHandler = require('../../util/catenis-api-response-handler.js');
 
 module.exports = function(RED) {
-    function CheckPermissionNode(config) {
+    function RetrievePermissionNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
         var device = RED.nodes.getNode(config.device);
@@ -20,7 +20,7 @@ module.exports = function(RED) {
         });
     }
 
-    RED.nodes.registerType("retrieve permission right", CheckPermissionNode);
+    RED.nodes.registerType("retrieve permission right", RetrievePermissionNode);
 
     RED.httpAdmin.post("/catenis.retrievepermissionright/:id", RED.auth.needsPermission("catenis.retrievepermissionright"), function(req, res) {
         var node = RED.nodes.getNode(req.params.id);

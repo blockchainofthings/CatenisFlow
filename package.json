@@ -16,7 +16,8 @@
       "retrieve device info": "nodes/retrieve device info/retrieve-device-info.js",
       "notification channel": "nodes/notification channel/notification-channel.js",
       "check permission": "nodes/check permission/check-permission.js",
-      "retrieve permission rights": "nodes/retrieve permission rights/retrieve-permission-rights.js"
+      "retrieve permission rights": "nodes/retrieve permission rights/retrieve-permission-rights.js",
+      "set permission rights": "nodes/set permission rights/set-permission-rights.js"
     }
   },
   "author": "",

@@ -1,0 +1,162 @@
+<script type="text/javascript">
+    RED.nodes.registerType('set permission rights', {
+        category: 'catenis',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device" },
+            event: { value: "" },
+            sysRight: { value: "" },
+            allowCtnNodeIndices: { value: "" },
+            denyCtnNodeIndices: { value: "" },
+            noneCtnNodeIndices: { value: "" },
+            allowClientIds: { value: "" },
+            denyClientIds: { value: "" },
+            noneClientIds: { value: "" },
+            allowDeviceIds: { value: "" },
+            denyDeviceIds: { value: "" },
+            noneDeviceIds: { value: "" },
+            allowProdIds: { value: "" },
+            denyProdIds: { value: "" },
+            noneProdIds: { value: "" },
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function () {
+            return this.name || "set permission rights";
+        },
+        button: {
+            enabled: true,
+            onclick: function() {
+                var node = this;
+                $.ajax({
+                    url: "catenis.setpermissionrights/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        },
+        oneditprepare: function () {
+            var node = this;
+            var eventSelect = $("#node-input-event");
+            $.ajax({
+                url: "catenis.permissionevents",
+                type: "GET",
+                success: function(data) {
+                    events = data;
+                    eventSelect.empty();
+                    var event;
+                    var option;
+                    for (var eventID in events) {
+                        if (node.event === eventID) {
+                            option = $('<option value="' + eventID + '" selected>' + events[eventID] + '</option>');
+                        } else {
+                            option = $('<option value="' + eventID + '">' + events[eventID] + '</option>');
+                        }
+                        option.appendTo(eventSelect);
+                    }
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                    if (jqXHR.status == 404) {
+                        RED.notify("Error - please deploy", "error");
+                    } else if (jqXHR.status == 500) {
+                        RED.notify("Error - server error", "error");
+                    } else if (jqXHR.status == 0) {
+                        RED.notify("Error - no response", "error");
+                    } else {
+                        RED.notify("Error - unexpected response", "error");
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="set permission rights">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-event"><i class="fa fa-font"></i> Event</label>
+        <select id="node-input-event">
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-sysRight"><i class="fa fa-font"></i> System right</label>
+        <select id="node-input-sysRight">
+            <option value="allow">Allow</option>
+            <option value="deny">Deny</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-allowCtnNodeIndices"><i class="fa fa-tag"></i> Allowed Catenis node indices</label>
+        <input type="text" id="node-input-allowCtnNodeIndices">
+    </div>
+    <div class="form-row">
+        <label for="node-input-denyCtnNodeIndices"><i class="fa fa-tag"></i> Denied Catenis node indices</label>
+        <input type="text" id="node-input-denyCtnNodeIndices">
+    </div>
+    <div class="form-row">
+        <label for="node-input-noneCtnNodeIndices"><i class="fa fa-tag"></i> Cleared Catenis node indices</label>
+        <input type="text" id="node-input-noneCtnNodeIndices">
+    </div>
+    <div class="form-row">
+        <label for="node-input-allowClientIds"><i class="fa fa-tag"></i> Allowed client IDs</label>
+        <input type="text" id="node-input-allowClientIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-denyClientIds"><i class="fa fa-tag"></i> Denied client IDs</label>
+        <input type="text" id="node-input-denyClientIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-noneClientIds"><i class="fa fa-tag"></i> Cleared client IDs</label>
+        <input type="text" id="node-input-noneClientIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-allowDeviceIds"><i class="fa fa-tag"></i> Allowed device IDs</label>
+        <input type="text" id="node-input-allowDeviceIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-allowProdIds"><i class="fa fa-tag"></i> Allowed device product uique IDs</label>
+        <input type="text" id="node-input-allowProdIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-denyDeviceIds"><i class="fa fa-tag"></i> Denied device IDs</label>
+        <input type="text" id="node-input-denyDeviceIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-denyProdIds"><i class="fa fa-tag"></i> Denied device product uique IDs</label>
+        <input type="text" id="node-input-denyProdIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-noneDeviceIds"><i class="fa fa-tag"></i> Cleared device IDs</label>
+        <input type="text" id="node-input-noneDeviceIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-noneProdIds"><i class="fa fa-tag"></i> Cleared device product uique IDs</label>
+        <input type="text" id="node-input-noneProdIds">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="set permission rights">
+    <p>Call Catenis API to set permission rights for the specified event</p>
+</script>
