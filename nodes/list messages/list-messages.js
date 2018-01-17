@@ -8,20 +8,18 @@ var moment = require('moment');
 
 function formatDate(value) {
     var mt = moment(value.trim());
-
     if (mt.isValid()) {
         return mt.utc().format('YYYYMMDDTHHmmss[Z]');
     }
-
     return undefined;
 }
 
-function checkDateField(ctrlId) {
+function checkDateField(ctrlId, node) {
     var startDate = document.getElementById(ctrlId);
 
     if (startDate && checkUndefined(startDate.value.trim())) {
         if (!moment(startDate.value.trim()).isValid()) {
-            alert('Invalid date and time. Please enter date and time in a ISO-8601 format like \'YYYY-MM-DD HH:mm:ss\'');
+            node.error('Invalid date and time. Please enter date and time in a ISO-8601 format like \'YYYY-MM-DD HH:mm:ss\'');
             startDate.focus();
             return false;
         }
@@ -34,7 +32,6 @@ function checkListMessagesDateFields() {
     if (checkDateField('idtStartDate')) {
         return checkDateField('idtEndDate');
     }
-
     return false;
 }
 

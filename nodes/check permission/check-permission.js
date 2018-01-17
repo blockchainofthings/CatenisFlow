@@ -30,7 +30,7 @@ module.exports = function(RED) {
                 res.sendStatus(200);
             } catch(err) {
                 res.sendStatus(500);
-                node.error(RED._("catenis.checkpermission.failed", { error: err.toString() }));
+                node.error("Check permission failed.");
             }
         } else {
             res.sendStatus(404);

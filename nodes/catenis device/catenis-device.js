@@ -44,7 +44,7 @@ module.exports = function(RED) {
                 res.json(node.notificationEvents);
             } catch(err) {
                 res.sendStatus(500);
-                node.error(RED._("catenis.notificationevents.failed", { error: err.toString() }));
+                node.error("Could not retrieve notification events.");
             }
         } else {
             res.sendStatus(406);
@@ -57,7 +57,7 @@ module.exports = function(RED) {
                 res.json(node.permissionEvents);
             } catch(err) {
                 res.sendStatus(500);
-                node.error(RED._("catenis.permissionevents.failed", { error: err.toString() }));
+                node.error("Could not retrieve permission events.");
             }
         } else {
             res.sendStatus(406);

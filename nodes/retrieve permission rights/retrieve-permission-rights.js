@@ -30,7 +30,7 @@ module.exports = function(RED) {
                 res.sendStatus(200);
             } catch(err) {
                 res.sendStatus(500);
-                node.error(RED._("catenis.retrievepermissionright.failed", { error: err.toString() }));
+                node.error("Could not retrieve permission rights.");
             }
         } else {
             res.sendStatus(404);

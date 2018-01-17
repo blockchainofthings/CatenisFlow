@@ -104,8 +104,6 @@ module.exports = function(RED) {
             }
         }));
 
-        console.log(JSON.stringify(rights, null, 4));
-
         node.on('input', function() {
             var ctnApiClient = device.ctnApiClient;
             ctnApiClient.setPermissionRights(event, rights, responseHandler.bind(node, {}));
@@ -122,7 +120,7 @@ module.exports = function(RED) {
                 res.sendStatus(200);
             } catch(err) {
                 res.sendStatus(500);
-                node.error(RED._("catenis.setpermissionrights.failed", { error: err.toString() }));
+                node.error("Could not set permission rights");
             }
         } else {
             res.sendStatus(404);
