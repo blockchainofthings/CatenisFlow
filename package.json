@@ -23,6 +23,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "merge": "^1.2.0",
     "moment": "^2.20.1"
   }
 }

@@ -5,14 +5,37 @@
         defaults: {
             name: { value: "" },
             device: { value: "", type: "catenis device" },
-            event: { value: "" },
-            state: { value: "connected" }
+            event: { value: "" }
         },
-        inputs:0,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "file.png",
         label: function () {
             return this.name || "notification channel";
+        },
+        button: {
+            enabled: true,
+            onclick: function() {
+                var node = this;
+                $.ajax({
+                    url: "catenis.notificationchannel/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        // RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
         },
         oneditprepare: function () {
             var node = this;
@@ -62,13 +85,6 @@
     <div class="form-row">
         <label for="node-input-event"><i class="fa fa-bell"></i> Event</label>
         <select id="node-input-event">
-        </select>
-    </div>
-    <div class="form-row">
-        <label for="node-input-state"><i class="fa fa-plug"></i> State</label>
-        <select id="node-input-state">
-            <option value="connected" selected>Connected</option>
-            <option value="disconnected">Disconnected</option>
         </select>
     </div>
 </script>

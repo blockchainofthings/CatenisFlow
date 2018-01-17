@@ -4,19 +4,19 @@
 */
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
+var merge = require('merge');
 
 module.exports = function(RED) {
     function CheckPermissionNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
-        var device = RED.nodes.getNode(config.device);
-        var deviceId = config.deviceId;
-        var isProdUniqueId = config.isProdUniqueId;
-        var event = config.event;
 
-        node.on('input', function() {
+        node.on('input', function(msg) {
+            var payload = merge(true, config, msg.payload);
+            var device = RED.nodes.getNode(payload.device);
+
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.checkEffectivePermissionRight(event, deviceId, isProdUniqueId, responseHandler.bind(node, {}));
+            ctnApiClient.checkEffectivePermissionRight(payload.event, payload.deviceId, payload.isProdUniqueId, responseHandler.bind(node, {}));
         });
     }
 

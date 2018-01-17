@@ -4,20 +4,37 @@
 */
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
+var merge = require('merge');
 
 module.exports = function(RED) {
     function retrieveDeviceInfoNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
-        var device = RED.nodes.getNode(config.device);
-        var deviceId = config.deviceId;
-        var isProdUniqueId = config.isProdUniqueId;
 
         node.on('input', function(msg) {
+            var payload = merge(true, config, msg.payload);
+            var device = RED.nodes.getNode(payload.device);
+
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.retrieveDeviceIdentificationInfo(deviceId, isProdUniqueId, responseHandler.bind(node, msg));
+            ctnApiClient.retrieveDeviceIdentificationInfo(payload.deviceId, payload.isProdUniqueId, responseHandler.bind(node, msg));
         });
     }
+
     RED.nodes.registerType("retrieve device info", retrieveDeviceInfoNode);
+
+    RED.httpAdmin.post("/catenis.retrievedeviceinfo/:id", RED.auth.needsPermission("catenis.retrievedeviceinfo"), function(req, res) {
+        var node = RED.nodes.getNode(req.params.id);
+        if (node != null) {
+            try {
+                node.receive();
+                res.sendStatus(200);
+            } catch(err) {
+                res.sendStatus(500);
+                node.error("Check permission failed.");
+            }
+        } else {
+            res.sendStatus(404);
+        }
+    });
 }
 

@@ -5,6 +5,7 @@
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
 var moment = require('moment');
+var merge = require('merge');
 
 function formatDate(value) {
     var mt = moment(value.trim());
@@ -39,23 +40,33 @@ module.exports = function(RED) {
     function ListMessagesNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
-        var device = RED.nodes.getNode(config.device);
 
         node.on('input', function(msg) {
+            var payload = merge(true, config, msg.payload);
+            var device = RED.nodes.getNode(payload.device);
+
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.listMessages({
-                action: config.action,
-	            direction: config.direction,
-	            fromDeviceIds: config.fromDeviceIds,
-	            toDeviceIds: config.toDeviceIds,
-	            fromDeviceProdUniqueIds: config.fromDeviceProdUniqueIds,
-	            toDeviceProdUniqueIds: config.toDeviceProdUniqueIds,
-	            readState: config.readState,
-	            startDate: formatDate(config.startDate),
-	            endDate: formatDate(config.endDate),
-            }, responseHandler.bind(node, msg));
+            payload.startDate = formatDate(payload.startDate);
+            payload.endDate = formatDate(payload.endDate);
+            ctnApiClient.listMessages(payload, responseHandler.bind(node, msg));
         });
     }
+
     RED.nodes.registerType("list messages", ListMessagesNode);
+
+    RED.httpAdmin.post("/catenis.listmessages/:id", RED.auth.needsPermission("catenis.listmessages"), function(req, res) {
+        var node = RED.nodes.getNode(req.params.id);
+        if (node != null) {
+            try {
+                node.receive();
+                res.sendStatus(200);
+            } catch(err) {
+                res.sendStatus(500);
+                node.error("Could not set permission rights");
+            }
+        } else {
+            res.sendStatus(404);
+        }
+    });
 }
 

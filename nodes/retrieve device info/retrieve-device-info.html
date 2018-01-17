@@ -13,6 +13,30 @@
         icon: "file.png",
         label: function () {
             return this.name || "retrieve device info";
+        },
+        button: {
+            enabled: true,
+            onclick: function() {
+                var node = this;
+                $.ajax({
+                    url: "catenis.retrievedeviceinfo/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
         }
     });
 </script>
