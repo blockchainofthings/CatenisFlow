@@ -63,9 +63,9 @@
                     var option;
                     for (var eventID in events) {
                         if (node.event === eventID) {
-                            option = $('<option value="' + eventID + '" selected>' + events[eventID] + '</option>');
+                            option = $('<option value="' + eventID + '" selected>' + eventID + ' - ' + events[eventID] + '</option>');
                         } else {
-                            option = $('<option value="' + eventID + '">' + events[eventID] + '</option>');
+                            option = $('<option value="' + eventID + '">' + eventID + ' - ' + events[eventID] + '</option>');
                         }
                         option.appendTo(eventSelect);
                     }
@@ -116,7 +116,7 @@
         <input type="text" id="node-input-denyCtnNodeIndices">
     </div>
     <div class="form-row">
-        <label for="node-input-noneCtnNodeIndices"><i class="fa fa-tag"></i> Cleared Catenis node indices</label>
+        <label for="node-input-noneCtnNodeIndices"><i class="fa fa-tag"></i> Clear Catenis node indices</label>
         <input type="text" id="node-input-noneCtnNodeIndices">
     </div>
     <div class="form-row">
@@ -128,7 +128,7 @@
         <input type="text" id="node-input-denyClientIds">
     </div>
     <div class="form-row">
-        <label for="node-input-noneClientIds"><i class="fa fa-tag"></i> Cleared client IDs</label>
+        <label for="node-input-noneClientIds"><i class="fa fa-tag"></i> Clear client IDs</label>
         <input type="text" id="node-input-noneClientIds">
     </div>
     <div class="form-row">
@@ -148,15 +148,18 @@
         <input type="text" id="node-input-denyProdIds">
     </div>
     <div class="form-row">
-        <label for="node-input-noneDeviceIds"><i class="fa fa-tag"></i> Cleared device IDs</label>
+        <label for="node-input-noneDeviceIds"><i class="fa fa-tag"></i> Clear device IDs</label>
         <input type="text" id="node-input-noneDeviceIds">
     </div>
     <div class="form-row">
-        <label for="node-input-noneProdIds"><i class="fa fa-tag"></i> Cleared device product uique IDs</label>
+        <label for="node-input-noneProdIds"><i class="fa fa-tag"></i> Clear device product uique IDs</label>
         <input type="text" id="node-input-noneProdIds">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="set permission rights">
-    <p>Call Catenis API to set permission rights for the specified event</p>
+    <p>Call Catenis API to set permission rights for the specified event.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API end-point is called using the parameters set in the node’s configuration.</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Note: different from the behavior of the other nodes, when used run-time mode, the value of the parameters come exclusively from the message payload. The only exception is the event name parameter that, if not present in the message payload, the corresponding value from the node’s configuration shall be used.</p>
+    <p>The data returned from a successful call to the Catenis API end-point are passed through the node’s single output.</p>
 </script>

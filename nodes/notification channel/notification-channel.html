@@ -74,5 +74,9 @@
 </script>
 
 <script type="text/x-red" data-help-name="notification channel">
-    <p>A node that creates a websocket channel to listen to Catenis events</p>
+    <p>Connects with Catenis and receives notification messages for a given event.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the notification channel for the given notification event (as specified in the node’s configuration) is open/closed. The button toggles the state of the notification channel from connected to disconnected, and vice-versa.</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object that contains the action to be performed, either opening or closing the notification channel for the given notification event (as specified in the node’s configuration).</p>
+    <p>The current state of the notification channel (either connected or disconnect) is displayed on the UI using the node’s status control.</p>
+    <p>Notification messages are passed through the node’s single output.</p>
 </script>

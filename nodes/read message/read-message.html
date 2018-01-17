@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('retrieve message', {
+    RED.nodes.registerType('read message', {
         category: 'catenis',
         color: '#a2a7cd',
         defaults: {
@@ -11,12 +11,12 @@
         outputs:1,
         icon: "file.png",
         label: function () {
-            return this.name || "retrieve message";
+            return this.name || "read message";
         }
     });
 </script>
 
-<script type="text/x-red" data-template-name="retrieve message">
+<script type="text/x-red" data-template-name="read message">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -35,6 +35,8 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="retrieve message">
-    <p>A node that retrieves a message from blockchain</p>
+<script type="text/x-red" data-help-name="read message">
+    <p>Call Catenis API to read a given message from the blockchain.</p>
+    <p>The payload of the received message is a string containing the ID of the message to be read.</p>
+    <p>The data returned from a successful call to the Catenis API end-point are passed through the node’s single output.</p>
 </script>

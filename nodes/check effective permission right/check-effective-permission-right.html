@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('check permission', {
+    RED.nodes.registerType('check effective permission right', {
         category: 'catenis',
         color: '#a2a7cd',
         defaults: {
@@ -13,7 +13,7 @@
         outputs:1,
         icon: "file.png",
         label: function () {
-            return this.name || "check permission";
+            return this.name || "check effective permission right";
         },
         button: {
             enabled: true,
@@ -52,9 +52,9 @@
                     var option;
                     for (var eventID in events) {
                         if (node.event === eventID) {
-                            option = $('<option value="' + eventID + '" selected>' + events[eventID] + '</option>');
+                            option = $('<option value="' + eventID + '" selected>' + eventID + ' - ' + events[eventID] + '</option>');
                         } else {
-                            option = $('<option value="' + eventID + '">' + events[eventID] + '</option>');
+                            option = $('<option value="' + eventID + '">' + eventID + ' - ' + events[eventID] + '</option>');
                         }
                         option.appendTo(eventSelect);
                     }
@@ -75,7 +75,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="check permission">
+<script type="text/x-red" data-template-name="check effective permission right">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -99,6 +99,9 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="check permission">
-    <p>Check effective permission for a device</p>
+<script type="text/x-red" data-help-name="check effective permission right">
+    <p>Call Catenis API to check effective permission right applied to a given device for the specified event.</p>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API end-point.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API end-point is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
 </script>

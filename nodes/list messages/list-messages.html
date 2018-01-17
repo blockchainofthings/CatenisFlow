@@ -53,19 +53,43 @@
         </select>
     </div>
     <div class="form-row">
-        <label for="node-input-fromDeviceIds"><i class="fa fa-microchip"></i> From devices</label>
+        <label for="node-input-fromDeviceIds"><i class="fa fa-microchip"></i> From device IDs</label>
         <input type="text" id="node-input-fromDeviceIds">
     </div>
     <div class="form-row">
-        <label for="node-input-toDeviceIds"><i class="fa fa-microchip"></i> To devices</label>
+        <label for="node-input-toDeviceIds"><i class="fa fa-microchip"></i> To device IDs</label>
         <input type="text" id="node-input-toDeviceIds">
     </div>
     <div class="form-row">
-        <label for="node-input-fromDeviceProdUniqueIds"><i class="fa fa-microchip"></i> From devices (Product unique ID)</label>
+        <label for="node-input-fromDeviceProdUniqueIds"><i class="fa fa-microchip"></i> From device product unique IDs</label>
         <input type="text" id="node-input-fromDeviceProdUniqueIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-toDeviceProdUniqueIds"><i class="fa fa-microchip"></i> To device product unique IDs</label>
+        <input type="text" id="node-input-toDeviceProdUniqueIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-readState"><i class="fa fa-exchange"></i> Read state</label>
+        <select id="node-input-readState">
+            <option value="any" selected>Any</option>
+            <option value="unread">Unread</option>
+            <option value="read">Read</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-startDate"><i class="fa fa-microchip"></i> Start date</label>
+        <input type="text" id="node-input-startDate" placeholder="YYYY-MM-dd HH:mm:ss">
+    </div>
+    <div class="form-row">
+        <label for="node-input-endDate"><i class="fa fa-microchip"></i> End date</label>
+        <input type="text" id="node-input-endDate" placeholder="YYYY-MM-dd HH:mm:ss">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="list messages">
-    <p>A node that lists messages sent via Catenis</p>
+    <p>Call Catenis API to retrieve a list of message entries filtered by a given criteria.</p>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API end-point.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API end-point is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API end-point are passed through the node’s single output.</p>
 </script>

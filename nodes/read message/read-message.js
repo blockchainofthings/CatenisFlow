@@ -16,5 +16,5 @@ module.exports = function(RED) {
             ctnApiClient.readMessage(msg.payload.messageId, config.encoding, responseHandler.bind(node, msg));
         });
     }
-    RED.nodes.registerType("retrieve message", RetrieveMessageNode);
+    RED.nodes.registerType("read message", RetrieveMessageNode);
 }

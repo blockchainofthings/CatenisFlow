@@ -37,5 +37,9 @@
 </script>
 
 <script type="text/x-red" data-help-name="retrieve device info">
-    <p>A node that gets the identification info given a Catenis device's ID</p>
+    <p>Call Catenis API to retrieve basic identification information from a given device.</p>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API end-point.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API end-point is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API end-point are passed through the node’s single output.</p>
 </script>

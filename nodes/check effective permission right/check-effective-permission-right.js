@@ -20,7 +20,7 @@ module.exports = function(RED) {
         });
     }
 
-    RED.nodes.registerType("check permission", CheckPermissionNode);
+    RED.nodes.registerType("check effective permission right", CheckPermissionNode);
 
     RED.httpAdmin.post("/catenis.checkpermission/:id", RED.auth.needsPermission("catenis.checkpermission"), function(req, res) {
         var node = RED.nodes.getNode(req.params.id);

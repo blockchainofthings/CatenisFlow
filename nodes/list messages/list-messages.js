@@ -19,7 +19,7 @@ function checkDateField(ctrlId, node) {
 
     if (startDate && checkUndefined(startDate.value.trim())) {
         if (!moment(startDate.value.trim()).isValid()) {
-            node.error('Invalid date and time. Please enter date and time in a ISO-8601 format like \'YYYY-MM-DD HH:mm:ss\'');
+            alert('Invalid date and time. Please enter date and time in a ISO-8601 format like \'YYYY-MM-DD HH:mm:ss\'');
             startDate.focus();
             return false;
         }

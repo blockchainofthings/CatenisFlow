@@ -27,16 +27,20 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-fromDevice"><i class="fa fa-microchip"></i> From device</label>
+        <label for="node-input-fromDevice"><i class="fa fa-microchip"></i> Device</label>
         <input type="text" id="node-input-fromDevice">
     </div>
     <div class="form-row">
-        <label for="node-input-toDeviceId"><i class="fa fa-microchip"></i> To device</label>
+        <label for="node-input-toDeviceId"><i class="fa fa-microchip"></i> Target device ID</label>
         <input type="text" id="node-input-toDeviceId">
     </div>
     <div class="form-row">
         <label for="node-input-isProdUniqueId"><i class="fa fa-tag"></i> Product unique ID</label>
         <input type="checkbox" id="node-input-isProdUniqueId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-readConfirmation"><i class="fa fa-envelope"></i> Read confirmation</label>
+        <input type="checkbox" id="node-input-readConfirmation">
     </div>
     <div class="form-row">
         <label for="node-input-encoding"><i class="fa fa-font"></i> Encoding</label>
@@ -58,12 +62,12 @@
         <label for="node-input-encrypt"><i class="fa fa-user-secret"></i> Encrypt</label>
         <input type="checkbox" id="node-input-encrypt">
     </div>
-    <div class="form-row">
-        <label for="node-input-readConfirmation"><i class="fa fa-envelope"></i> Read confirmation</label>
-        <input type="checkbox" id="node-input-readConfirmation">
-    </div>
 </script>
 
 <script type="text/x-red" data-help-name="send message">
-    <p>A node that sends a message to another device</p>
+    <p>Call Catenis API to record a message to the blockchain directing it to another device.</p>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API end-point.</p>
+    <p>The payload of the received message can be either a string or an object. If it is a string, its contents is used as the message to be logged and the default settings (as specified in the node’s configuration) are used for the other parameters.</p>
+    <p>In case an object is received, the message and the options parameters are gotten from it. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API end-point are passed through the node’s single output.</p>
 </script>

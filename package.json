@@ -7,17 +7,17 @@
   },
   "node-red": {
     "nodes": {
-      "log message": "nodes/log message/log-message.js",
       "catenis device": "nodes/catenis device/catenis-device.js",
-      "retrieve message container": "nodes/retrieve message container/retrieve-message-container.js",
-      "retrieve message": "nodes/retrieve message/retrieve-message.js",
+      "log message": "nodes/log message/log-message.js",
       "send message": "nodes/send message/send-message.js",
+      "retrieve message container": "nodes/retrieve message container/retrieve-message-container.js",
+      "read message": "nodes/read message/read-message.js",
       "list messages": "nodes/list messages/list-messages.js",
-      "retrieve device info": "nodes/retrieve device info/retrieve-device-info.js",
-      "notification channel": "nodes/notification channel/notification-channel.js",
-      "check permission": "nodes/check permission/check-permission.js",
       "retrieve permission rights": "nodes/retrieve permission rights/retrieve-permission-rights.js",
-      "set permission rights": "nodes/set permission rights/set-permission-rights.js"
+      "set permission rights": "nodes/set permission rights/set-permission-rights.js",
+      "check effective permission right": "nodes/check effective permission right/check-effective-permission-right.js",
+      "retrieve device info": "nodes/retrieve device info/retrieve-device-info.js",
+      "notification channel": "nodes/notification channel/notification-channel.js"
     }
   },
   "author": "",
