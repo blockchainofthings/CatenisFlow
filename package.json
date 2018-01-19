@@ -13,10 +13,12 @@
       "retrieve message container": "nodes/retrieve message container/retrieve-message-container.js",
       "read message": "nodes/read message/read-message.js",
       "list messages": "nodes/list messages/list-messages.js",
+      "list permission events": "nodes/list permission events/list-permission-events.js",
       "retrieve permission rights": "nodes/retrieve permission rights/retrieve-permission-rights.js",
       "set permission rights": "nodes/set permission rights/set-permission-rights.js",
       "check effective permission right": "nodes/check effective permission right/check-effective-permission-right.js",
       "retrieve device info": "nodes/retrieve device info/retrieve-device-info.js",
+      "list notifiation events": "nodes/list notification events/list-notification-events.js",
       "notification channel": "nodes/notification channel/notification-channel.js"
     }
   },
