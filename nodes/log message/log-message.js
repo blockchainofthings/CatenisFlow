@@ -13,11 +13,42 @@ module.exports = function(RED) {
 
         node.on('input', function(msg) {
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.logMessage(msg.payload, {
+
+            // Get options from node's configuration
+            var opts = {
                 encoding: config.encoding,
                 encrypt: config.encrypt,
                 storage: config.storage
-            }, responseHandler.bind(node, msg));
+            };
+
+            var message;
+
+            if (typeof msg.payload === 'string') {
+                // Assume that payload contains the message to log
+                message = msg.payload;
+            }
+            else if (typeof msg.payload === 'object' && msg.payload !== null) {
+                // Get message to log
+                message = msg.payload.message;
+
+                if (typeof msg.payload.options === 'object' && msg.payload.options !== null) {
+                    // Payload has options. Override them as appropriate
+                    if (msg.payload.options.encoding) {
+                        opts.encoding = msg.payload.options.encoding;
+                    }
+
+                    if (msg.payload.options.encrypt) {
+                        opts.encrypt = msg.payload.options.encrypt;
+                    }
+
+                    if (msg.payload.options.storage) {
+                        opts.storage = msg.payload.options.storage;
+                    }
+                }
+            }
+
+            // Call Catenis API to log message
+            ctnApiClient.logMessage(message, opts, responseHandler.bind(node, msg));
         });
     }
     RED.nodes.registerType("log message", LogMessageNode);
