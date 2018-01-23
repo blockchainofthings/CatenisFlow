@@ -5,7 +5,7 @@
         defaults: {
             name: { value: "" },
             device: { value: "", type: "catenis device" },
-            event: { value: "" }
+            eventName: { value: "" }
         },
         inputs: 1,
         outputs: 1,
@@ -39,7 +39,7 @@
         },
         oneditprepare: function () {
             var node = this;
-            var eventSelect = $("#node-input-event");
+            var eventSelect = $("#node-input-eventName");
             $.ajax({
                 url: "catenis.notificationevents",
                 type: "GET",
@@ -83,8 +83,8 @@
         <input type="text" id="node-input-device">
     </div>
     <div class="form-row">
-        <label for="node-input-event"><i class="fa fa-bell"></i> Event</label>
-        <select id="node-input-event">
+        <label for="node-input-eventName"><i class="fa fa-bell"></i> Event</label>
+        <select id="node-input-eventName">
         </select>
     </div>
 </script>

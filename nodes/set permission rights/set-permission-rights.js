@@ -4,7 +4,7 @@
 */
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
-var merge = require('merge');
+var util = require('../../util');
 
 module.exports = function(RED) {
     function SetPermissionNode(config) {
@@ -12,36 +12,78 @@ module.exports = function(RED) {
         var node = this;
 
         node.on('input', function(msg) {
-            var payload = merge(true, config, msg.payload);
+            var payload = msg.payload || {};
             var device = RED.nodes.getNode(payload.device);
 
-            var event = payload.event;
-            var sysRight = payload.sysRight;
-            var allowCtnNodeIndices = payload.allowCtnNodeIndices || "";
-            var denyCtnNodeIndices = payload.denyCtnNodeIndices || "";
-            var noneCtnNodeIndices = payload.noneCtnNodeIndices || "";
-            var allowClientIds = payload.allowClientIds || "";
-            var denyClientIds = payload.denyClientIds || "";
-            var noneClientIds = payload.noneClientIds || "";
-            var allowDeviceIds = payload.allowDeviceIds || "";
-            var denyDeviceIds = payload.denyDeviceIds || "";
-            var noneDeviceIds = payload.noneDeviceIds || "";
-            var allowProdIds = payload.allowProdIds || "";
-            var denyProdIds = payload.denyProdIds || "";
-            var noneProdIds = payload.noneProdIds || "";
+            var eventName = payload.eventName || config.eventName;
+            var sysRight = config.sysRight;
+            var allowCtnNodeIndices = (config.allowCtnNodeIndices || "").split(" ").join("");
+            var denyCtnNodeIndices = (config.denyCtnNodeIndices || "").split(" ").join("");
+            var noneCtnNodeIndices = (config.noneCtnNodeIndices || "").split(" ").join("");
+            var allowClientIds = (config.allowClientIds || "").split(" ").join("");
+            var denyClientIds = (config.denyClientIds || "").split(" ").join("");
+            var noneClientIds = (config.noneClientIds || "").split(" ").join("");
+            var allowDeviceIds = (config.allowDeviceIds || "").split(" ").join("");
+            var denyDeviceIds = (config.denyDeviceIds || "").split(" ").join("");
+            var noneDeviceIds = (config.noneDeviceIds || "").split(" ").join("");
+            var allowProdIds = (config.allowProdIds || "").split(" ").join("");
+            var denyProdIds = (config.denyProdIds || "").split(" ").join("");
+            var noneProdIds = (config.noneProdIds || "").split(" ").join("");
+            var allowDevices = [];
+            var denyDevices = [];
+            var noneDevices = [];
 
-            allowCtnNodeIndices = allowCtnNodeIndices.split(" ").join("");
-            denyCtnNodeIndices = denyCtnNodeIndices.split(" ").join("");
-            noneCtnNodeIndices = noneCtnNodeIndices.split(" ").join("");
-            allowClientIds = allowClientIds.split(" ").join("");
-            denyClientIds = denyClientIds.split(" ").join("");
-            noneClientIds = noneClientIds.split(" ").join("");
-            allowDeviceIds = allowDeviceIds.split(" ").join("");
-            denyDeviceIds = denyDeviceIds.split(" ").join("");
-            noneDeviceIds = noneDeviceIds.split(" ").join("");
-            allowProdIds = allowProdIds.split(" ").join("");
-            denyProdIds = denyProdIds.split(" ").join("");
-            noneProdIds = noneProdIds.split(" ").join("");
+            if (util.checkNonNullObject(payload.rights)) {
+
+                if (payload.rights.system) {
+                    sysRight = payload.rights.system;
+                }
+
+                if (util.checkNonNullObject(payload.catenisNode)) {
+
+                    if (payload.catenisNode.allow) {
+                        allowCtnNodeIndices = payload.catenisNode.allow;
+                    }
+
+                    if (payload.catenisNode.deny) {
+                        denyCtnNodeIndices = payload.catenisNode.deny;
+                    }
+
+                    if (payload.catenisNode.none) {
+                        noneCtnNodeIndices = payload.catenisNode.none;
+                    }
+                }
+
+                if (util.checkNonNullObject(payload.client)) {
+
+                    if (payload.client.allow) {
+                        allowClientIds = payload.client.allow;
+                    }
+
+                    if (payload.client.deny) {
+                        denyClientIds = payload.client.deny;
+                    }
+
+                    if (payload.client.none) {
+                        noneClientIds = payload.client.none;
+                    }
+                }
+
+                if (util.checkNonNullObject(payload.device)) {
+
+                    if (payload.device.allow) {
+                        allowDevices = payload.device.allow;
+                    }
+
+                    if (payload.device.deny) {
+                        allowDevices = payload.device.deny;
+                    }
+
+                    if (payload.device.none) {
+                        allowDevices = payload.device.none;
+                    }
+                }
+            }
 
             allowCtnNodeIndices = (allowCtnNodeIndices === "") ? [] : allowCtnNodeIndices.split(",");
             denyCtnNodeIndices = (denyCtnNodeIndices === "") ? [] : denyCtnNodeIndices.split(",");
@@ -72,45 +114,60 @@ module.exports = function(RED) {
             rights.client.allow = allowClientIds;
             rights.client.deny = denyClientIds;
             rights.client.none = noneClientIds;
-            rights.device.allow = allowDeviceIds.map(function(id) {
-                return {
-                    id: id,
-                    isProdUniqueId: false
-                }
-            });
-            rights.device.deny = denyDeviceIds.map(function(id) {
-                return {
-                    id: id,
-                    isProdUniqueId: false
-                }
-            });
-            rights.device.none = denyDeviceIds.map(function(id) {
-                return {
-                    id: id,
-                    isProdUniqueId: false
-                }
-            });
-            rights.device.allow = rights.device.allow.concat(allowProdIds.map(function(id) {
-                return {
-                    id: id,
-                    isProdUniqueId: true
-                }
-            }));
-            rights.device.deny = rights.device.deny.concat(denyProdIds.map(function(id) {
-                return {
-                    id: id,
-                    isProdUniqueId: true
-                }
-            }));
-            rights.device.none = rights.device.none.concat(noneProdIds.map(function(id) {
-                return {
-                    id: id,
-                    isProdUniqueId: true
-                }
-            }));
+
+            if (allowDevices && allowDevices.length > 0) {
+                rights.device.allow = allowDevices;
+            } else {
+                rights.device.allow = allowDeviceIds.map(function(id) {
+                    return {
+                        id: id,
+                        isProdUniqueId: false
+                    }
+                });
+                rights.device.allow = rights.device.allow.concat(allowProdIds.map(function(id) {
+                    return {
+                        id: id,
+                        isProdUniqueId: true
+                    }
+                }));
+            }
+
+            if (denyDevices && denyDevices.length > 0) {
+                rights.device.deny = denyDevices;
+            } else {
+                rights.device.deny = denyDeviceIds.map(function(id) {
+                    return {
+                        id: id,
+                        isProdUniqueId: false
+                    }
+                });
+                rights.device.deny = rights.device.deny.concat(denyProdIds.map(function(id) {
+                    return {
+                        id: id,
+                        isProdUniqueId: true
+                    }
+                }));
+            }
+
+            if (noneDevices && noneDevices.length > 0) {
+                rights.device.none = noneDevices;
+            } else {
+                rights.device.none = denyDeviceIds.map(function(id) {
+                    return {
+                        id: id,
+                        isProdUniqueId: false
+                    }
+                });
+                rights.device.none = rights.device.none.concat(noneProdIds.map(function(id) {
+                    return {
+                        id: id,
+                        isProdUniqueId: true
+                    }
+                }));
+            }
 
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.setPermissionRights(event, rights, responseHandler.bind(node, {}));
+            ctnApiClient.setPermissionRights(eventName, rights, responseHandler.bind(node, {}));
         });
     }
 

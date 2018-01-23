@@ -16,8 +16,8 @@ module.exports = function(RED) {
         node.status({ fill:"red", shape:"dot", text:"disconnected" });
     }
 
-    function openWsNtfyChannel(node, ctnApiClient, event) {
-        var wsNtfyChannel = ctnApiClient.createWsNotifyChannel(event);
+    function openWsNtfyChannel(node, ctnApiClient, eventName) {
+        var wsNtfyChannel = ctnApiClient.createWsNotifyChannel(eventName);
 
         wsNtfyChannel.addListener('error', function (error) {
             node.error(error.message);
@@ -35,7 +35,7 @@ module.exports = function(RED) {
             if (err) {
                 node.status({ fill:"red", shape:"dot", text:"error connecting" });
             } else {
-                node.status({ fill:"green", shape:"dot", text:"connected - " + event });
+                node.status({ fill:"green", shape:"dot", text:"connected - " + eventName });
             }
         });
 
@@ -56,18 +56,17 @@ module.exports = function(RED) {
 
             if (payload.action) {
                 clearWSNtfyChannel(wsNtfyChannel, node);
-                if (payload.action === 'connect') {
-                    wsNtfyChannel = openWsNtfyChannel(node, ctnApiClient, payload.event);
+                if (payload.action === 'open') {
+                    wsNtfyChannel = openWsNtfyChannel(node, ctnApiClient, payload.eventName);
                 }
             } else {
                 if (wsNtfyChannel) {
                     clearWSNtfyChannel(wsNtfyChannel, node);
                     wsNtfyChannel = undefined;
                 } else {
-                    wsNtfyChannel = openWsNtfyChannel(node, ctnApiClient, payload.event);
+                    wsNtfyChannel = openWsNtfyChannel(node, ctnApiClient, payload.eventName);
                 }
             }
-
         })
 
         node.on('close', function() {

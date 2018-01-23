@@ -16,7 +16,7 @@ module.exports = function(RED) {
             var device = RED.nodes.getNode(payload.device);
 
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.checkEffectivePermissionRight(payload.event, payload.deviceId, payload.isProdUniqueId, responseHandler.bind(node, {}));
+            ctnApiClient.checkEffectivePermissionRight(payload.eventName, payload.deviceId, payload.isProdUniqueId, responseHandler.bind(node, {}));
         });
     }
 

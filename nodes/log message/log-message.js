@@ -4,6 +4,7 @@
 */
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
+var util = require('../../util');
 
 module.exports = function(RED) {
     function LogMessageNode(config) {
@@ -27,11 +28,11 @@ module.exports = function(RED) {
                 // Assume that payload contains the message to log
                 message = msg.payload;
             }
-            else if (typeof msg.payload === 'object' && msg.payload !== null) {
+            else if (util.checkNonNullObject(msg.payload)) {
                 // Get message to log
                 message = msg.payload.message;
 
-                if (typeof msg.payload.options === 'object' && msg.payload.options !== null) {
+                if (checkNonNullObject(msg.payload.options)) {
                     // Payload has options. Override them as appropriate
                     if (msg.payload.options.encoding) {
                         opts.encoding = msg.payload.options.encoding;

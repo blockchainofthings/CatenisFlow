@@ -16,7 +16,7 @@ module.exports = function(RED) {
             var device = RED.nodes.getNode(payload.device);
 
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.retrievePermissionRights(payload.event, responseHandler.bind(node, {}));
+            ctnApiClient.retrievePermissionRights(payload.eventName, responseHandler.bind(node, {}));
         });
     }
 
