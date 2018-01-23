@@ -37,6 +37,31 @@
 
 <script type="text/x-red" data-help-name="read message">
     <p>Call Catenis API to read a given message from the blockchain.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">string</span></dt>
+        <dd>the ID of the message to read.</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload.action<span class="property-type">string</span></dt>
+        <dd>message action - <code>log</code>, <code>send</code>.</dd>
+        <dt>payload.from.deviceId<span class="property-type">string</span></dt>
+        <dd>the ID of the device from which the message was sent.</dd>
+        <dt>payload.from.name<span class="property-type">string</span></dt>
+        <dd>the name of the device from which the message was sent.</dd>
+        <dt>payload.from.prodUniqueId<span class="property-type">string</span></dt>
+        <dd>the product unique ID.</dd>
+        <dt>payload.to.deviceId<span class="property-type">string</span></dt>
+        <dd>the ID of the device to which the message was sent.</dd>
+        <dt>payload.to.name<span class="property-type">string</span></dt>
+        <dd>the name of the device to which the message was sent.</dd>
+        <dt>payload.to.prodUniqueId<span class="property-type">string</span></dt>
+        <dd>the product unique ID.</dd>
+        <dt>payload.message<span class="property-type">string</span></dt>
+        <dd>the message that was sent.</dd>
+    </dl>
+    <h3>Details</h3>
     <p>The payload of the received message is a string containing the ID of the message to be read.</p>
     <p>The data returned from a successful call to the Catenis API end-point are passed through the node’s single output.</p>
 </script>

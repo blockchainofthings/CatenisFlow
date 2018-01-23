@@ -75,21 +75,19 @@
     <dl class="message-properties">
         <dt>payload<span class="property-type">object</span></dt>
         <dd>the payload of the message to send.</dd>
-        <dt class="optional">payload.fromDevice<span class="property-type">string</span></dt>
-        <dd>ID of the device to use to send the message (configured in the flow)</dd>
-        <dt class="optional">payload.toDeviceId<span class="property-type">string</span></dt>
+        <dt class="optional">payload.targetDevice.id<span class="property-type">string</span></dt>
         <dd>target device ID.</dd>
-        <dt class="optional">payload.isProdUniqueId<span class="property-type">boolean</span></dt>
+        <dt class="optional">payload.targetDevice.isProdUniqueId<span class="property-type">boolean</span></dt>
         <dd>whether the ID belongs to a product.</dd>
-        <dt class="optional">payload.device<span class="property-type">string</span></dt>
-        <dd>ID of the device to use to send the message</dd>
-        <dt class="optional">payload.readConfirmation<span class="property-type">boolean</span></dt>
+        <dt class="optional">payload.message<span class="property-type">string</span></dt>
+        <dd>the message to be sent.</dd>
+        <dt class="optional">payload.optoins.readConfirmation<span class="property-type">boolean</span></dt>
         <dd>whether the flow receive a read confirmation notification</dd>
-        <dt class="optional">payload.encoding<span class="property-type">string</span></dt>
+        <dt class="optional">payload.optoins.encoding<span class="property-type">string</span></dt>
         <dd><code>utf8</code>, <code>base64</code>, <code>hex</code></dd>
-        <dt class="optional">payload.storage<span class="property-type">string</span></dt>
+        <dt class="optional">payload.optoins.storage<span class="property-type">string</span></dt>
         <dd><code>auto</code>, <code>embedded</code>, <code>external</code></dd>
-        <dt class="optional">payload.encrypt<span class="property-type">boolean</span></dt>
+        <dt class="optional">payload.optoins.encrypt<span class="property-type">boolean</span></dt>
         <dd>whether to encrypt the message or not.</dd>
     </dl>
     <h3>Outputs</h3>
