@@ -109,6 +109,63 @@
 
 <script type="text/x-red" data-help-name="list messages">
     <p>Call Catenis API to retrieve a list of message entries filtered by a given criteria.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload.action<span class="property-type">string</span></dt>
+        <dd><code>log</code>, <code>send</code>, <code>any</code>.</dd>
+        <dt>payload.direction<span class="property-type">string</span></dt>
+        <dd><code>inbound</code>, <code>outbound</code>, <code>any</code>.</dd>
+        <dt>payload.fromDeviceIds<span class="property-type">string</span></dt>
+        <dd>comma separate list of device IDs from which the messages were sent.</dd>
+        <dt>payload.toDeviceIds<span class="property-type">string</span></dt>
+        <dd>comma separate list of device IDs to which the messages were sent.</dd>
+        <dt>payload.fromDevicProdUniqueeIds<span class="property-type">string</span></dt>
+        <dd>comma separate list of product unique IDs from which the messages were sent.</dd>
+        <dt>payload.toDeviceProdUniqueIds<span class="property-type">string</span></dt>
+        <dd>comma separate list of product unique IDs to which the messages were sent.</dd>
+        <dt>payload.readState<span class="property-type">string</span></dt>
+        <dd><code>read</code>, <code>unread</code>, <code>any</code></dd>
+        <dt>payload.startDate<span class="property-type">string</span></dt>
+        <dd>start date in the format <code>YYYY-MM-dd HH:mm:ss</code>.</dd>
+        <dt>payload.endDate<span class="property-type">string</span></dt>
+        <dd>end date in the format <code>YYYY-MM-dd HH:mm:ss</code>.</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload.messages<span class="property-type">array</span></dt>
+        <dd>list of messages. <code>message</code> explained below.</dd>
+        <dt>message.action<span class="property-type">array</span></dt>
+        <dd><code>log</code>, <code>send</code>, <code>any</code>.</dd>
+        <dt>message.direction<span class="property-type">string</span></dt>
+        <dd><code>inbound</code>, <code>outbound</code>, <code>any</code>.</dd>
+        <dt>message.from<span class="property-type">object</span></dt>
+        <dd>details of the device from which the message was sent.</dd>
+        <dt>message.from.deviceId<span class="property-type">string</span></dt>
+        <dd>ID of the device from which the message was sent.</dd>
+        <dt>message.from.name<span class="property-type">string</span></dt>
+        <dd>name of the device from which the message was sent.</dd>
+        <dt>message.from.prodUniqueId<span class="property-type">string</span></dt>
+        <dd>product unique ID from which the message was sent.</dd>
+        <dt>message.to<span class="property-type">object</span></dt>
+        <dd>details of the device to which the message was sent.</dd>
+        <dt>message.to.deviceId<span class="property-type">string</span></dt>
+        <dd>ID of the device to which the message was sent.</dd>
+        <dt>message.to.name<span class="property-type">string</span></dt>
+        <dd>name of the device to which the message was sent.</dd>
+        <dt>message.to.prodUniqueId<span class="property-type">string</span></dt>
+        <dd>product unique ID to which the message was sent.</dd>
+        <dt>message.readConfirmation<span class="property-type">boolean</span></dt>
+        <dd>whether a read confirmation notification should be sent back to the flow.</dd>
+        <dt>message.read<span class="property-type">boolean</span></dt>
+        <dd>whether the message was read.</dd>
+        <dt>payload.date<span class="property-type">date</span></dt>
+        <dd>the date on which the message was sent.</dd>
+        <dt>payload.msgCount<span class="property-type">number</span></dt>
+        <dd>total number of messages matchin the query</dd>
+        <dt>payload.countExceeded<span class="property-type">number</span></dt>
+        <dd>start date in the format <code>YYYY-MM-dd HH:mm:ss</code>.</dd>
+    </dl>
+    <h3>Details</h3>
     <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API end-point.</p>
     <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API end-point is called using the default settings (as specified in the node’s configuration).</p>
     <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>

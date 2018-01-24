@@ -52,6 +52,12 @@
 
 <script type="text/x-red" data-help-name="list notification events">
     <p>Call Catenis API to retrieve a list of system defined notification events.</p>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>&lt;event_name&gt;<span class="property-type">string</span></dt>
+        <dd>the keys in the response object are the event names and the values are the corresponding descriptions</dd>
+    </dl>
+    <h3>Details</h3>
     <p>This node is to be used exclusively in interactive mode, where the end user clicks on the action button and the Catenis API end-point is called using the parameters set in the node’s configuration.</p>
     <p>The data returned from a successful call to the Catenis API end-point are passed through the node’s single output.</p>
 </script>

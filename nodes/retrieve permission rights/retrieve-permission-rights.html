@@ -91,6 +91,18 @@
 
 <script type="text/x-red" data-help-name="retrieve permission right">
     <p>Call Catenis API to retrieve permission rights currently set for the specified event.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dd>the payload of the message to send.</dd>
+        <dt class="optional">payload.eventName<span class="property-type">string</span></dt>
+        <dd>name of the event to retrieve permission rights for.</dd>
+    </dl>
+    <h3>Outputs</h3>
+        <dl class="message-properties"><dt>system<span class="property-type">string</span></dt>
+        <dd><code>allow</code>, <code>deny</code>, <code>none</code>.</dd>
+    </dl>
+    <h3>Details</h3>
     <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API end-point.</p>
     <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API end-point is called using the default settings (as specified in the node’s configuration).</p>
     <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
