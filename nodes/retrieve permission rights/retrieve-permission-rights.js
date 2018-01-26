@@ -20,7 +20,7 @@ module.exports = function(RED) {
         });
     }
 
-    RED.nodes.registerType("retrieve permission right", RetrievePermissionNode);
+    RED.nodes.registerType("retrieve permission rights", RetrievePermissionNode);
 
     RED.httpAdmin.post("/catenis.retrievepermissionright/:id", RED.auth.needsPermission("catenis.retrievepermissionright"), function(req, res) {
         var node = RED.nodes.getNode(req.params.id);

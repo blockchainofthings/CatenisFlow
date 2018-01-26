@@ -4,7 +4,7 @@
 */
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../util');
+var util = require('../../util');
 
 module.exports = function(RED) {
     function SendMessageNode(config) {
@@ -16,7 +16,7 @@ module.exports = function(RED) {
 
         var targetDevice = {
             id: config.toDeviceId,
-            isProdUniqueId = config.isProdUniqueId
+            isProdUniqueId: config.isProdUniqueId
         }
 
         node.on('input', function(msg) {
