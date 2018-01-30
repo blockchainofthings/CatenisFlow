@@ -1,13 +1,13 @@
 /*
-* @Author: Mahesh J
-* @Date:   2018-01-05 19:46:47
+* @Author: mahesh
+* @Date:   2018-01-13 21:22:38
 */
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
 var merge = require('merge');
 
 module.exports = function(RED) {
-    function retrieveDeviceInfoNode(config) {
+    function RetrievePermissionNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
 
@@ -16,13 +16,13 @@ module.exports = function(RED) {
             var device = RED.nodes.getNode(payload.device);
 
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.retrieveDeviceIdentificationInfo(payload.deviceId, payload.isProdUniqueId, responseHandler.bind(node, msg));
+            ctnApiClient.retrievePermissionRights(payload.eventName, responseHandler.bind(node, {}));
         });
     }
 
-    RED.nodes.registerType("retrieve device info", retrieveDeviceInfoNode);
+    RED.nodes.registerType("retrieve permission rights", RetrievePermissionNode);
 
-    RED.httpAdmin.post("/catenis.retrievedeviceinfo/:id", RED.auth.needsPermission("catenis.retrievedeviceinfo"), function(req, res) {
+    RED.httpAdmin.post("/catenis.retrievepermissionright/:id", RED.auth.needsPermission("catenis.retrievepermissionright"), function(req, res) {
         var node = RED.nodes.getNode(req.params.id);
         if (node != null) {
             try {
@@ -30,11 +30,10 @@ module.exports = function(RED) {
                 res.sendStatus(200);
             } catch(err) {
                 res.sendStatus(500);
-                node.error("Check permission failed.");
+                node.error("Could not retrieve permission rights.");
             }
         } else {
             res.sendStatus(404);
         }
     });
 }
-

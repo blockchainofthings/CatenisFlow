@@ -4,23 +4,23 @@
 */
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
+var merge = require('merge');
 
 module.exports = function(RED) {
     function CheckPermissionNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
-        var device = RED.nodes.getNode(config.device);
-        var deviceId = config.deviceId;
-        var isProdUniqueId = config.isProdUniqueId;
-        var event = config.event;
 
-        node.on('input', function() {
+        node.on('input', function(msg) {
+            var payload = merge(true, config, msg.payload);
+            var device = RED.nodes.getNode(payload.device);
+
             var ctnApiClient = device.ctnApiClient;
-            ctnApiClient.checkEffectivePermissionRight(event, deviceId, isProdUniqueId, responseHandler.bind(node, {}));
+            ctnApiClient.checkEffectivePermissionRight(payload.eventName, payload.deviceId, payload.isProdUniqueId, responseHandler.bind(node, {}));
         });
     }
 
-    RED.nodes.registerType("check permission", CheckPermissionNode);
+    RED.nodes.registerType("check effective permission right", CheckPermissionNode);
 
     RED.httpAdmin.post("/catenis.checkpermission/:id", RED.auth.needsPermission("catenis.checkpermission"), function(req, res) {
         var node = RED.nodes.getNode(req.params.id);
@@ -30,7 +30,7 @@ module.exports = function(RED) {
                 res.sendStatus(200);
             } catch(err) {
                 res.sendStatus(500);
-                node.error(RED._("catenis.checkpermission.failed", { error: err.toString() }));
+                node.error("Check permission failed.");
             }
         } else {
             res.sendStatus(404);

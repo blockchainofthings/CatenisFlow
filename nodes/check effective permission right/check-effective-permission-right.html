@@ -1,27 +1,29 @@
 <script type="text/javascript">
-    RED.nodes.registerType('notification channel', {
+    RED.nodes.registerType('check effective permission right', {
         category: 'catenis',
         color: '#a2a7cd',
         defaults: {
             name: { value: "" },
             device: { value: "", type: "catenis device" },
+            deviceId: { value: "" },
+            isProdUniqueId: { value: false },
             eventName: { value: "" }
         },
-        inputs: 1,
-        outputs: 1,
-        icon: "catenis-notification-channel.png",
+        inputs:0,
+        outputs:1,
+        icon: "catenis-check-permission-rights.png",
         label: function () {
-            return this.name || "notification channel";
+            return this.name || "check effective permission right";
         },
         button: {
             enabled: true,
             onclick: function() {
                 var node = this;
                 $.ajax({
-                    url: "catenis.notificationchannel/" + this.id,
+                    url: "catenis.checkpermission/" + this.id,
                     type:"POST",
                     success: function(resp) {
-                        // RED.notify("Success", "success");
+                        RED.notify("Success", "success");
                     },
                     error: function(jqXHR,textStatus,errorThrown) {
                         if (jqXHR.status == 404) {
@@ -41,7 +43,7 @@
             var node = this;
             var eventSelect = $("#node-input-eventName");
             $.ajax({
-                url: "catenis.notificationevents",
+                url: "catenis.permissionevents",
                 type: "GET",
                 success: function(data) {
                     events = data;
@@ -50,9 +52,9 @@
                     var option;
                     for (var eventID in events) {
                         if (node.event === eventID) {
-                            option = $('<option value="' + eventID + '" selected>' + events[eventID] + '</option>');
+                            option = $('<option value="' + eventID + '" selected>' + eventID + ' - ' + events[eventID] + '</option>');
                         } else {
-                            option = $('<option value="' + eventID + '">' + events[eventID] + '</option>');
+                            option = $('<option value="' + eventID + '">' + eventID + ' - ' + events[eventID] + '</option>');
                         }
                         option.appendTo(eventSelect);
                     }
@@ -73,7 +75,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="notification channel">
+<script type="text/x-red" data-template-name="check effective permission right">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -87,12 +89,19 @@
         <select id="node-input-eventName">
         </select>
     </div>
+    <div class="form-row">
+        <label for="node-input-deviceId"><i class="fa fa-microchip"></i> Device ID</label>
+        <input type="text" id="node-input-deviceId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-isProdUniqueId"><i class="fa fa-tag"></i> Product unique ID</label>
+        <input type="checkbox" id="node-input-isProdUniqueId">
+    </div>
 </script>
 
-<script type="text/x-red" data-help-name="notification channel">
-    <p>Connects with Catenis and receives notification messages for a given event.</p>
-    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the notification channel for the given notification event (as specified in the node’s configuration) is open/closed. The button toggles the state of the notification channel from connected to disconnected, and vice-versa.</p>
-    <p>In run-time mode, the node receives a message the payload of which is an object that contains the action to be performed, either opening or closing the notification channel for the given notification event (as specified in the node’s configuration).</p>
-    <p>The current state of the notification channel (either connected or disconnect) is displayed on the UI using the node’s status control.</p>
-    <p>Notification messages are passed through the node’s single output.</p>
+<script type="text/x-red" data-help-name="check effective permission right">
+    <p>Call Catenis API to check effective permission right applied to a given device for the specified event.</p>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API end-point.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API end-point is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
 </script>

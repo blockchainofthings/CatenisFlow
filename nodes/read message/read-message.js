@@ -9,12 +9,13 @@ module.exports = function(RED) {
     function RetrieveMessageNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
-        this.device = RED.nodes.getNode(config.device);
-        var ctnApiClient = this.device.ctnApiClient;
+        var device = RED.nodes.getNode(config.device);
 
         node.on('input', function(msg) {
+            var ctnApiClient = device.ctnApiClient;
+
             ctnApiClient.readMessage(msg.payload.messageId, config.encoding, responseHandler.bind(node, msg));
         });
     }
-    RED.nodes.registerType("retrieve message", RetrieveMessageNode);
+    RED.nodes.registerType("read message", RetrieveMessageNode);
 }

@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('notification channel', {
+    RED.nodes.registerType('retrieve permission rights', {
         category: 'catenis',
         color: '#a2a7cd',
         defaults: {
@@ -7,21 +7,21 @@
             device: { value: "", type: "catenis device" },
             eventName: { value: "" }
         },
-        inputs: 1,
-        outputs: 1,
-        icon: "catenis-notification-channel.png",
+        inputs:0,
+        outputs:1,
+        icon: "catenis-retrieve-permission-rights.png",
         label: function () {
-            return this.name || "notification channel";
+            return this.name || "retrieve permission rights";
         },
         button: {
             enabled: true,
             onclick: function() {
                 var node = this;
                 $.ajax({
-                    url: "catenis.notificationchannel/" + this.id,
+                    url: "catenis.retrievepermissionright/" + this.id,
                     type:"POST",
                     success: function(resp) {
-                        // RED.notify("Success", "success");
+                        RED.notify("Success", "success");
                     },
                     error: function(jqXHR,textStatus,errorThrown) {
                         if (jqXHR.status == 404) {
@@ -41,7 +41,7 @@
             var node = this;
             var eventSelect = $("#node-input-eventName");
             $.ajax({
-                url: "catenis.notificationevents",
+                url: "catenis.permissionevents",
                 type: "GET",
                 success: function(data) {
                     events = data;
@@ -50,9 +50,9 @@
                     var option;
                     for (var eventID in events) {
                         if (node.event === eventID) {
-                            option = $('<option value="' + eventID + '" selected>' + events[eventID] + '</option>');
+                            option = $('<option value="' + eventID + '" selected>' + eventID + ' - ' + events[eventID] + '</option>');
                         } else {
-                            option = $('<option value="' + eventID + '">' + events[eventID] + '</option>');
+                            option = $('<option value="' + eventID + '">' + eventID + ' - ' + events[eventID] + '</option>');
                         }
                         option.appendTo(eventSelect);
                     }
@@ -73,7 +73,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="notification channel">
+<script type="text/x-red" data-template-name="retrieve permission rights">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -89,10 +89,22 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="notification channel">
-    <p>Connects with Catenis and receives notification messages for a given event.</p>
-    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the notification channel for the given notification event (as specified in the node’s configuration) is open/closed. The button toggles the state of the notification channel from connected to disconnected, and vice-versa.</p>
-    <p>In run-time mode, the node receives a message the payload of which is an object that contains the action to be performed, either opening or closing the notification channel for the given notification event (as specified in the node’s configuration).</p>
-    <p>The current state of the notification channel (either connected or disconnect) is displayed on the UI using the node’s status control.</p>
-    <p>Notification messages are passed through the node’s single output.</p>
+<script type="text/x-red" data-help-name="retrieve permission rights">
+    <p>Call Catenis API to retrieve permission rightss currently set for the specified event.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dd>the payload of the message to send.</dd>
+        <dt class="optional">payload.eventName<span class="property-type">string</span></dt>
+        <dd>name of the event to retrieve permission rightss for.</dd>
+    </dl>
+    <h3>Outputs</h3>
+        <dl class="message-properties"><dt>system<span class="property-type">string</span></dt>
+        <dd><code>allow</code>, <code>deny</code>, <code>none</code>.</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API end-point.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API end-point is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API end-point are passed through the node’s single output.</p>
 </script>
