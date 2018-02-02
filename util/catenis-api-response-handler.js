@@ -8,12 +8,8 @@ var util = require('util');
 exports = module.exports = function (msg, err, data) {
 	var node = this;
 	if (err) {
-		if (err.apiError) {
-			var errMsg = err.clientError ? err.clientError.toString() : util.format('[%d] - %s', err.apiError.httpStatusCode, err.apiError.message);
-			return node.error(errMsg, msg);
-		} else {
-			return node.error(err.clientError.message, err);
-		}
+		var errMsg = err.clientError ? err.clientError.toString() : util.format('[%d] - %s', err.apiError.httpStatusCode, err.apiError.message);
+		return node.error(errMsg, msg);
 	}
 	// Success. Retrieve returned data
 	msg.payload = data.data;
