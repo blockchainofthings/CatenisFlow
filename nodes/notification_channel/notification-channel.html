@@ -1,0 +1,134 @@
+<script type="text/javascript">
+    RED.nodes.registerType('notification channel', {
+        category: 'catenis',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device" },
+            eventName: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "catenis-notification-channel.png",
+        label: function () {
+            return this.name || "notification channel" + (this.eventName ? ' (' + this.eventName + ')' : '');
+        },
+        button: {
+            enabled: function() {
+                return !this.changed;
+            },
+            onclick: function() {
+                if (this.changed) {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                }
+                var node = this;
+                $.ajax({
+                    url: "catenis.notificationchannel/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        // RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        },
+        oneditprepare: function () {
+            var node = this;
+            var eventSelect = $("#node-input-eventName");
+            $.ajax({
+                url: "catenis.notificationevents",
+                type: "GET",
+                success: function(data) {
+                    events = data;
+                    eventSelect.empty();
+                    for (var eventID in events) {
+                        var option = $('<option value="' + eventID + (node.eventName === eventID ? '" selected>' : '">') + eventID + ' - ' + events[eventID] + '</option>');
+                        option.appendTo(eventSelect);
+                    }
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                    if (jqXHR.status == 404) {
+                        RED.notify("Error - please deploy", "error");
+                    } else if (jqXHR.status == 500) {
+                        RED.notify("Error - server error", "error");
+                    } else if (jqXHR.status == 0) {
+                        RED.notify("Error - no response", "error");
+                    } else {
+                        RED.notify("Error - unexpected response", "error");
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="notification channel">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-eventName"><i class="fa fa-bell"></i> Event</label>
+        <select id="node-input-eventName">
+        </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="notification channel">
+    <p>Connects with Catenis and receives notification messages for a given event.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">action<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The action to perform. One of: <code>open</code>, <code>close</code></dd>
+    </dl>
+    <h3>Outputs</h3>
+    <p>The contents of the output depends on the selected notification event</p>
+    <dl class="message-properties">
+        <dt>payload (new-msg-received)<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">messageId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the received message</dd>
+        <dt style="margin-left:1em">from<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of device that sent the message</dd>
+        <dt style="margin-left:2em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:2em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em">receivedDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Date and time when message was received</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>payload (sent-msg-read)<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">messageId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the originally sent message</dd>
+        <dt style="margin-left:1em">to<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of device to which message was originally sent</dd>
+        <dt style="margin-left:2em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:2em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em">readDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Date and time when message was read</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the notification channel for the given notification event (as specified in the node’s configuration) is open/closed. The button toggles the state of the notification channel from connected to disconnected, and vice-versa.</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object that contains the action to be performed, either opening or closing the notification channel for the given notification event (as specified in the node’s configuration).</p>
+    <p>The current state of the notification channel (either connected or disconnect) is displayed on the UI using the node’s status control.</p>
+    <p>Notification messages are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis API methods</li>
+    </ul>
+</script>
