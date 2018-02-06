@@ -4,7 +4,7 @@ A set of Node-RED nodes to build IOT flows using Catenis Enterprise API. Please 
 
 # Installation
 
-Run the following npm command in your Node-RED user directory (typically ~/.node-red):
+Run the following npm command in your Node-RED user directory (typically `~/.node-red`):
 
 	npm install node-red-contrib-catenis
 
@@ -29,7 +29,7 @@ There are two modes in which the nodes can operate.
 
 ### Interactive mode
 
-Nodes that support this mode will have an button on the input side of the node. Clcking on it will trigger the flow. `List messages` node is one such example.
+Nodes that support this mode will have an button on the input side of the node. Clcking on it will trigger the flow. `List messages` node is an example of one such node.
 
 ### Non-interactive mode
 
