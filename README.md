@@ -16,7 +16,7 @@ Once you install the package and restart Node-RED, you'll see a new set of nodes
 
 Each node requires a `Catenis device` to be configured. Once you have the device details, you can place any of the nodes in the flow editor and configure a new device as shown below.
 
-![Example node configuration UI for log message node](/images/log-message-node-config.png)
+![Example node configuration UI for log message node](/images/device-config.png)
 
 # References
 
