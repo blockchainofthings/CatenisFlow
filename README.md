@@ -6,7 +6,7 @@ A set of Node-RED nodes to build IOT flows using Catenis Enterprise API. Please 
 
 Run the following npm command in your Node-RED user directory (typically ~/.node-red):
 
-`npm install node-red-contrib-catenis`
+	npm install node-red-contrib-catenis
 
 # Usage
 
