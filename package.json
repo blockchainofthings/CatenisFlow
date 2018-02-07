@@ -2,9 +2,17 @@
   "name": "node-red-contrib-catenis",
   "version": "1.0.0",
   "description": "Node-RED components to interact with the Bitcoin blockchain by means of the Catenis Enterprise API",
+  "homepage": "https://github.com/blockchainofthings/CatenisAPINodeRed",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "Catenis",
+    "Catenis Enterprise API",
+    "Blockchain of Things",
+    "blockchain",
+    "node-red"
+  ],
   "node-red": {
     "nodes": {
       "catenis device": "nodes/catenis_device/catenis-device.js",
@@ -22,9 +30,9 @@
       "notification channel": "nodes/notification_channel/notification-channel.js"
     }
   },
-  "author": "",
-  "license": "ISC",
+  "author": "MJ",
+  "license": "MIT",
   "dependencies": {
-    "catenis-api-client": "^1.0.0"
+    "catenis-api-client": "^1.0.1"
   }
 }
