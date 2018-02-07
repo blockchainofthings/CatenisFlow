@@ -1,0 +1,141 @@
+<script type="text/javascript">
+    RED.nodes.registerType('retrieve permission rights', {
+        category: 'catenis',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device" },
+            eventName: { value: "" }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "catenis-retrieve-permission-rights.png",
+        label: function () {
+            return this.name || "retrieve permission rights";
+        },
+        button: {
+            enabled: function() {
+                return !this.changed;
+            },
+            onclick: function() {
+                if (this.changed) {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                }
+                var node = this;
+                $.ajax({
+                    url: "catenis.retrievepermissionright/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        },
+        oneditprepare: function () {
+            var node = this;
+            var eventSelect = $("#node-input-eventName");
+            $.ajax({
+                url: "catenis.permissionevents",
+                type: "GET",
+                success: function(data) {
+                    events = data;
+                    eventSelect.empty();
+                    for (var eventID in events) {
+                        var option = $('<option value="' + eventID + (node.eventName === eventID ? '" selected>' : '">') + eventID + ' - ' + events[eventID] + '</option>');
+                        option.appendTo(eventSelect);
+                    }
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                    if (jqXHR.status == 404) {
+                        RED.notify("Error - please deploy", "error");
+                    } else if (jqXHR.status == 500) {
+                        RED.notify("Error - server error", "error");
+                    } else if (jqXHR.status == 0) {
+                        RED.notify("Error - no response", "error");
+                    } else {
+                        RED.notify("Error - unexpected response", "error");
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="retrieve permission rights">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-eventName"><i class="fa fa-bell"></i> Event</label>
+        <select id="node-input-eventName">
+        </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="retrieve permission rights">
+    <p>Call Catenis API "Retrieve Permission Rights" method to retrieve permission rights currently set for the specified event.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">eventName<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Name of the event to retrieve permission rights for</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">system<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">One of: <code>allow</code>, <code>deny</code></dd>
+        <dt style="margin-left:2em" class="optional">catenisNode<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em" class="optional">allow<span class="property-type">array</span></dt>
+        <dt style="margin-left:4em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">Index of Catenis node with allow right</dd>
+        <dt style="margin-left:3em" class="optional">deny<span class="property-type">array</span></dt>
+        <dt style="margin-left:4em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">Index of Catenis node with deny right</dd>
+        <dt style="margin-left:2em" class="optional">client<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em" class="optional">allow<span class="property-type">array</span></dt>
+        <dt style="margin-left:4em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">ID of client with allow right</dd>
+        <dt style="margin-left:3em" class="optional">deny<span class="property-type">array</span></dt>
+        <dt style="margin-left:4em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">ID of client with deny right</dd>
+        <dt style="margin-left:2em" class="optional">device<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em" class="optional">allow<span class="property-type">array</span></dt>
+        <dt style="margin-left:4em">[array.element]<span class="property-type">object</span></dt>
+        <dt style="margin-left:5em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:5.5em">ID of device with allow right</dd>
+        <dt style="margin-left:5em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:5em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:3em" class="optional">deny<span class="property-type">array</span></dt>
+        <dt style="margin-left:4em">[array.element]<span class="property-type">object</span></dt>
+        <dt style="margin-left:5em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:5.5em">ID of device with deny right</dd>
+        <dt style="margin-left:5em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:5em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API method is called using the event specified in the node’s configuration.</p>
+    <p>In run-time mode, the node receives a message the payload of which is the name of the event to be used.</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

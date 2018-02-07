@@ -1,0 +1,52 @@
+<script type="text/javascript">
+    RED.nodes.registerType('retrieve message container', {
+        category: 'catenis',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device" }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "catenis-retrieve-message-container.png",
+        label: function () {
+            return this.name || "retrieve message container";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="retrieve message container">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="retrieve message container">
+    <p>Call Catenis API "Retrieve Message Container" method to retrieve information about where a given message is recorded.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">string</span></dt>
+        <dd>ID of the message to retrieve container's info</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">blockchain<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">txid<span class="property-type">string</span></dt>
+        <dt style="margin-left:2em">isConfirmed<span class="property-type">boolean</span></dt>
+        <dt style="margin-left:1em" class="optional">externalStorage<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">ipfs<span class="property-type">string</span></dt>
+    </dl>
+    <h3>Details</h3>
+    <p>The payload of the received message is a string containing the ID of the message the container info of which is to be retrieved.</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

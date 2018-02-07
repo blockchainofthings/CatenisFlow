@@ -1,0 +1,174 @@
+<script type="text/javascript">
+    RED.nodes.registerType('list messages', {
+        category: 'catenis',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device"},
+            action: { value: "any" },
+            direction: { value: "any" },
+            fromDeviceIds: { value: "" },
+            toDeviceIds: { value: "" },
+            fromDeviceProdUniqueIds: { value: "" },
+            toDeviceProdUniqueIds: { value: "" },
+            readState: { value: "any" },
+            startDate: { value: "" },
+            endDate: { value: "" }
+        },
+        inputs:1,
+        outputs:1,
+        button: {
+            enabled: function() {
+                return !this.changed;
+            },
+            onclick: function() {
+                if (this.changed) {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                }
+                var node = this;
+                $.ajax({
+                    url: "catenis.listmessages/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        },
+        icon: "catenis-list-messages.png",
+        label: function () {
+            return this.name || "list messages";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="list messages">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="fa fa-bolt"></i> Action</label>
+        <select id="node-input-action">
+            <option value="any" selected>Any</option>
+            <option value="log">Log</option>
+            <option value="send">Send</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-direction"><i class="fa fa-exchange"></i> Direction</label>
+        <select id="node-input-direction">
+            <option value="any" selected>Any</option>
+            <option value="inbound">Inbound</option>
+            <option value="outbound">Outbound</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-fromDeviceIds"><i class="fa fa-microchip"></i> From device IDs</label>
+        <input type="text" id="node-input-fromDeviceIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-toDeviceIds"><i class="fa fa-microchip"></i> To device IDs</label>
+        <input type="text" id="node-input-toDeviceIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-fromDeviceProdUniqueIds"><i class="fa fa-microchip"></i> From device product unique IDs</label>
+        <input type="text" id="node-input-fromDeviceProdUniqueIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-toDeviceProdUniqueIds"><i class="fa fa-microchip"></i> To device product unique IDs</label>
+        <input type="text" id="node-input-toDeviceProdUniqueIds">
+    </div>
+    <div class="form-row">
+        <label for="node-input-readState"><i class="fa fa-toggle-on"></i> Read state</label>
+        <select id="node-input-readState">
+            <option value="any" selected>Any</option>
+            <option value="unread">Unread</option>
+            <option value="read">Read</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-startDate"><i class="fa fa-calendar"></i> Start date</label>
+        <input type="text" id="node-input-startDate" placeholder="YYYY-MM-dd HH:mm:ss">
+    </div>
+    <div class="form-row">
+        <label for="node-input-endDate"><i class="fa fa-calendar"></i> End date</label>
+        <input type="text" id="node-input-endDate" placeholder="YYYY-MM-dd HH:mm:ss">
+    </div>
+    <div style="margin-top:1em">&nbsp;</div>
+</script>
+
+<script type="text/x-red" data-help-name="list messages">
+    <p>Call Catenis API "List Messages" method to retrieve a list of message entries filtered by a given criteria.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">action<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The action originally performed on the messages. One of: <code>log</code>, <code>send</code>, <code>any</code></dd>
+        <dt style="margin-left:1em" class="optional">direction<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The direction of the sent messages. One of: <code>inbound</code>, <code>outbound</code>, <code>any</code></dd>
+        <dt style="margin-left:1em" class="optional">fromDeviceIds<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Comma separated list of device IDs of virtual devices from which the messages were sent</dd>
+        <dt style="margin-left:1em" class="optional">toDeviceIds<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Comma separated list of device IDs of virtual devices to which the messages were sent</dd>
+        <dt style="margin-left:1em" class="optional">fromDeviceProdUniqueIds<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Comma separated list of product unique IDs of virtual devices from which the messages were sent</dd>
+        <dt style="margin-left:1em" class="optional">toDeviceProdUniqueIds<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Comma separated list of product unique IDs of virtual devices to which the messages were sent</dd>
+        <dt style="margin-left:1em" class="optional">readState<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Current read state of the messages. One of: <code>read</code>, <code>unread</code>, <code>any</code></dd>
+        <dt style="margin-left:1em" class="optional">startDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ISO 8601 formatted date/time (<code>YYYY-MM-ddTHH:mm:ss</code>) from when messages were logged/sent/received</dd>
+        <dt style="margin-left:1em" class="optional">endDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ISO 8601 formatted date/time (<code>YYYY-MM-ddTHH:mm:ss</code>) until when messages were logged/sent/received</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">messages<span class="property-type">array</span></dt>
+        <dd style="margin-left:1.5em">The list of message entries returned</dd>
+        <dt style="margin-left:2em">[array.element]<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em">action<span class="property-type">array</span></dt>
+        <dd style="margin-left:3.5em">One of: <code>log</code>, <code>send</code></dd>
+        <dt style="margin-left:3em" class="optional">direction<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">One of: <code>inbound</code>, <code>outbound</code></dd>
+        <dt style="margin-left:3em" class="optional">from<span class="property-type">object</span></dt>
+        <dt style="margin-left:4em">deviceId<span class="property-type">string</span></dt>
+        <dt style="margin-left:4em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:4em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:3em" class="optional">to<span class="property-type">object</span></dt>
+        <dt style="margin-left:4em">deviceId<span class="property-type">string</span></dt>
+        <dt style="margin-left:4em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:4em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:3em">read<span class="property-type">boolean</span></dt>
+        <dt style="margin-left:3em">date<span class="property-type">date</span></dt>
+        <dt style="margin-left:1em">msgCount<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">The number of messages returned</dd>
+        <dt style="margin-left:1em">countExceeded<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">Indicates whether there are more messages that fulfill the query criteria that were not returned</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API method is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

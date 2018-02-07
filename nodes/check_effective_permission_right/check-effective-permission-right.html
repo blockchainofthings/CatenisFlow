@@ -1,0 +1,126 @@
+<script type="text/javascript">
+    RED.nodes.registerType('check effective permission right', {
+        category: 'catenis',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device" },
+            eventName: { value: "" },
+            deviceId: { value: "" },
+            isProdUniqueId: { value: false }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "catenis-check-permission-rights.png",
+        label: function () {
+            return this.name || "check effective permission right";
+        },
+        button: {
+            enabled: function() {
+                return !this.changed;
+            },
+            onclick: function() {
+                if (this.changed) {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                }
+                var node = this;
+                $.ajax({
+                    url: "catenis.checkpermission/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        },
+        oneditprepare: function () {
+            var node = this;
+            var eventSelect = $("#node-input-eventName");
+            $.ajax({
+                url: "catenis.permissionevents",
+                type: "GET",
+                success: function(data) {
+                    events = data;
+                    eventSelect.empty();
+                    for (var eventID in events) {
+                        var option = $('<option value="' + eventID + (node.eventName === eventID ? '" selected>' : '">') + eventID + ' - ' + events[eventID] + '</option>');
+                        option.appendTo(eventSelect);
+                    }
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                    if (jqXHR.status == 404) {
+                        RED.notify("Error - please deploy", "error");
+                    } else if (jqXHR.status == 500) {
+                        RED.notify("Error - server error", "error");
+                    } else if (jqXHR.status == 0) {
+                        RED.notify("Error - no response", "error");
+                    } else {
+                        RED.notify("Error - unexpected response", "error");
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="check effective permission right">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-eventName"><i class="fa fa-bell"></i> Event</label>
+        <select id="node-input-eventName">
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-deviceId"><i class="fa fa-microchip"></i> Device ID</label>
+        <input type="text" id="node-input-deviceId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-isProdUniqueId"><i class="fa fa-tag"></i> Product unique ID</label>
+        <input type="checkbox" id="node-input-isProdUniqueId">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="check effective permission right">
+    <p>Call Catenis API "Check Effective Permission Right" method to check effective permission right applied to a given device for the specified event.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">eventName<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Name of permission event</dd>
+        <dt style="margin-left:1em" class="optional">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of device to check permission right</dd>
+        <dt style="margin-left:1em" class="optional">isProdUniqueId<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">Indicates whether supplied ID is a product unique ID</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dd>A dictionary where the keys are the device IDs and the values their respective right (one of: <code>allow</code>, <code>deny</code>)</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API method is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

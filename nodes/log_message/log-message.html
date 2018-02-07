@@ -1,0 +1,86 @@
+<script type="text/javascript">
+    RED.nodes.registerType('log message', {
+        category: 'catenis',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device" },
+            encoding: { value: "utf8" },
+            encrypt: { value: true },
+            storage: { value: "auto" }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "catenis-log-message.png",
+        label: function () {
+            return this.name || "log message";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="log message">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-encoding"><i class="fa fa-font"></i> Encoding</label>
+        <select id="node-input-encoding">
+            <option value="utf8" selected>UTF-8</option>
+            <option value="base64">Base-64</option>
+            <option value="hex">Hex</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-encrypt"><i class="fa fa-user-secret"></i> Encrypt</label>
+        <input type="checkbox" id="node-input-encrypt">
+    </div>
+    <div class="form-row">
+        <label for="node-input-storage"><i class="fa fa-archive"></i> Storage</label>
+        <select id="node-input-storage">
+            <option value="auto" selected>Auto</option>
+            <option value="embedded">Embedded</option>
+            <option value="external">External</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="log message">
+    <p>Call Catenis API "Log Message" method to record a message to the blockchain.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">string</span></dt>
+        <dd>The message to record</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">message<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The message to record</dd>
+        <dt style="margin-left:1em" class="optional">options<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em" class="optional">encoding<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Specifies the encoding of the message. One of: <code>utf8</code>, <code>base64</code>, <code>hex</code></dd>
+        <dt style="margin-left:2em" class="optional">encrypt<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether message should be encrypted before storing it</dd>
+        <dt style="margin-left:2em" class="optional">storage<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Specifies where the message should be stored. One of: <code>auto</code>, <code>embedded</code>, <code>external</code></dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">messageId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the stored message</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The payload of the received message can be either a string or an object. If it is a string, its contents is used as the message to be logged and the default settings (as specified in the node’s configuration) are used for the other parameters.</p>
+    <p>In case an object is received, the message and the options parameters are gotten from it. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

@@ -1,16 +1,38 @@
 {
   "name": "node-red-contrib-catenis",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node-RED components to interact with the Bitcoin blockchain by means of the Catenis Enterprise API",
+  "homepage": "https://github.com/blockchainofthings/CatenisAPINodeRed",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "Catenis",
+    "Catenis Enterprise API",
+    "Blockchain of Things",
+    "blockchain",
+    "node-red"
+  ],
   "node-red": {
     "nodes": {
-      "log message": "log-message.js",
-      "catenis device": "catenis-device.js"
+      "catenis device": "nodes/catenis_device/catenis-device.js",
+      "log message": "nodes/log_message/log-message.js",
+      "send message": "nodes/send_message/send-message.js",
+      "retrieve message container": "nodes/retrieve_message_container/retrieve-message-container.js",
+      "read message": "nodes/read_message/read-message.js",
+      "list messages": "nodes/list_messages/list-messages.js",
+      "list permission events": "nodes/list_permission_events/list-permission-events.js",
+      "retrieve permission rights": "nodes/retrieve_permission_rights/retrieve-permission-rights.js",
+      "set permission rights": "nodes/set_permission_rights/set-permission-rights.js",
+      "check effective permission right": "nodes/check_effective_permission_right/check-effective-permission-right.js",
+      "retrieve device identification info": "nodes/retrieve_device_identification_info/retrieve-device-id-info.js",
+      "list notifiation events": "nodes/list_notification_events/list-notification-events.js",
+      "notification channel": "nodes/notification_channel/notification-channel.js"
     }
   },
-  "author": "",
-  "license": "ISC"
+  "author": "MJ",
+  "license": "MIT",
+  "dependencies": {
+    "catenis-api-client": "^1.0.1"
+  }
 }

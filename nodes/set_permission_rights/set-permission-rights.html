@@ -1,0 +1,225 @@
+<script type="text/javascript">
+    RED.nodes.registerType('set permission rights', {
+        category: 'catenis',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device" },
+            eventName: { value: "" },
+            sysRight: { value: "" },
+            allowCtnNodeIndices: { value: "" },
+            denyCtnNodeIndices: { value: "" },
+            noneCtnNodeIndices: { value: "" },
+            allowClientIds: { value: "" },
+            denyClientIds: { value: "" },
+            noneClientIds: { value: "" },
+            allowDeviceIds: { value: "" },
+            denyDeviceIds: { value: "" },
+            noneDeviceIds: { value: "" },
+            allowProdIds: { value: "" },
+            denyProdIds: { value: "" },
+            noneProdIds: { value: "" },
+        },
+        inputs:1,
+        outputs:1,
+        icon: "catenis-set-permission-rights.png",
+        label: function () {
+            return this.name || "set permission rights";
+        },
+        button: {
+            enabled: function() {
+                return !this.changed;
+            },
+            onclick: function() {
+                if (this.changed) {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                }
+                var node = this;
+                $.ajax({
+                    url: "catenis.setpermissionrights/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        },
+        oneditprepare: function () {
+            var node = this;
+            var eventSelect = $("#node-input-eventName");
+            $.ajax({
+                url: "catenis.permissionevents",
+                type: "GET",
+                success: function(data) {
+                    events = data;
+                    eventSelect.empty();
+                    for (var eventID in events) {
+                        var option = $('<option value="' + eventID + (node.eventName === eventID ? '" selected>' : '">') + eventID + ' - ' + events[eventID] + '</option>');
+                        option.appendTo(eventSelect);
+                    }
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                    if (jqXHR.status == 404) {
+                        RED.notify("Error - please deploy", "error");
+                    } else if (jqXHR.status == 500) {
+                        RED.notify("Error - server error", "error");
+                    } else if (jqXHR.status == 0) {
+                        RED.notify("Error - no response", "error");
+                    } else {
+                        RED.notify("Error - unexpected response", "error");
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="set permission rights">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-eventName"><i class="fa fa-bell"></i> Event</label>
+        <select id="node-input-eventName">
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-sysRight"><i class="fa fa-lock"></i> System right</label>
+        <select id="node-input-sysRight">
+            <option value=""></option>
+            <option value="allow">Allow</option>
+            <option value="deny">Deny</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-allowCtnNodeIndices"><i class="fa fa-tag"></i> Allowed Catenis node indices</label>
+        <input type="text" id="node-input-allowCtnNodeIndices" placeholder="comma separated list of indices">
+    </div>
+    <div class="form-row">
+        <label for="node-input-denyCtnNodeIndices"><i class="fa fa-tag"></i> Denied Catenis node indices</label>
+        <input type="text" id="node-input-denyCtnNodeIndices" placeholder="comma separated list of indices">
+    </div>
+    <div class="form-row">
+        <label for="node-input-noneCtnNodeIndices"><i class="fa fa-tag"></i> Clear Catenis node indices</label>
+        <input type="text" id="node-input-noneCtnNodeIndices" placeholder="comma separated list of indices">
+    </div>
+    <div class="form-row">
+        <label for="node-input-allowClientIds"><i class="fa fa-tag"></i> Allowed client IDs</label>
+        <input type="text" id="node-input-allowClientIds" placeholder="comma separated list of IDs">
+    </div>
+    <div class="form-row">
+        <label for="node-input-denyClientIds"><i class="fa fa-tag"></i> Denied client IDs</label>
+        <input type="text" id="node-input-denyClientIds" placeholder="comma separated list of IDs">
+    </div>
+    <div class="form-row">
+        <label for="node-input-noneClientIds"><i class="fa fa-tag"></i> Clear client IDs</label>
+        <input type="text" id="node-input-noneClientIds" placeholder="comma separated list of IDs">
+    </div>
+    <div class="form-row">
+        <label for="node-input-allowDeviceIds"><i class="fa fa-tag"></i> Allowed device IDs</label>
+        <input type="text" id="node-input-allowDeviceIds" placeholder="comma separated list of IDs">
+    </div>
+    <div class="form-row">
+        <label for="node-input-allowProdIds"><i class="fa fa-tag"></i> Allowed device product uique IDs</label>
+        <input type="text" id="node-input-allowProdIds" placeholder="comma separated list of IDs">
+    </div>
+    <div class="form-row">
+        <label for="node-input-denyDeviceIds"><i class="fa fa-tag"></i> Denied device IDs</label>
+        <input type="text" id="node-input-denyDeviceIds" placeholder="comma separated list of IDs">
+    </div>
+    <div class="form-row">
+        <label for="node-input-denyProdIds"><i class="fa fa-tag"></i> Denied device product uique IDs</label>
+        <input type="text" id="node-input-denyProdIds" placeholder="comma separated list of IDs">
+    </div>
+    <div class="form-row">
+        <label for="node-input-noneDeviceIds"><i class="fa fa-tag"></i> Clear device IDs</label>
+        <input type="text" id="node-input-noneDeviceIds" placeholder="comma separated list of IDs">
+    </div>
+    <div class="form-row">
+        <label for="node-input-noneProdIds"><i class="fa fa-tag"></i> Clear device product uique IDs</label>
+        <input type="text" id="node-input-noneProdIds" placeholder="comma separated list of IDs">
+    </div>
+    <div style="margin-top:1em">&nbsp;</div>
+</script>
+
+<script type="text/x-red" data-help-name="set permission rights">
+    <p>Call Catenis API "Set Permission Rights" method to set permission rights for the specified event.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">eventName<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Name of permission event</dd>
+        <dt style="margin-left:1em" class="optional">rights<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em" class="optional">system<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">One of: <code>allow</code>, <code>deny</code></dd>
+        <dt style="margin-left:3em" class="optional">catenisNode<span class="property-type">object</span></dt>
+        <dt style="margin-left:4em" class="optional">allow<span class="property-type">array | string</span></dt>
+        <dt style="margin-left:5em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:5.5em">Index of Catenis node with allow right</dd>
+        <dt style="margin-left:4em" class="optional">deny<span class="property-type">array | string</span></dt>
+        <dt style="margin-left:5em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:5.5em">Index of Catenis node with deny right</dd>
+        <dt style="margin-left:4em" class="optional">node<span class="property-type">array | string</span></dt>
+        <dt style="margin-left:5em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:5.5em">Index of Catenis node to remove right</dd>
+        <dt style="margin-left:3em" class="optional">client<span class="property-type">object</span></dt>
+        <dt style="margin-left:4em" class="optional">allow<span class="property-type">array | string</span></dt>
+        <dt style="margin-left:5em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:5.5em">ID of client with allow right</dd>
+        <dt style="margin-left:4em" class="optional">deny<span class="property-type">array | string</span></dt>
+        <dt style="margin-left:5em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:5.5em">ID of client with deny right</dd>
+        <dt style="margin-left:4em" class="optional">none<span class="property-type">array | string</span></dt>
+        <dt style="margin-left:5em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:5.5em">ID of client to remove right</dd>
+        <dt style="margin-left:3em" class="optional">device<span class="property-type">object</span></dt>
+        <dt style="margin-left:4em" class="optional">allow<span class="property-type">array | object</span></dt>
+        <dt style="margin-left:5em">[array.element]<span class="property-type">object</span></dt>
+        <dt style="margin-left:6em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:6.5em">ID of device with allow right</dd>
+        <dt style="margin-left:6em" class="optional">isProdUniqueId<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:6.5em">Indicates whether supplied ID is a product unique ID</dd>
+        <dt style="margin-left:4em" class="optional">deny<span class="property-type">array | object</span></dt>
+        <dt style="margin-left:5em">[array.element]<span class="property-type">object</span></dt>
+        <dt style="margin-left:6em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:6.5em">ID of device with deny right</dd>
+        <dt style="margin-left:6em" class="optional">isProdUniqueId<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:6.5em">Indicates whether supplied ID is a product unique ID</dd>
+        <dt style="margin-left:4em" class="optional">none<span class="property-type">array | object</span></dt>
+        <dt style="margin-left:5em">[array.element]<span class="property-type">object</span></dt>
+        <dt style="margin-left:6em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:6.5em">ID of device to remove right</dd>
+        <dt style="margin-left:6em" class="optional">isProdUniqueId<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:6.5em">Indicates whether supplied ID is a product unique ID</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">success<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em"><code>true</code></dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API method is called using the parameters set in the node’s configuration.</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Note: different from the behavior of the other nodes, when used run-time mode, the value of the parameters come exclusively from the message payload. The only exception is the event name parameter that, if not present in the message payload, the corresponding value from the node’s configuration shall be used.</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>
