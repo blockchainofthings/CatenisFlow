@@ -12,6 +12,6 @@ exports = module.exports = function (msg, err, data) {
 		return node.error(errMsg, msg);
 	}
 	// Success. Retrieve returned data
-	msg.payload = data.data;
+	msg.payload = data;
 	node.send(msg);
 }
