@@ -1,0 +1,79 @@
+<script type="text/javascript">
+    RED.nodes.registerType('reissue asset', {
+        category: 'catenis',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device", required: true },
+            assetId: { value: "" },
+            holdingDeviceId: { value: "" },
+            isProdUniqueId: { value: false }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "reissue_asset.png",
+        label: function () {
+            return this.name || "reissue asset";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="reissue asset">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-assetId"><i class="fa fa-tag"></i> Asset ID</label>
+        <input type="text" id="node-input-assetId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-holdingDeviceId"><i class="fa fa-microchip"></i> Holding device ID</label>
+        <input type="text" id="node-input-holdingDeviceId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-isProdUniqueId"><i class="fa fa-tag"></i> Product unique ID</label>
+        <input type="checkbox" id="node-input-isProdUniqueId">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="reissue asset">
+    <p>Call Catenis API "Reissue Asset" method to issue more amount of an existing asset.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">number</span></dt>
+        <dd>The amount of asset to issue</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the asset to issue more amount of it</dd>
+        <dt style="margin-left:1em">amount<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">The amount of asset to issue</dd>
+        <dt style="margin-left:1em" class="optional">holdingDevice<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em"><b>Note:</b> should be set to <i>null</i> to indicate that holding device should not be specified</dd>
+        <dt style="margin-left:2em">id<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of holding device. Should be a virtual device ID unless isProdUniqueId is true</dd>
+        <dt style="margin-left:2em" class="optional">isProdUniqueId<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether supplied ID is a product unique ID</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">totalExistentBalance<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">Total balance of the asset that there is after specified amount has been issued</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The payload of the received message can be either a number or an object. If it is a number, it specifies the amount of the asset to issue and the default settings (as specified in the node’s configuration) are used for the other parameters.</p>
+    <p>In case an object is received, the amount and other parameters are gotten from it. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

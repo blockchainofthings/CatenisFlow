@@ -4,7 +4,7 @@
         color: '#9f9fe4',
         defaults: {
             name: { value: "" },
-            device: { value: "", type: "catenis device"},
+            device: { value: "", type: "catenis device", required: true },
             action: { value: "any" },
             direction: { value: "any" },
             fromDeviceIds: { value: "" },
@@ -143,7 +143,7 @@
         <dt style="margin-left:1em">messages<span class="property-type">array</span></dt>
         <dd style="margin-left:1.5em">The list of message entries returned</dd>
         <dt style="margin-left:2em">[array.element]<span class="property-type">object</span></dt>
-        <dt style="margin-left:3em">action<span class="property-type">array</span></dt>
+        <dt style="margin-left:3em">action<span class="property-type">string</span></dt>
         <dd style="margin-left:3.5em">One of: <code>log</code>, <code>send</code></dd>
         <dt style="margin-left:3em" class="optional">direction<span class="property-type">string</span></dt>
         <dd style="margin-left:3.5em">One of: <code>inbound</code>, <code>outbound</code></dd>
@@ -169,6 +169,6 @@
     <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
     <h3>References</h3>
     <ul>
-        <li><a target="catenis_docs" href="catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+        <li><a target="catenis_docs" href="https://catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
     </ul>
 </script>

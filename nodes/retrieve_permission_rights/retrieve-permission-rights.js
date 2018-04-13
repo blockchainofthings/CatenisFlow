@@ -14,8 +14,11 @@ module.exports = function(RED) {
         node.on('input', function(msg) {
             var eventName = config.eventName;
 
-            if (util.checkNonEmptyStr(msg.payload)) {
-                eventName = msg.payload
+            if (util.checkNonBlankStr(msg.payload)) {
+                eventName = msg.payload.trim()
+            }
+            else {
+                return node.error('Missing required parameter \'eventName\'', msg);
             }
 
             var device = RED.nodes.getNode(config.device);

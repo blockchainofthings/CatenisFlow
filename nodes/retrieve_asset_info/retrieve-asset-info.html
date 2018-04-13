@@ -1,0 +1,102 @@
+<script type="text/javascript">
+    RED.nodes.registerType('retrieve asset info', {
+        category: 'catenis',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device", required: true },
+            assetId: { value: "" }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "asset_info.png",
+        label: function () {
+            return this.name || "retrieve asset info";
+        },
+        button: {
+            enabled: function() {
+                return !this.changed;
+            },
+            onclick: function() {
+                if (this.changed) {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                }
+                var node = this;
+                $.ajax({
+                    url: "catenis.retrieveassetinfo/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="retrieve asset info">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+    <div class="form-row">
+        <label for="node-input-assetId"><i class="fa fa-microchip"></i> Asset ID</label>
+        <input type="text" id="node-input-assetId">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="retrieve asset info">
+    <p>Call Catenis API "Retrieve Asset Info" method to retrieve information about a given asset.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the asset to retrieve information</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The ID of the asset</dd>
+        <dt style="margin-left:1em">name<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The name of the asset</dd>
+        <dt style="margin-left:1em">description<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The description of the asset</dd>
+        <dt style="margin-left:1em">canReissue<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">Indicates whether more amount of this asset can be issued</dd>
+        <dt style="margin-left:1em">decimalPlaces<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">The maximum number of decimal places that can be used to specify a fractional amount of this asset</dd>
+        <dt style="margin-left:1em">issuer<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of the device that issued this asset</dd>
+        <dt style="margin-left:2em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:2em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em">totalExistentBalance<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">Current total balance of the asset that there is</dd>
+        <dd></dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API method is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

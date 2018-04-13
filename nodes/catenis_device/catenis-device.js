@@ -3,7 +3,8 @@
 * @Date:   2017-12-25 20:48:46
 */
 
-const CtnApiClient = require('catenis-api-client');
+var CtnApiClient = require('catenis-api-client');
+var util = require('../../util');
 
 var node;
 
@@ -14,24 +15,36 @@ module.exports = function(RED) {
         node.notificationEvents = {};
         node.permissionEvents = {};
         var options = {
-        	host: config.host,
-        	environment: config.environment,
-        	secure: config.secure,
-        	version: config.version
+        	secure: config.secure
+        };
+
+        var trimmedStr;
+
+        if (util.checkNonEmptyStr(trimmedStr = config.host.trim())) {
+            options.host = trimmedStr;
         }
+
+        if (util.checkNonEmptyStr(config.environment)) {
+            options.environment = config.environment;
+        }
+
+        if (util.checkNonEmptyStr(trimmedStr = config.version.trim())) {
+            options.version = trimmedStr;
+        }
+
         this.ctnApiClient = new CtnApiClient(config.deviceId, config.apiAccessSecret, options);
         this.ctnApiClient.listNotificationEvents(function (err, data) {
             if (err) {
-                node.error('Error retrieving notification events', {});
+                node.error('Error retrieving notification events', err);
             } else {
-                node.notificationEvents = data.data;
+                node.notificationEvents = data;
             }
         });
         this.ctnApiClient.listPermissionEvents(function (err, data) {
             if (err) {
-                node.error('Error retrieving permission events', {});
+                node.error('Error retrieving permission events', err);
             } else {
-                node.permissionEvents = data.data;
+                node.permissionEvents = data;
             }
         });
     }
@@ -63,4 +76,4 @@ module.exports = function(RED) {
             res.sendStatus(406);
         }
     });
-}
+};

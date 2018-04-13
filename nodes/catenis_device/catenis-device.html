@@ -3,12 +3,12 @@
         category: 'config',
         defaults: {
             name: { value: "", required: true },
-            deviceId: { value: "" },
-            apiAccessSecret: { value: "" },
-            host: { value: "catenis.io" },
+            deviceId: { value: "", required: true },
+            apiAccessSecret: { value: "", required: true },
+            host: { value: "" },
             environment: { value: "beta" },
             secure: { value: true },
-            version: { value: "0.5" },
+            version: { value: "" },
             notificationEvents: []
         },
         inputs: 0,
@@ -39,6 +39,7 @@
     <div class="form-row">
         <label for="node-config-input-environment"><i class="fa fa-tag"></i> Environment</label>
         <select id="node-config-input-environment">
+            <option value=""></option>
             <option value="prod">Production</option>
             <option value="beta" selected>Beta</option>
         </select>
@@ -63,18 +64,18 @@
         <dd>The Catenis assigned ID of the Catenis virtual device to use</dd>
         <dt>API access secret<span class="property-type">string</span></dt>
         <dd>The Catenis assigned API access secret of the Catenis virtual device</dd>
-        <dt>Host<span class="property-type">string</span></dt>
-        <dd>The name or IP address of the host from where the Catenis Enterprise API should to be accessed. <b>Note:</b> you should normally just use the default for this setting</dd>
-        <dt>Environment<span class="property-type">string</span></dt>
-        <dd>The environment of the Catenis Enterprise API. <b>Note:</b> you should normally just use the default for this setting</dd>
+        <dt class="optional">Host<span class="property-type">string</span></dt>
+        <dd>The name or IP address of the host (with an optional '<i>:&lt;port></i>' suffix) from where the Catenis Enterprise API should to be accessed. If not specified, the value 'catenis.io' is used. <b>Note:</b> you should normally just use the default for this setting or leave it blank</dd>
+        <dt class="optional">Environment<span class="property-type">string</span></dt>
+        <dd>The environment of the Catenis Enterprise API. If not specified, the default value 'Production' is used. <b>Note:</b> you should normally just use the default for this setting or leave it blank</dd>
         <dt>Secure<span class="property-type">boolean</span></dt>
         <dd>Indicates whether a secure connection (via HTTPS) should be used with the Catenis Enterprise API. <b>Note:</b> you should normally just use the default for this setting</dd>
-        <dt>Version<span class="property-type">boolean</span></dt>
-        <dd>The version of the Catenis Enterprise API that should be used. <b>Note:</b> you should normally just use the default for this setting</dd>
+        <dt class="optional">Version<span class="property-type">boolean</span></dt>
+        <dd>The version of the Catenis Enterprise API that should be used. If not specified, the value '0.6' is used. <b>Note:</b> you should normally just use the default for this setting or leave it blank</dd>
     </dl>
     <h3>References</h3>
     <ul>
-        <li><a target="catenis_docs" href="catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+        <li><a target="catenis_docs" href="https://catenis.com/api/docs">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
     </ul>
 
 </script>

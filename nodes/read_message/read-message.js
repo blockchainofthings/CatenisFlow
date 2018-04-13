@@ -16,8 +16,8 @@ module.exports = function(RED) {
 
             var messageId;
 
-            if (util.checkNonEmptyStr(msg.payload)) {
-                messageId = msg.payload;
+            if (util.checkNonBlankStr(msg.payload)) {
+                messageId = msg.payload.trim();
             }
             else if (util.checkNonNullObject(msg.payload)) {
                 if (util.checkNonEmptyStr(msg.payload.messageId)) {
@@ -26,6 +26,10 @@ module.exports = function(RED) {
                 if (util.checkNonEmptyStr(msg.payload.encoding)) {
                     encoding = msg.payload.encoding;
                 }
+            }
+
+            if (messageId === undefined) {
+                return node.error('Missing required parameter \'messageId\'', msg);
             }
 
             var device = RED.nodes.getNode(config.device);

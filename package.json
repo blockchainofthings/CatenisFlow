@@ -21,6 +21,15 @@
       "retrieve message container": "nodes/retrieve_message_container/retrieve-message-container.js",
       "read message": "nodes/read_message/read-message.js",
       "list messages": "nodes/list_messages/list-messages.js",
+      "issue asset": "nodes/issue_asset/issue-asset.js",
+      "reissue asset": "nodes/reissue_asset/reissue-asset.js",
+      "transfer asset": "nodes/transfer_asset/transfer-asset.js",
+      "retrieve asset info": "nodes/retrieve_asset_info/retrieve-asset-info.js",
+      "get asset balance": "nodes/get_asset_balance/get-asset-balance.js",
+      "list owned assets": "nodes/list_owned_assets/list-owned-assets.js",
+      "list issued assets": "nodes/list_issued_assets/list-issued-assets.js",
+      "reetrieve asset issuance history": "nodes/retrieve_asset_issuance_history/retrieve-asset-issuance-history.js",
+      "list asset holders": "nodes/list_asset_holders/list-asset-holders.js",
       "list permission events": "nodes/list_permission_events/list-permission-events.js",
       "retrieve permission rights": "nodes/retrieve_permission_rights/retrieve-permission-rights.js",
       "set permission rights": "nodes/set_permission_rights/set-permission-rights.js",
@@ -33,7 +42,7 @@
   "author": "MJ",
   "license": "MIT",
   "dependencies": {
-    "catenis-api-client": "^1.1.0"
+    "catenis-api-client": "1.2.1"
   },
   "repository": {
     "type": "git",

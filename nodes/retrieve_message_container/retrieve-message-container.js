@@ -14,8 +14,11 @@ module.exports = function(RED) {
         node.on('input', function(msg) {
             var messageId;
 
-            if (util.checkNonEmptyStr(msg.payload)) {
-                messageId = msg.payload;
+            if (util.checkNonBlankStr(msg.payload)) {
+                messageId = msg.payload.trim();
+            }
+            else {
+                return node.error('Missing required parameter \'messageId\'', msg);
             }
 
             var device = RED.nodes.getNode(config.device);

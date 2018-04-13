@@ -13,26 +13,33 @@ module.exports = function(RED) {
 
         node.on('input', function(msg) {
             var params = {
-                eventName: config.eventName,
                 isProdUniqueId: config.isProdUniqueId
             };
 
             var trimmedStr;
+
+            if (util.checkNonEmptyStr(trimmedStr = config.eventName.trim())) {
+                params.eventName = trimmedStr;
+            }
 
             if (util.checkNonEmptyStr(trimmedStr = config.deviceId.trim())) {
                 params.deviceId = trimmedStr;
             }
 
             if (util.checkNonNullObject(msg.payload)) {
-                if (util.checkNonEmptyStr(msg.payload.eventName)) {
-                    params.eventName = msg.payload.eventName;
+                if (util.checkNonBlankStr(msg.payload.eventName)) {
+                    params.eventName = msg.payload.eventName.trim();
                 }
-                if (util.checkNonEmptyStr(msg.payload.deviceId)) {
-                    params.deviceId = msg.payload.deviceId;
+                if (util.checkNonBlankStr(msg.payload.deviceId)) {
+                    params.deviceId = msg.payload.deviceId.trim();
                 }
                 if (msg.payload.isProdUniqueId !== undefined && msg.payload.isProdUniqueId !== null) {
                     params.isProdUniqueId = !!msg.payload.isProdUniqueId;
                 }
+            }
+
+            if (params.eventName === undefined || params.deviceId === undefined) {
+                return node.error('Missing required parameters \'eventName\' and/or \'deviceId\'', msg);
             }
 
             var device = RED.nodes.getNode(config.device);

@@ -25,7 +25,8 @@ module.exports = function(RED) {
                 }
             }
 
-            var eventName = config.eventName;
+            var trimmedStr;
+            var eventName = util.checkNonEmptyStr(trimmedStr = config.eventName.trim()) ? trimmedStr : undefined;
             var rights = {};
             var ctnNodeRights = {};
             var clientRights = {};
@@ -105,8 +106,8 @@ module.exports = function(RED) {
             }
 
             if (util.checkNonNullObject(msg.payload)) {
-                if (util.checkNonEmptyStr(msg.payload.eventName)) {
-                    eventName = msg.payload.eventName;
+                if (util.checkNonBlankStr(msg.payload.eventName)) {
+                    eventName = msg.payload.eventName.trim();
                 }
 
                 if (util.checkNonNullObject(msg.payload.rights)) {
@@ -150,6 +151,10 @@ module.exports = function(RED) {
                         }
                     }
                 }
+            }
+
+            if (eventName === undefined) {
+                return node.error('Missing required parameter \'eventName\'', msg);
             }
 
             if (Object.keys(ctnNodeRights).length > 0) {

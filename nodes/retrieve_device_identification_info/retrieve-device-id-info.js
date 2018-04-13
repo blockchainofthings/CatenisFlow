@@ -22,12 +22,16 @@ module.exports = function(RED) {
             var isProdUniqueId = config.isProdUniqueId;
 
             if (util.checkNonNullObject(msg.payload)) {
-                if (util.checkNonEmptyStr(msg.payload.deviceId)) {
-                    deviceId = msg.payload.deviceId;
+                if (util.checkNonBlankStr(msg.payload.deviceId)) {
+                    deviceId = msg.payload.deviceId.trim();
                 }
                 if (util.checkNonEmpty(msg.payload.isProdUniqueId)) {
                     isProdUniqueId = !!msg.payload.isProdUniqueId;
                 }
+            }
+
+            if (deviceId === undefined) {
+                return node.error('Missing required parameter \'deviceId\'', msg);
             }
 
             var device = RED.nodes.getNode(config.device);
