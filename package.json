@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-catenis",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Node-RED components to interact with the Bitcoin blockchain by means of the Catenis Enterprise API",
   "homepage": "https://github.com/blockchainofthings/CatenisAPINodeRed",
   "scripts": {
