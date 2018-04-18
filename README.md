@@ -18,7 +18,7 @@ Once you install the package and restart Node-RED, you'll see a new set of nodes
 
 The Catenis nodes map to the Catenis Enterprise API methods. Just add them to a flow, configure them, and start interacting with the Bitcoin blockchain.
 
-For further information, you can always reference the [Catenis Enterprice API Documentation](catenis.com/docs/api).
+For further information, you can always reference the [Catenis Enterprice API Documentation](https://catenis.com/docs/api).
 
 # Error handling
 
