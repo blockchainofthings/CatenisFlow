@@ -42,7 +42,7 @@
 </script>
 
 <script type="text/x-red" data-help-name="reissue asset">
-    <p>Call Catenis API "Reissue Asset" method to issue more amount of an existing asset.</p>
+    <p>Call Catenis API "Reissue Asset" method to issue an additional amount of an existing asset.</p>
     <h3>Inputs</h3>
     <dl class="message-properties">
         <dt>payload<span class="property-type">number</span></dt>
@@ -51,7 +51,7 @@
     <dl class="message-properties">
         <dt>payload<span class="property-type">object</span></dt>
         <dt style="margin-left:1em">assetId<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">ID of the asset to issue more amount of it</dd>
+        <dd style="margin-left:1.5em">ID of the asset to issue more units of it</dd>
         <dt style="margin-left:1em">amount<span class="property-type">number</span></dt>
         <dd style="margin-left:1.5em">The amount of asset to issue</dd>
         <dt style="margin-left:1em" class="optional">holdingDevice<span class="property-type">object</span></dt>
@@ -65,7 +65,7 @@
     <dl class="message-properties">
         <dt>payload<span class="property-type">object</span></dt>
         <dt style="margin-left:1em">totalExistentBalance<span class="property-type">number</span></dt>
-        <dd style="margin-left:1.5em">Total balance of the asset that there is after specified amount has been issued</dd>
+        <dd style="margin-left:1.5em">Total balance of the asset in existence after specified amount has been issued</dd>
     </dl>
     <h3>Details</h3>
     <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>
