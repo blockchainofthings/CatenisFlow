@@ -1,6 +1,8 @@
-# CatenisAPINodeRed
+# Catenis API Node-RED
 
 A set of Node-RED nodes used to interact with the Bitcoin blockchain by means of the Catenis Enterprise API.
+
+This version (0.1.1) is compliant with Catenis API version 0.6.
 
 # Installation
 
