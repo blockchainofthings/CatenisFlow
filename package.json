@@ -1,12 +1,13 @@
 {
-  "name": "node-red-contrib-catenis",
-  "version": "1.1.0",
-  "description": "Node-RED components to interact with the Bitcoin blockchain by means of the Catenis Enterprise API",
-  "homepage": "https://github.com/blockchainofthings/CatenisAPINodeRed",
+  "name": "catenis-flow",
+  "version": "1.1.1",
+  "description": "Catenis Flow - A set of Node-RED nodes used to interact with the Bitcoin blockchain by means of the Catenis Enterprise API",
+  "homepage": "https://github.com/blockchainofthings/CatenisFlow",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "Catenis Flow",
     "Catenis",
     "Catenis Enterprise API",
     "Blockchain of Things",
@@ -46,6 +47,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/blockchainofthings/CatenisAPINodeRed.git"
+    "url": "https://github.com/blockchainofthings/CatenisFlow.git"
   }
 }
