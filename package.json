@@ -1,6 +1,6 @@
 {
   "name": "catenis-flow",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Catenis Flow - A set of Node-RED nodes used to interact with the Bitcoin blockchain by means of the Catenis Enterprise API",
   "homepage": "https://github.com/blockchainofthings/CatenisFlow",
   "scripts": {
@@ -43,7 +43,7 @@
   "author": "MJ",
   "license": "MIT",
   "dependencies": {
-    "catenis-api-client": "1.2.1"
+    "catenis-api-client": "1.3.0"
   },
   "repository": {
     "type": "git",

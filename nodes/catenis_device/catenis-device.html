@@ -6,7 +6,7 @@
             deviceId: { value: "", required: true },
             apiAccessSecret: { value: "", required: true },
             host: { value: "" },
-            environment: { value: "beta" },
+            environment: { value: "sandbox" },
             secure: { value: true },
             version: { value: "" },
             notificationEvents: []
@@ -41,7 +41,7 @@
         <select id="node-config-input-environment">
             <option value=""></option>
             <option value="prod">Production</option>
-            <option value="beta" selected>Beta</option>
+            <option value="sandbox" selected>Sandbox</option>
         </select>
     </div>
     <div class="form-row">
@@ -67,7 +67,7 @@
         <dt class="optional">Host<span class="property-type">string</span></dt>
         <dd>The name or IP address of the host (with an optional '<i>:&lt;port></i>' suffix) from where the Catenis Enterprise API should to be accessed. If not specified, the value 'catenis.io' is used. <b>Note:</b> you should normally just use the default for this setting or leave it blank</dd>
         <dt class="optional">Environment<span class="property-type">string</span></dt>
-        <dd>The environment of the Catenis Enterprise API. If not specified, the default value 'Production' is used. <b>Note:</b> you should normally just use the default for this setting or leave it blank</dd>
+        <dd>The environment of the Catenis Enterprise API. If not specified, the default value 'Sandbox' is used. <b>Note:</b> you should normally just use the default for this setting or leave it blank</dd>
         <dt>Secure<span class="property-type">boolean</span></dt>
         <dd>Indicates whether a secure connection (via HTTPS) should be used with the Catenis Enterprise API. <b>Note:</b> you should normally just use the default for this setting</dd>
         <dt class="optional">Version<span class="property-type">boolean</span></dt>
