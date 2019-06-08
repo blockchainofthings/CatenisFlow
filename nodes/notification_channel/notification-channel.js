@@ -26,16 +26,18 @@ module.exports = function(RED) {
             node.status({ fill:'red', shape:'dot', text:'disconnected' + (code ? ' - [' + code + ']' + (reason ? ' - ' + reason : '') : '') });
         });
 
-        node.wsNtfyChannel.addListener('message', function (data) {
-            node.send({payload: JSON.parse(data)});
+        node.wsNtfyChannel.addListener('open', function () {
+            node.channelOpen = true;
+            node.status({ fill:'green', shape:'dot', text:'connected' });
+        });
+
+        node.wsNtfyChannel.addListener('notify', function (data) {
+            node.send({payload: data});
         });
 
         function wsOpenHandler(err) {
             if (err) {
                 node.error(err.toString());
-            } else {
-                node.channelOpen = true;
-                node.status({ fill:'green', shape:'dot', text:'connected' });
             }
         }
 

@@ -122,6 +122,66 @@
         <dt style="margin-left:1em">readDate<span class="property-type">string</span></dt>
         <dd style="margin-left:1.5em">Date and time when message was read</dd>
     </dl>
+    <dl class="message-properties">
+        <dt>payload (asset-received)<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the received asset</dd>
+        <dt style="margin-left:1em">amount<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Amount of the asset that has been received</dd>
+        <dt style="margin-left:1em">issuer<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of device that issued the asset</dd>
+        <dt style="margin-left:2em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:2em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em">from<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of device that sent or assigned the asset amount</dd>
+        <dt style="margin-left:2em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:2em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em">receivedDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Date and time when asset amount has been received</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>payload (asset-confirmed)<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the confirmed asset</dd>
+        <dt style="margin-left:1em">amount<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Amount of the asset that has been confirmed</dd>
+        <dt style="margin-left:1em">issuer<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of device that issued the asset</dd>
+        <dt style="margin-left:2em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:2em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em">from<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">deviceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of device that originally sent or assigned the asset amount</dd>
+        <dt style="margin-left:2em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:2em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em">confirmedDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Date and time when asset amount has been confirmed</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>payload (final-msg-progress)<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">ephemeralMessageId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the ephemeral message to which this notification refers</dd>
+        <dt style="margin-left:1em">action<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Action that was to be performed on the message</dd>
+        <dt style="margin-left:1em">progress<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">bytesProcessed<span class="property-type">number</span></dt>
+        <dd style="margin-left:2.5em">Total number of bytes of message that had already been processed</dd>
+        <dt style="margin-left:2em">done<span class="property-type">boolean</span></dt>
+        <dt style="margin-left:2em">success<span class="property-type">boolean</span></dt>
+        <dt style="margin-left:2em" class="optional">error<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em">code<span class="property-type">number</span></dt>
+        <dt style="margin-left:3em">message<span class="property-type">string</span></dt>
+        <dt style="margin-left:2em">finishDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Date and time when processing has been finalized</dd>
+        <dt style="margin-left:1em" class="optional">result<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">messageId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of associated Catenis message</dd>
+        <dt style="margin-left:2em" class="optional">continuationToken<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Token that should be used to complete the read of the message</dd>
+    </dl>
     <h3>Details</h3>
     <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the notification channel for the given notification event (as specified in the node’s configuration) is open/closed. The button toggles the state of the notification channel from connected to disconnected, and vice-versa.</p>
     <p>In run-time mode, the node receives a message the payload of which is an object that contains the action to be performed, either opening or closing the notification channel for the given notification event (as specified in the node’s configuration).</p>

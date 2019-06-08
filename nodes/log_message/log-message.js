@@ -16,7 +16,8 @@ module.exports = function(RED) {
             var options = {
                 encoding: config.encoding,
                 encrypt: config.encrypt,
-                storage: config.storage
+                storage: config.storage,
+                async: config.async
             };
 
             var message;
@@ -26,7 +27,7 @@ module.exports = function(RED) {
                 message = msg.payload;
             }
             else if (util.checkNonNullObject(msg.payload)) {
-                if (util.checkNonEmptyStr(msg.payload.message)) {
+                if (util.checkNonEmptyStr(msg.payload.message) || util.checkNonNullObject(msg.payload.message)) {
                     // Get message to log
                     message = msg.payload.message;
                 }
@@ -43,6 +44,10 @@ module.exports = function(RED) {
 
                     if (util.checkNonEmptyStr(msg.payload.options.storage)) {
                         options.storage = msg.payload.options.storage;
+                    }
+
+                    if (util.checkNonEmpty(msg.payload.options.async)) {
+                        options.async = !!msg.payload.options.async;
                     }
                 }
             }

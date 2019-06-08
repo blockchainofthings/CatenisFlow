@@ -12,7 +12,15 @@ module.exports = function(RED) {
         var node = this;
 
         node.on('input', function(msg) {
-            var encoding = config.encoding;
+            // Get options from node's configuration
+            var options = {
+                encoding: config.encoding,
+                async: config.async
+            };
+
+            if (util.checkIntNumberStr(config.dataChunkSize)) {
+                options.dataChunkSize = parseInt(config.dataChunkSize);
+            }
 
             var messageId;
 
@@ -23,8 +31,31 @@ module.exports = function(RED) {
                 if (util.checkNonEmptyStr(msg.payload.messageId)) {
                     messageId = msg.payload.messageId;
                 }
-                if (util.checkNonEmptyStr(msg.payload.encoding)) {
-                    encoding = msg.payload.encoding;
+
+                if (util.checkNonEmptyStr(msg.payload.options)) {
+                    // Assume that this is the encoding of the message
+                    options = msg.payload.options;
+                }
+                else if (util.checkNonNullObject(msg.payload.options)) {
+                    // Payload has options. Override them as appropriate
+                    if (util.checkNonEmptyStr(msg.payload.options.encoding)) {
+                        options.encoding = msg.payload.options.encoding;
+                    }
+
+                    if (util.checkNonEmptyStr(msg.payload.options.continuationToken)) {
+                        options.continuationToken = msg.payload.options.continuationToken;
+                    }
+
+                    if (util.checkNumber(msg.payload.options.dataChunkSize)) {
+                        options.dataChunkSize = msg.payload.options.dataChunkSize;
+                    }
+                    else if (msg.payload.options.dataChunkSize === null) {
+                        delete options.dataChunkSize;
+                    }
+
+                    if (util.checkNonEmpty(msg.payload.options.async)) {
+                        options.async = !!msg.payload.options.async;
+                    }
                 }
             }
 
@@ -35,7 +66,7 @@ module.exports = function(RED) {
             var device = RED.nodes.getNode(config.device);
             var ctnApiClient = device.ctnApiClient;
 
-            ctnApiClient.readMessage(messageId, encoding, responseHandler.bind(node, msg));
+            ctnApiClient.readMessage(messageId, options, responseHandler.bind(node, msg));
         });
     }
     RED.nodes.registerType("read message", RetrieveMessageNode);

@@ -5,7 +5,9 @@
         defaults: {
             name: { value: "" },
             device: { value: "", type: "catenis device", required: true },
-            encoding: { value: "utf8" }
+            encoding: { value: "utf8" },
+            dataChunkSize: { value: "" },
+            async: { value: false }
         },
         inputs:1,
         outputs:1,
@@ -33,6 +35,14 @@
             <option value="hex">Hex</option>
         </select>
     </div>
+    <div class="form-row">
+        <label for="node-input-dataChunkSize"><i class="fa fa-building"></i> Data Chunk Size</label>
+        <input type="number" id="node-input-dataChunkSize" step="1" min="1024" max="15728640">
+    </div>
+    <div class="form-row">
+        <label for="node-input-async"><i class="fa fa-refresh"></i> Async</label>
+        <input type="checkbox" id="node-input-async">
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="read message">
@@ -46,25 +56,39 @@
         <dt>payload<span class="property-type">object</span></dt>
         <dt style="margin-left:1em">messageId<span class="property-type">string</span></dt>
         <dd style="margin-left:1.5em">ID of the message to read</dd>
-        <dt style="margin-left:1em">encoding<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">Encoding that should be used for the returned message. One of: <code>utf8</code>, <code>base64</code>, <code>hex</code></dd>
+        <dt style="margin-left:1em" class="optional">options<span class="property-type">string | object</span></dt>
+        <dd style="margin-left:1.5em">Encoding that should be used for the returned message, or a collection of various read options</dd>
+        <dt style="margin-left:2em" class="optional">encoding<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Encoding that should be used for the returned message. One of: <code>utf8</code>, <code>base64</code>, <code>hex</code></dd>
+        <dt style="margin-left:2em" class="optional">continuationToken<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Token required to read next message data chunk</dd>
+        <dt style="margin-left:2em" class="optional">dataChunkSize<span class="property-type">number</span></dt>
+        <dd style="margin-left:2.5em">Size, in bytes, of the largest message data chunk that should be returned</dd>
+        <dt style="margin-left:2em" class="optional">async<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether processing should be done asynchronously</dd>
     </dl>
     <h3>Outputs</h3>
     <dl class="message-properties">
         <dt>payload<span class="property-type">object</span></dt>
-        <dt style="margin-left:1em">action<span class="property-type">object</span></dt>
-        <dd style="margin-left:1.5em">One of: <code>log</code>, <code>send</code></dd>
-        <dt style="margin-left:1em" class="optional">from<span class="property-type">object</span></dt>
-        <dt style="margin-left:2em">deviceId<span class="property-type">string</span></dt>
-        <dt style="margin-left:2em" class="optional">name<span class="property-type">string</span></dt>
-        <dt style="margin-left:2em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
-        <dt style="margin-left:1em">message<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">Message formatted using the specified encoding</dd>
+        <dt style="margin-left:1em" class="optional">msgInfo<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">Information about the read message</dd>
+        <dt style="margin-left:2em">action<span class="property-type">object</span></dt>
+        <dd style="margin-left:2.5em">One of: <code>log</code>, <code>send</code></dd>
+        <dt style="margin-left:2em" class="optional">from<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em">deviceId<span class="property-type">string</span></dt>
+        <dt style="margin-left:3em" class="optional">name<span class="property-type">string</span></dt>
+        <dt style="margin-left:3em" class="optional">prodUniqueId<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em">msgData<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The message's contents formatted using the specified encoding</dd>
+        <dt style="margin-left:1em" class="optional">continuationToken<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Token to be used to read next message data chunk</dd>
+        <dt style="margin-left:1em" class="optional">cachedMessageId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of cached message used to retrieve asynchronous processing progress</dd>
     </dl>
     <h3>Details</h3>
     <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API method.</p>
     <p>The payload of the received message can be either a string or an object. If it is a string, its contents is used as the ID of the message to read and the default settings (as specified in the node’s configuration) are used for the other parameters.</p>
-    <p>In case an object is received, the ID of the message to read and the other parameters are gotten from it. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>In case an object is received, the ID of the message to read and the options parameters are gotten from it. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
     <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
     <h3>References</h3>
     <ul>

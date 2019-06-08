@@ -7,7 +7,8 @@
             device: { value: "", type: "catenis device", required: true },
             encoding: { value: "utf8" },
             encrypt: { value: true },
-            storage: { value: "auto" }
+            storage: { value: "auto" },
+            async: { value: false }
         },
         inputs:1,
         outputs:1,
@@ -47,6 +48,10 @@
             <option value="external">External</option>
         </select>
     </div>
+    <div class="form-row">
+        <label for="node-input-async"><i class="fa fa-refresh"></i> Async</label>
+        <input type="checkbox" id="node-input-async">
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="log message">
@@ -58,8 +63,14 @@
     </dl>
     <dl class="message-properties">
         <dt>payload<span class="property-type">object</span></dt>
-        <dt style="margin-left:1em">message<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em">message<span class="property-type">string | object</span></dt>
         <dd style="margin-left:1.5em">The message to record</dd>
+        <dt style="margin-left:2em" class="optional">data<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The message data chunk</dd>
+        <dt style="margin-left:2em" class="optional">isFinal<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether this is the final message data chunk</dd>
+        <dt style="margin-left:2em" class="optional">continuationToken<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Token required to send this continuation message data chunk</dd>
         <dt style="margin-left:1em" class="optional">options<span class="property-type">object</span></dt>
         <dt style="margin-left:2em" class="optional">encoding<span class="property-type">string</span></dt>
         <dd style="margin-left:2.5em">Specifies the encoding of the message. One of: <code>utf8</code>, <code>base64</code>, <code>hex</code></dd>
@@ -67,12 +78,18 @@
         <dd style="margin-left:2.5em">Indicates whether message should be encrypted before storing it</dd>
         <dt style="margin-left:2em" class="optional">storage<span class="property-type">string</span></dt>
         <dd style="margin-left:2.5em">Specifies where the message should be stored. One of: <code>auto</code>, <code>embedded</code>, <code>external</code></dd>
+        <dt style="margin-left:2em" class="optional">async<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether processing should be done asynchronously</dd>
     </dl>
     <h3>Outputs</h3>
     <dl class="message-properties">
         <dt>payload<span class="property-type">object</span></dt>
-        <dt style="margin-left:1em">messageId<span class="property-type">string</span></dt>
+        <dt style="margin-left:1em" class="optional">continuationToken<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">Token to be used to send next message data chunk</dd>
+        <dt style="margin-left:1em" class="optional">messageId<span class="property-type">string</span></dt>
         <dd style="margin-left:1.5em">ID of the stored message</dd>
+        <dt style="margin-left:1em" class="optional">provisionalMessageId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of provisional message used to retrieve asynchronous processing progress</dd>
     </dl>
     <h3>Details</h3>
     <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>

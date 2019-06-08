@@ -1,0 +1,66 @@
+<script type="text/javascript">
+    RED.nodes.registerType('retrieve message progress', {
+        category: 'catenis flow',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            device: { value: "", type: "catenis device", required: true }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "retrieve_message_progress.png",
+        label: function () {
+            return this.name || "retrieve message progress";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="retrieve message progress">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
+        <input type="text" id="node-input-device">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="retrieve message progress">
+    <p>Call Catenis API "Retrieve Message Progress" method to retrieve asynchronous message processing progress.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">string</span></dt>
+        <dd>ID of ephemeral message (either a provisional or a cached message) for which to return processing progress</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">action<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The action that was to be performed on the message. One of: <code>send</code>, <code>log</code>, <code>read</code></dd>
+        <dt style="margin-left:1em">progress<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">bytesProcessed<span class="property-type">number</span></dt>
+        <dd style="margin-left:2.5em">Total number of bytes of message that had already been processed</dd>
+        <dt style="margin-left:2em">done<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether processing had been finalized</dd>
+        <dt style="margin-left:2em" class="optional">success<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether message had been successfully processed</dd>
+        <dt style="margin-left:2em" class="optional">error<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em">code<span class="property-type">number</span></dt>
+        <dd style="margin-left:3.5em">Code number of error that took place while processing the message</dd>
+        <dt style="margin-left:3em">message<span class="property-type">number</span></dt>
+        <dd style="margin-left:3.5em">Text describing the error that took place while processing the message</dd>
+        <dt style="margin-left:1em" class="optional">result<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">messageId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of the message</dd>
+        <dt style="margin-left:2em">continuationToken<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The token that should be used to complete the read of the message</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The payload of the received message is a string containing the ID of the ephemeral message for which to return processing progress.</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/docs/api">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

@@ -19,18 +19,22 @@ module.exports = function(RED) {
             };
 
             var trimmedStr;
+            var fromDeviceIds;
+            var toDeviceIds;
+            var fromDeviceProdUniqueIds;
+            var toDeviceProdUniqueIds;
 
             if (util.checkNonEmptyStr(trimmedStr = config.fromDeviceIds.trim())) {
-                options.fromDeviceIds = trimmedStr;
+                fromDeviceIds = trimmedStr;
             }
             if (util.checkNonEmptyStr(trimmedStr = config.toDeviceIds.trim())) {
-                options.toDeviceIds = trimmedStr;
+                toDeviceIds = trimmedStr;
             }
             if (util.checkNonEmptyStr(trimmedStr = config.fromDeviceProdUniqueIds.trim())) {
-                options.fromDeviceProdUniqueIds = trimmedStr;
+                fromDeviceProdUniqueIds = trimmedStr;
             }
             if (util.checkNonEmptyStr(trimmedStr = config.toDeviceProdUniqueIds.trim())) {
-                options.toDeviceProdUniqueIds = trimmedStr;
+                toDeviceProdUniqueIds = trimmedStr;
             }
             if (util.checkNonEmptyStr(trimmedStr = config.startDate.trim())) {
                 options.startDate = trimmedStr;
@@ -47,16 +51,16 @@ module.exports = function(RED) {
                     options.direction = msg.payload.direction;
                 }
                 if (util.checkNonEmptyStr(msg.payload.fromDeviceIds)) {
-                    options.fromDeviceIds = msg.payload.fromDeviceIds;
+                    fromDeviceIds = msg.payload.fromDeviceIds;
                 }
                 if (util.checkNonEmptyStr(msg.payload.toDeviceIds)) {
-                    options.toDeviceIds = msg.payload.toDeviceIds;
+                    toDeviceIds = msg.payload.toDeviceIds;
                 }
                 if (util.checkNonEmptyStr(msg.payload.fromDeviceProdUniqueIds)) {
-                    options.fromDeviceProdUniqueIds = msg.payload.fromDeviceProdUniqueIds;
+                    fromDeviceProdUniqueIds = msg.payload.fromDeviceProdUniqueIds;
                 }
                 if (util.checkNonEmptyStr(msg.payload.toDeviceProdUniqueIds)) {
-                    options.toDeviceProdUniqueIds = msg.payload.toDeviceProdUniqueIds;
+                    toDeviceProdUniqueIds = msg.payload.toDeviceProdUniqueIds;
                 }
                 if (util.checkNonEmptyStr(msg.payload.startDate)) {
                     options.startDate = msg.payload.startDate;
@@ -64,6 +68,50 @@ module.exports = function(RED) {
                 if (util.checkNonEmptyStr(msg.payload.endDate)) {
                     options.endDate = msg.payload.endDate;
                 }
+            }
+
+            var fromDevices = [];
+
+            if (fromDeviceIds) {
+                fromDevices = fromDevices.concat(fromDeviceIds.split(',').map(function (id) {
+                    return {
+                        id: id
+                    };
+                }));
+            }
+            if (fromDeviceProdUniqueIds) {
+                fromDevices = fromDevices.concat(fromDeviceProdUniqueIds.split(',').map(function (id) {
+                    return {
+                        id: id,
+                        isProdUniqueId: true
+                    };
+                }));
+            }
+
+            if (fromDevices.length > 0) {
+                options.fromDevices = fromDevices;
+            }
+
+            var toDevices = [];
+
+            if (toDeviceIds) {
+                toDevices = toDevices.concat(toDeviceIds.split(',').map(function (id) {
+                    return {
+                        id: id
+                    };
+                }));
+            }
+            if (toDeviceProdUniqueIds) {
+                toDevices = toDevices.concat(toDeviceProdUniqueIds.split(',').map(function (id) {
+                    return {
+                        id: id,
+                        isProdUniqueId: true
+                    };
+                }));
+            }
+
+            if (toDevices.length > 0) {
+                options.toDevices = toDevices;
             }
 
             var device = RED.nodes.getNode(config.device);

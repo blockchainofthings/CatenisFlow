@@ -4,11 +4,12 @@
 */
 
 var util = require('util');
+var CatenisApiError = require('catenis-api-client/lib/CatenisApiError');
 
 exports = module.exports = function (msg, err, data) {
 	var node = this;
 	if (err) {
-		var errMsg = err.clientError ? err.clientError.toString() : util.format('[%d] - %s', err.apiError.httpStatusCode, err.apiError.message);
+		var errMsg = err instanceof CatenisApiError ? err.message : err.toString();
 		return node.error(errMsg, msg);
 	}
 	// Success. Retrieve returned data
