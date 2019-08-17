@@ -12,7 +12,7 @@ Run the following npm command in your Node-RED user directory (typically `~/.nod
 npm install catenis-flow
 ```
 
-Once you install the package and restart Node-RED, you'll see a new set of nodes in the sidebar under the category `catenis flow`.
+Once you install the package and restart Node-RED, you'll see a new set of nodes in the sidebar under the category `Catenis Flow`.
 
 # Usage
 
