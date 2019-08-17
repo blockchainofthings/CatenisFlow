@@ -9,12 +9,48 @@
             environment: { value: "sandbox" },
             secure: { value: true },
             version: { value: "" },
+            useCompression: { value: true },
+            compressThreshold: { value: ""},
             notificationEvents: []
         },
         inputs: 0,
         outputs: 0,
         label: function () {
             return this.name || "unnamed catenis device";
+        },
+        oneditprepare: function () {
+            var node = this;
+            if (!node.initUseCompression) {
+                // `Use compression` setting not yet initialized. Retrieve setting from server
+                var $useCompression = $('#node-config-input-useCompression');
+                $.ajax({
+                    url: "catenis.devConfUseCompression/" + node.id,
+                    type: "GET",
+                    success: function (data) {
+                        // Update `use compression` UI component according to current setting
+                        $useCompression.prop('checked', data.useCompression);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        if (jqXHR.status === 406) {
+                            RED.notify("Error - invalid node ID", "error");
+                        }
+                        else if (jqXHR.status === 500) {
+                            RED.notify("Error - server error", "error");
+                        }
+                        else if (jqXHR.status === 0) {
+                            RED.notify("Error - no response", "error");
+                        }
+                        else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        },
+        oneditsave: function () {
+            var node = this;
+            // Indicate that `use compression` setting is already initialized
+            node.initUseCompression = true;
         }
     });
 </script>
@@ -52,6 +88,14 @@
         <label for="node-config-input-version"><i class="fa fa-tag"></i> Version</label>
         <input type="text" id="node-config-input-version">
     </div>
+    <div class="form-row">
+        <label for="node-config-input-useCompression"><i class="fa fa-tag"></i> Use compression</label>
+        <input type="checkbox" id="node-config-input-useCompression">
+    </div>
+    <div class="form-row">
+        <label for="node-input-compressThreshold"><i class="fa fa-tag"></i> Compress threshold</label>
+        <input type="number" id="node-config-input-compressThreshold" step="32" min="32">
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="catenis device">
@@ -71,11 +115,14 @@
         <dt>Secure<span class="property-type">boolean</span></dt>
         <dd>Indicates whether a secure connection (via HTTPS) should be used with the Catenis Enterprise API. <b>Note:</b> you should normally just use the default for this setting</dd>
         <dt class="optional">Version<span class="property-type">boolean</span></dt>
-        <dd>The version of the Catenis Enterprise API that should be used. If not specified, the value '0.7' is used. <b>Note:</b> you should normally just use the default for this setting or leave it blank</dd>
+        <dd>The version of the Catenis Enterprise API that should be used. If not specified, the value '0.8' is used. <b>Note:</b> you should normally just use the default for this setting or leave it blank</dd>
+        <dt class="optional">Use compression<span class="property-type">boolean</span></dt>
+        <dd>Indicates whether request/response body should be compressed</dd>
+        <dt class="optional">Compress threshold<span class="property-type">boolean</span></dt>
+        <dd>Minimum size, in bytes, of request body for it to be compressed</dd>
     </dl>
     <h3>References</h3>
     <ul>
         <li><a target="catenis_docs" href="https://catenis.com/docs/api">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
     </ul>
-
 </script>

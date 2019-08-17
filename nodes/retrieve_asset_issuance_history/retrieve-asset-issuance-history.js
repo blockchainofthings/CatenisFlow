@@ -11,7 +11,9 @@ module.exports = function(RED) {
             // Get parameters from node's configuration
             var assetId,
                 startDate,
-                endDate;
+                endDate,
+                limit,
+                skip;
             var trimmedStr;
 
             if (util.checkNonEmptyStr(trimmedStr = config.assetId.trim())) {
@@ -24,6 +26,14 @@ module.exports = function(RED) {
 
             if (util.checkNonEmptyStr(trimmedStr = config.endDate.trim())) {
                 endDate = trimmedStr;
+            }
+
+            if (util.checkIntNumberStr(config.limit)) {
+                limit = parseInt(config.limit);
+            }
+
+            if (util.checkIntNumberStr(config.skip)) {
+                skip = parseInt(config.skip);
             }
 
             if (util.checkNonNullObject(msg.payload)) {
@@ -39,6 +49,13 @@ module.exports = function(RED) {
                 if (util.checkNonEmptyStr(msg.payload.endDate)) {
                     endDate = msg.payload.endDate;
                 }
+
+                if (util.checkNumber(msg.payload.limit)) {
+                    limit = msg.payload.limit;
+                }
+                if (util.checkNumber(msg.payload.skip)) {
+                    skip = msg.payload.skip;
+                }
             }
 
             if (assetId === undefined) {
@@ -48,7 +65,7 @@ module.exports = function(RED) {
             var device = RED.nodes.getNode(config.device);
             var ctnApiClient = device.ctnApiClient;
 
-            ctnApiClient.retrieveAssetIssuanceHistory(assetId, startDate, endDate, responseHandler.bind(node, msg));
+            ctnApiClient.retrieveAssetIssuanceHistory(assetId, startDate, endDate, limit, skip, responseHandler.bind(node, msg));
         });
     }
 

@@ -13,7 +13,9 @@
             toDeviceProdUniqueIds: { value: "" },
             readState: { value: "any" },
             startDate: { value: "" },
-            endDate: { value: "" }
+            endDate: { value: "" },
+            limit: { value: "" },
+            skip: { value: "" }
         },
         inputs:1,
         outputs:1,
@@ -110,6 +112,14 @@
         <label for="node-input-endDate"><i class="fa fa-calendar"></i> End date</label>
         <input type="text" id="node-input-endDate" placeholder="YYYY-MM-dd HH:mm:ss">
     </div>
+    <div class="form-row">
+        <label for="node-input-limit"><i class="fa fa-stop-circle"></i> Limit</label>
+        <input type="number" id="node-input-limit" step="1" min="1" max="500">
+    </div>
+    <div class="form-row">
+        <label for="node-input-skip"><i class="fa fa-fast-forward"></i> Skip</label>
+        <input type="number" id="node-input-skip" step="1" min="0">
+    </div>
     <div style="margin-top:1em">&nbsp;</div>
 </script>
 
@@ -118,24 +128,29 @@
     <h3>Inputs</h3>
     <dl class="message-properties">
         <dt>payload<span class="property-type">object</span></dt>
-        <dt style="margin-left:1em" class="optional">action<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">The action originally performed on the messages. One of: <code>log</code>, <code>send</code>, <code>any</code></dd>
-        <dt style="margin-left:1em" class="optional">direction<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">The direction of the sent messages. One of: <code>inbound</code>, <code>outbound</code>, <code>any</code></dd>
-        <dt style="margin-left:1em" class="optional">fromDeviceIds<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">Comma separated list of device IDs of virtual devices from which the messages were sent</dd>
-        <dt style="margin-left:1em" class="optional">toDeviceIds<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">Comma separated list of device IDs of virtual devices to which the messages were sent</dd>
-        <dt style="margin-left:1em" class="optional">fromDeviceProdUniqueIds<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">Comma separated list of product unique IDs of virtual devices from which the messages were sent</dd>
-        <dt style="margin-left:1em" class="optional">toDeviceProdUniqueIds<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">Comma separated list of product unique IDs of virtual devices to which the messages were sent</dd>
-        <dt style="margin-left:1em" class="optional">readState<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">Current read state of the messages. One of: <code>read</code>, <code>unread</code>, <code>any</code></dd>
-        <dt style="margin-left:1em" class="optional">startDate<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">ISO 8601 formatted date/time (<code>YYYY-MM-ddTHH:mm:ss</code>) from when messages were logged/sent/received</dd>
-        <dt style="margin-left:1em" class="optional">endDate<span class="property-type">string</span></dt>
-        <dd style="margin-left:1.5em">ISO 8601 formatted date/time (<code>YYYY-MM-ddTHH:mm:ss</code>) until when messages were logged/sent/received</dd>
+        <dt style="margin-left:1em" class="optional">selector<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em" class="optional">action<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The action originally performed on the messages. One of: <code>log</code>, <code>send</code>, <code>any</code></dd>
+        <dt style="margin-left:2em" class="optional">direction<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The direction of the sent messages. One of: <code>inbound</code>, <code>outbound</code>, <code>any</code></dd>
+        <dt style="margin-left:2em" class="optional">fromDeviceIds<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Comma separated list of device IDs of virtual devices from which the messages were sent</dd>
+        <dt style="margin-left:2em" class="optional">toDeviceIds<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Comma separated list of device IDs of virtual devices to which the messages were sent</dd>
+        <dt style="margin-left:2em" class="optional">fromDeviceProdUniqueIds<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Comma separated list of product unique IDs of virtual devices from which the messages were sent</dd>
+        <dt style="margin-left:2em" class="optional">toDeviceProdUniqueIds<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Comma separated list of product unique IDs of virtual devices to which the messages were sent</dd>
+        <dt style="margin-left:2em" class="optional">readState<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Current read state of the messages. One of: <code>read</code>, <code>unread</code>, <code>any</code></dd>
+        <dt style="margin-left:2em" class="optional">startDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ISO 8601 formatted date/time (<code>YYYY-MM-ddTHH:mm:ss</code>) from when messages were logged/sent/received</dd>
+        <dt style="margin-left:2em" class="optional">endDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ISO 8601 formatted date/time (<code>YYYY-MM-ddTHH:mm:ss</code>) until when messages were logged/sent/received</dd>
+        <dt style="margin-left:1em" class="optional">limit<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">Maximum number of messages that should be returned</dd>
+        <dt style="margin-left:1em" class="optional">skip<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">Number of messages that should be skipped (from beginning of list of matching messages) and not returned</dd>
     </dl>
     <h3>Outputs</h3>
     <dl class="message-properties">
@@ -159,8 +174,8 @@
         <dt style="margin-left:3em">date<span class="property-type">date</span></dt>
         <dt style="margin-left:1em">msgCount<span class="property-type">number</span></dt>
         <dd style="margin-left:1.5em">The number of messages returned</dd>
-        <dt style="margin-left:1em">countExceeded<span class="property-type">boolean</span></dt>
-        <dd style="margin-left:1.5em">Indicates whether there are more messages that fulfill the query criteria that were not returned</dd>
+        <dt style="margin-left:1em">hasMore<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">Indicates whether there are more messages that satisfy the search criteria yet to be returned</dd>
     </dl>
     <h3>Details</h3>
     <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>

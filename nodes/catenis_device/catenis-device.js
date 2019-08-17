@@ -6,9 +6,9 @@
 var CtnApiClient = require('catenis-api-client');
 var util = require('../../util');
 
-var node;
-
 module.exports = function(RED) {
+    var node;
+
     function CatenisDevice(config) {
         RED.nodes.createNode(this, config);
         node = this;
@@ -30,6 +30,15 @@ module.exports = function(RED) {
 
         if (util.checkNonEmptyStr(trimmedStr = config.version.trim())) {
             options.version = trimmedStr;
+        }
+
+        // Make sure that Catenis device nodes that had been defined before this option was
+        //  available (in a previous version of Catenis Flow) use its default setting (true)
+        node._useCompression = 'useCompression' in config ? config.useCompression : true;
+        options.useCompression = node._useCompression;
+
+        if (util.checkIntNumberStr(config.compressThreshold)) {
+            options.compressThreshold = parseInt(config.compressThreshold);
         }
 
         this.ctnApiClient = new CtnApiClient(config.deviceId, config.apiAccessSecret, options);
@@ -71,6 +80,21 @@ module.exports = function(RED) {
             } catch(err) {
                 res.sendStatus(500);
                 node.error("Error responding to catenis.permissionevents request: " + err);
+            }
+        } else {
+            res.sendStatus(406);
+        }
+    });
+
+    // Used to retrieve current `use compression` setting
+    RED.httpAdmin.get("/catenis.devConfUseCompression/:id", RED.auth.needsPermission("catenis.devConfUseCompression"), function(req, res) {
+        var _node = RED.nodes.getNode(req.params.id);
+        if (_node !== undefined) {
+            try {
+                res.json({useCompression: _node._useCompression});
+            } catch(err) {
+                res.sendStatus(500);
+                node.error("Error sending message to node component in response to catenis.devConfUseCompression request: " + err);
             }
         } else {
             res.sendStatus(406);

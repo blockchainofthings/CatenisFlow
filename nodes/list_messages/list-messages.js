@@ -12,11 +12,13 @@ module.exports = function(RED) {
         var node = this;
 
         node.on('input', function(msg) {
-            var options = {
+            var selector = {
                 action: config.action,
                 direction: config.direction,
                 readState: config.readState
             };
+            var limit,
+                skip;
 
             var trimmedStr;
             var fromDeviceIds;
@@ -37,36 +39,52 @@ module.exports = function(RED) {
                 toDeviceProdUniqueIds = trimmedStr;
             }
             if (util.checkNonEmptyStr(trimmedStr = config.startDate.trim())) {
-                options.startDate = trimmedStr;
+                selector.startDate = trimmedStr;
             }
             if (util.checkNonEmptyStr(trimmedStr = config.endDate.trim())) {
-                options.endDate = trimmedStr;
+                selector.endDate = trimmedStr;
+            }
+
+            if (util.checkIntNumberStr(config.limit)) {
+                limit = parseInt(config.limit);
+            }
+            if (util.checkIntNumberStr(config.skip)) {
+                skip = parseInt(config.skip);
             }
 
             if (util.checkNonNullObject(msg.payload)) {
-                if (util.checkNonEmptyStr(msg.payload.action)) {
-                    options.action = msg.payload.action;
+                if (util.checkNonNullObject(msg.payload.selector)) {
+                    if (util.checkNonEmptyStr(msg.payload.selector.action)) {
+                        selector.action = msg.payload.selector.action;
+                    }
+                    if (util.checkNonEmptyStr(msg.payload.selector.direction)) {
+                        selector.direction = msg.payload.selector.direction;
+                    }
+                    if (util.checkNonEmptyStr(msg.payload.selector.fromDeviceIds)) {
+                        fromDeviceIds = msg.payload.selector.fromDeviceIds;
+                    }
+                    if (util.checkNonEmptyStr(msg.payload.selector.toDeviceIds)) {
+                        toDeviceIds = msg.payload.selector.toDeviceIds;
+                    }
+                    if (util.checkNonEmptyStr(msg.payload.selector.fromDeviceProdUniqueIds)) {
+                        fromDeviceProdUniqueIds = msg.payload.selector.fromDeviceProdUniqueIds;
+                    }
+                    if (util.checkNonEmptyStr(msg.payload.selector.toDeviceProdUniqueIds)) {
+                        toDeviceProdUniqueIds = msg.payload.selector.toDeviceProdUniqueIds;
+                    }
+                    if (util.checkNonEmptyStr(msg.payload.selector.startDate)) {
+                        selector.startDate = msg.payload.selector.startDate;
+                    }
+                    if (util.checkNonEmptyStr(msg.payload.selector.endDate)) {
+                        selector.endDate = msg.payload.selector.endDate;
+                    }
                 }
-                if (util.checkNonEmptyStr(msg.payload.direction)) {
-                    options.direction = msg.payload.direction;
+
+                if (util.checkNumber(msg.payload.limit)) {
+                    limit = msg.payload.limit;
                 }
-                if (util.checkNonEmptyStr(msg.payload.fromDeviceIds)) {
-                    fromDeviceIds = msg.payload.fromDeviceIds;
-                }
-                if (util.checkNonEmptyStr(msg.payload.toDeviceIds)) {
-                    toDeviceIds = msg.payload.toDeviceIds;
-                }
-                if (util.checkNonEmptyStr(msg.payload.fromDeviceProdUniqueIds)) {
-                    fromDeviceProdUniqueIds = msg.payload.fromDeviceProdUniqueIds;
-                }
-                if (util.checkNonEmptyStr(msg.payload.toDeviceProdUniqueIds)) {
-                    toDeviceProdUniqueIds = msg.payload.toDeviceProdUniqueIds;
-                }
-                if (util.checkNonEmptyStr(msg.payload.startDate)) {
-                    options.startDate = msg.payload.startDate;
-                }
-                if (util.checkNonEmptyStr(msg.payload.endDate)) {
-                    options.endDate = msg.payload.endDate;
+                if (util.checkNumber(msg.payload.skip)) {
+                    skip = msg.payload.skip;
                 }
             }
 
@@ -89,7 +107,7 @@ module.exports = function(RED) {
             }
 
             if (fromDevices.length > 0) {
-                options.fromDevices = fromDevices;
+                selector.fromDevices = fromDevices;
             }
 
             var toDevices = [];
@@ -111,13 +129,13 @@ module.exports = function(RED) {
             }
 
             if (toDevices.length > 0) {
-                options.toDevices = toDevices;
+                selector.toDevices = toDevices;
             }
 
             var device = RED.nodes.getNode(config.device);
             var ctnApiClient = device.ctnApiClient;
 
-            ctnApiClient.listMessages(options, responseHandler.bind(node, msg));
+            ctnApiClient.listMessages(selector, limit, skip, responseHandler.bind(node, msg));
         });
     }
 
