@@ -1,9 +1,6 @@
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
 var util = require('../../util');
-// DEBUG - Begin
-var nsUtil = require('util');
-// DEBUG - End
 
 module.exports = function(RED) {
     function ReissueAssetNode(config) {
@@ -65,13 +62,6 @@ module.exports = function(RED) {
             if (holdingDevice.id === undefined) {
                 holdingDevice = undefined;
             }
-
-            // DEBUG - Begin
-            node.log('>>>>>> Reissue Asset: assetId: ' + assetId);
-            node.log('>>>>>> Reissue Asset: amount: ' + amount);
-            node.log('>>>>>> Reissue Asset: holdingDevice: ' + nsUtil.inspect(holdingDevice));
-            return;
-            // DEBUG - End
 
             var device = RED.nodes.getNode(config.device);
             var ctnApiClient = device.ctnApiClient;

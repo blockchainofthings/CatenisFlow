@@ -1,9 +1,6 @@
 
 var responseHandler = require('../../util/catenis-api-response-handler.js');
 var util = require('../../util');
-// DEBUG - Begin
-var nsUtil = require('util');
-// DEBUG - End
 
 module.exports = function(RED) {
     function TransferAssetNode(config) {
@@ -55,13 +52,6 @@ module.exports = function(RED) {
             if (assetId === undefined) {
                 return node.error('Missing required parameter \'assetId\'', msg);
             }
-
-            // DEBUG - Begin
-            node.log('>>>>>> Transfer Asset: assetId: ' + assetId);
-            node.log('>>>>>> Transfer Asset: amount: ' + amount);
-            node.log('>>>>>> Transfer Asset: receivingDevice: ' + nsUtil.inspect(receivingDevice));
-            return;
-            // DEBUG - End
 
             var device = RED.nodes.getNode(config.device);
             var ctnApiClient = device.ctnApiClient;
