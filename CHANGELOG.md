@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.1] - 2019-11-16
+
+### Fixes
+- Remove spurious debugging code from nodes Issue Asset, Reissue Asset, and Transfer Asset that was hindering their
+ functionality; those nodes were simply not doing anything.
+
 ## [2.0.0] - 2019-08-17
 
 ### Breaking changes
