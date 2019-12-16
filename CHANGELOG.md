@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.2] - 2019-12-16
+
+### Fixes
+- Fix issue with processing input message for Retrieve Permission Rights node.
+
 ## [2.0.1] - 2019-11-16
 
 ### Fixes
