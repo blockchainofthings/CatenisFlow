@@ -12,12 +12,14 @@ module.exports = function(RED) {
         var node = this;
 
         node.on('input', function(msg) {
-            var eventName = config.eventName;
+            var trimmedStr;
+            var eventName = util.checkNonEmptyStr(trimmedStr = config.eventName.trim()) ? trimmedStr : undefined;
 
             if (util.checkNonBlankStr(msg.payload)) {
-                eventName = msg.payload.trim()
+                eventName = msg.payload.trim();
             }
-            else {
+
+            if (eventName === undefined) {
                 return node.error('Missing required parameter \'eventName\'', msg);
             }
 
