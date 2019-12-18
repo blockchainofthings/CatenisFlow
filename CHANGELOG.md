@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.3] - 2019-12-18
+
+### Fixes
+- Fix issue when entering a single value in input field of Set Permission Rights node's config parameters used to set permission at device level.
+
 ## [2.0.2] - 2019-12-16
 
 ### Fixes
