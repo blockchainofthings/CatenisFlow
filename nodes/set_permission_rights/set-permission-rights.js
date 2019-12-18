@@ -59,50 +59,50 @@ module.exports = function(RED) {
             }
 
             if ((ids = parseCSList(config.allowDeviceIds)) !== undefined) {
-                deviceRights.allow = ids.map(function (id) {
+                deviceRights.allow = Array.isArray(ids) ? ids.map(function (id) {
                     return {
                         id: id
                     }
-                });
+                }) : {id: ids};
             }
             if ((ids = parseCSList(config.denyDeviceIds)) !== undefined) {
-                deviceRights.deny = ids.map(function (id) {
+                deviceRights.deny = Array.isArray(ids) ? ids.map(function (id) {
                     return {
                         id: id
                     }
-                });
+                }) : {id: ids};
             }
             if ((ids = parseCSList(config.noneDeviceIds)) !== undefined) {
-                deviceRights.none = ids.map(function (id) {
+                deviceRights.none = Array.isArray(ids) ? ids.map(function (id) {
                     return {
                         id: id
                     }
-                });
+                }) : {id: ids};
             }
 
             if ((ids = parseCSList(config.allowProdIds)) !== undefined) {
-                deviceRights.allow = ids.map(function (id) {
+                deviceRights.allow = Array.isArray(ids) ? ids.map(function (id) {
                     return {
                         id: id,
                         isProdUniqueId: true
                     }
-                });
+                }) : {id: ids, isProdUniqueId: true};
             }
             if ((ids = parseCSList(config.denyProdIds)) !== undefined) {
-                deviceRights.deny = ids.map(function (id) {
+                deviceRights.deny = Array.isArray(ids) ? ids.map(function (id) {
                     return {
                         id: id,
                         isProdUniqueId: true
                     }
-                });
+                }) : {id: ids, isProdUniqueId: true};
             }
             if ((ids = parseCSList(config.noneProdIds)) !== undefined) {
-                deviceRights.none = ids.map(function (id) {
+                deviceRights.none = Array.isArray(ids) ? ids.map(function (id) {
                     return {
                         id: id,
                         isProdUniqueId: true
                     }
-                });
+                }) : {id: ids, isProdUniqueId: true};
             }
 
             if (util.checkNonNullObject(msg.payload)) {
