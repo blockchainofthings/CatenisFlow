@@ -39,11 +39,17 @@
     <h3>Outputs</h3>
     <dl class="message-properties">
         <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">offChain<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">cid<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">IPFS CID of Catenis off-chain message envelope data structure that holds the off-chain message's contents</dd>
         <dt style="margin-left:1em" class="optional">blockchain<span class="property-type">object</span></dt>
         <dt style="margin-left:2em">txid<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The ID of the blockchain transaction where the message was recorded</dd>
         <dt style="margin-left:2em">isConfirmed<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the blockchain transaction has already been confirmed</dd>
         <dt style="margin-left:1em" class="optional">externalStorage<span class="property-type">object</span></dt>
         <dt style="margin-left:2em">ipfs<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The hash used to reference the message on IPFS</dd>
     </dl>
     <h3>Details</h3>
     <p>The payload of the received message is a string containing the ID of the message the container info of which is to be retrieved.</p>

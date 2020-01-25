@@ -44,7 +44,7 @@
   "author": "MJ",
   "license": "MIT",
   "dependencies": {
-    "catenis-api-client": "~4.0.0"
+    "catenis-api-client": "~5.0.1"
   },
   "repository": {
     "type": "git",

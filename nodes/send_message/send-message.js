@@ -27,6 +27,7 @@ module.exports = function(RED) {
             var options = {
                 encoding: config.encoding,
                 encrypt: config.encrypt,
+                offChain: config.offChain,
                 storage: config.storage,
                 readConfirmation: config.readConfirmation,
                 async: config.async
@@ -66,6 +67,10 @@ module.exports = function(RED) {
 
                     if (util.checkNonEmpty(msg.payload.options.encrypt)) {
                         options.encrypt = !!msg.payload.options.encrypt;
+                    }
+
+                    if (util.checkNonEmpty(msg.payload.options.offChain)) {
+                        options.offChain = !!msg.payload.options.offChain;
                     }
 
                     if (util.checkNonEmptyStr(msg.payload.options.storage)) {

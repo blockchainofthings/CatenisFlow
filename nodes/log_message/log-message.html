@@ -7,6 +7,7 @@
             device: { value: "", type: "catenis device", required: true },
             encoding: { value: "utf8" },
             encrypt: { value: true },
+            offChain: { value: true },
             storage: { value: "auto" },
             async: { value: false }
         },
@@ -44,6 +45,10 @@
         <input type="checkbox" id="node-input-encrypt">
     </div>
     <div class="form-row">
+        <label for="node-input-offChain"><i class="fa fa-envelope"></i> Off-Chain</label>
+        <input type="checkbox" id="node-input-offChain">
+    </div>
+    <div class="form-row">
         <label for="node-input-storage"><i class="fa fa-archive"></i> Storage</label>
         <select id="node-input-storage">
             <option value="auto" selected>Auto</option>
@@ -79,6 +84,8 @@
         <dd style="margin-left:2.5em">Specifies the encoding of the message. One of: <code>utf8</code>, <code>base64</code>, <code>hex</code></dd>
         <dt style="margin-left:2em" class="optional">encrypt<span class="property-type">boolean</span></dt>
         <dd style="margin-left:2.5em">Indicates whether message should be encrypted before storing it</dd>
+        <dt style="margin-left:2em" class="optional">offChain<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether message should be logged as a Catenis off-chain message</dd>
         <dt style="margin-left:2em" class="optional">storage<span class="property-type">string</span></dt>
         <dd style="margin-left:2.5em">Specifies where the message should be stored. One of: <code>auto</code>, <code>embedded</code>, <code>external</code></dd>
         <dt style="margin-left:2em" class="optional">async<span class="property-type">boolean</span></dt>
