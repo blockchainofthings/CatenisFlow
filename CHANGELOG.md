@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.0] - 2020-01-25
+
+### Changes
+- The default value of the 'version' field of the Catenis Device properties has changed to 0.9.
+
+### New features
+- As a consequence for targeting version 0.9 of the Catenis Enterprise API, the new features introduced by that version
+ are supported: log, send, read and retrieve container info of Catenis off-chain messages.
+
 ## [2.0.3] - 2019-12-18
 
 ### Fixes
