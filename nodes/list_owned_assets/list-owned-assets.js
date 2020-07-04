@@ -1,15 +1,14 @@
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function listOwnedAssets(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
             // Get parameters from node's configuration
-            var limit,
+            let limit,
                 skip;
 
             if (util.checkIntNumberStr(config.limit)) {
@@ -31,8 +30,8 @@ module.exports = function(RED) {
                 }
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             ctnApiClient.listOwnedAssets(limit, skip, responseHandler.bind(node, msg));
         });
@@ -41,7 +40,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("list owned assets", listOwnedAssets);
 
     RED.httpAdmin.post("/catenis.listownedassets/:id", RED.auth.needsPermission("catenis.listownedassets"), function(req, res) {
-        var node = RED.nodes.getNode(req.params.id);
+        const node = RED.nodes.getNode(req.params.id);
         if (node != null) {
             try {
                 node.receive();

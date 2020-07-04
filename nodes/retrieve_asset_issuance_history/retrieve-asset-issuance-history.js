@@ -1,20 +1,19 @@
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function retrieveAssetIssuanceHistoryNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
             // Get parameters from node's configuration
-            var assetId,
+            let assetId,
                 startDate,
                 endDate,
                 limit,
                 skip;
-            var trimmedStr;
+            let trimmedStr;
 
             if (util.checkNonEmptyStr(trimmedStr = config.assetId.trim())) {
                 assetId = trimmedStr;
@@ -62,8 +61,8 @@ module.exports = function(RED) {
                 return node.error('Missing required parameter \'assetId\'', msg);
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             ctnApiClient.retrieveAssetIssuanceHistory(assetId, startDate, endDate, limit, skip, responseHandler.bind(node, msg));
         });
@@ -72,7 +71,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("retrieve asset issuance history", retrieveAssetIssuanceHistoryNode);
 
     RED.httpAdmin.post("/catenis.retrieveassetissuancehistory/:id", RED.auth.needsPermission("catenis.retrieveassetissuancehistory"), function(req, res) {
-        var node = RED.nodes.getNode(req.params.id);
+        const node = RED.nodes.getNode(req.params.id);
         if (node != null) {
             try {
                 node.receive();

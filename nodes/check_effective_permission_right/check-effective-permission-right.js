@@ -1,22 +1,17 @@
-/*
-* @Author: Mahesh J
-* @Date:   2018-01-12 19:54:14
-*/
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function CheckPermissionNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
-            var params = {
+            const params = {
                 isProdUniqueId: config.isProdUniqueId
             };
 
-            var trimmedStr;
+            let trimmedStr;
 
             if (util.checkNonEmptyStr(trimmedStr = config.eventName.trim())) {
                 params.eventName = trimmedStr;
@@ -42,8 +37,8 @@ module.exports = function(RED) {
                 return node.error('Missing required parameters \'eventName\' and/or \'deviceId\'', msg);
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             ctnApiClient.checkEffectivePermissionRight(params.eventName, params.deviceId, params.isProdUniqueId, responseHandler.bind(node, {}));
         });
@@ -52,7 +47,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("check effective permission right", CheckPermissionNode);
 
     RED.httpAdmin.post("/catenis.checkpermission/:id", RED.auth.needsPermission("catenis.checkpermission"), function(req, res) {
-        var node = RED.nodes.getNode(req.params.id);
+        const node = RED.nodes.getNode(req.params.id);
         if (node != null) {
             try {
                 node.receive();

@@ -1,18 +1,13 @@
-/*
-* @Author: mahesh
-* @Date:   2018-01-19 17:53:12
-*/
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
 
 module.exports = function(RED) {
     function RetrievePermissionNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function() {
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             ctnApiClient.listPermissionEvents(responseHandler.bind(node, {}));
         });
@@ -21,7 +16,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("list permission events", RetrievePermissionNode);
 
     RED.httpAdmin.post("/catenis.listpermissionevents/:id", RED.auth.needsPermission("catenis.listpermissionevents"), function(req, res) {
-        var node = RED.nodes.getNode(req.params.id);
+        const node = RED.nodes.getNode(req.params.id);
         if (node != null) {
             try {
                 node.receive();

@@ -1,19 +1,14 @@
-/*
-* @Author: Mahesh J
-* @Date:   2018-01-09 19:29:59
-*/
-
-var util = require('../../util');
+const util = require('../../util');
 
 module.exports = function(RED) {
 
     function NotificationChannelNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         // Instantiate Web Services notification channel
-        var device = RED.nodes.getNode(config.device);
-        var ctnApiClient = device.ctnApiClient;
+        const connection = RED.nodes.getNode(config.connection);
+        const ctnApiClient = connection.ctnApiClient;
 
         node.wsNtfyChannel = ctnApiClient.createWsNotifyChannel(config.eventName);
 
@@ -45,7 +40,7 @@ module.exports = function(RED) {
         node.status({ fill:'red', shape:'dot', text:'disconnected' });
 
         node.on('input', function (msg) {
-            var action = node.channelOpen ? 'close' : 'open';
+            let action = node.channelOpen ? 'close' : 'open';
 
             if (util.checkNonNullObject(msg.payload)) {
                 if (util.checkNonEmptyStr(msg.payload.action)) {
@@ -80,7 +75,7 @@ module.exports = function(RED) {
     RED.nodes.registerType('notification channel', NotificationChannelNode);
 
     RED.httpAdmin.post('/catenis.notificationchannel/:id', RED.auth.needsPermission('catenis.notificationchannel'), function(req, res) {
-        var node = RED.nodes.getNode(req.params.id);
+        const node = RED.nodes.getNode(req.params.id);
         if (node != null) {
             try {
                 node.receive();

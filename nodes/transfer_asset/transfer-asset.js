@@ -1,28 +1,27 @@
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function TransferAssetNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
             // Get asset ID from node's configuration
-            var assetId;
-            var trimmedStr;
+            let assetId;
+            let trimmedStr;
 
             if (util.checkNonEmptyStr(trimmedStr = config.assetId.trim())) {
                 assetId = trimmedStr;
             }
 
             // Get receiving device from node's configuration
-            var receivingDevice = {
+            const receivingDevice = {
                 id: util.checkNonEmptyStr(trimmedStr = config.receivingDeviceId.trim()) ? trimmedStr : undefined,
                 isProdUniqueId: config.isProdUniqueId
             };
 
-            var amount;
+            let amount;
 
             if (util.checkNumber(msg.payload)) {
                 // Assume that payload contains the amount of asset to transfer
@@ -53,8 +52,8 @@ module.exports = function(RED) {
                 return node.error('Missing required parameter \'assetId\'', msg);
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             ctnApiClient.transferAsset(assetId, amount, receivingDevice, responseHandler.bind(node, msg));
         });

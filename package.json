@@ -16,11 +16,12 @@
   ],
   "node-red": {
     "nodes": {
-      "catenis device": "nodes/catenis_device/catenis-device.js",
+      "catenis api connection": "nodes/catenis_api_connection/catenis-api-connection.js",
       "log message": "nodes/log_message/log-message.js",
       "send message": "nodes/send_message/send-message.js",
       "retrieve message container": "nodes/retrieve_message_container/retrieve-message-container.js",
       "read message": "nodes/read_message/read-message.js",
+      "retrieve message origin": "nodes/retrieve_message_origin/retrieve-message-origin.js",
       "retrieve message progress": "nodes/retrieve_message_progress/retrieve-message-progress.js",
       "list messages": "nodes/list_messages/list-messages.js",
       "issue asset": "nodes/issue_asset/issue-asset.js",
@@ -44,7 +45,7 @@
   "author": "MJ",
   "license": "MIT",
   "dependencies": {
-    "catenis-api-client": "~5.0.1"
+    "catenis-api-client": "~5.1.0"
   },
   "repository": {
     "type": "git",

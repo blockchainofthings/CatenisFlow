@@ -1,20 +1,15 @@
-/*
-* @Author: mahesh
-* @Date:   2018-01-15 22:49:34
-*/
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function SetPermissionNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
             function parseCSList(list) {
                 if (typeof list === 'string' && list.length > 0) {
-                    var elems = list.trim().split(/\s*,\s*/);
+                    const elems = list.trim().split(/\s*,\s*/);
 
                     if (elems.length > 1) {
                         return elems;
@@ -25,18 +20,18 @@ module.exports = function(RED) {
                 }
             }
 
-            var trimmedStr;
-            var eventName = util.checkNonEmptyStr(trimmedStr = config.eventName.trim()) ? trimmedStr : undefined;
-            var rights = {};
-            var ctnNodeRights = {};
-            var clientRights = {};
-            var deviceRights = {};
+            let trimmedStr;
+            let eventName = util.checkNonEmptyStr(trimmedStr = config.eventName.trim()) ? trimmedStr : undefined;
+            const rights = {};
+            const ctnNodeRights = {};
+            const clientRights = {};
+            const deviceRights = {};
 
             if (util.checkNonEmptyStr(config.sysRight)) {
                 rights.system = config.sysRight;
             }
 
-            var ids;
+            let ids;
 
             if ((ids = parseCSList(config.allowCtnNodeIndices)) !== undefined) {
                 ctnNodeRights.allow = ids;
@@ -167,8 +162,8 @@ module.exports = function(RED) {
                 rights.device = deviceRights;
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             ctnApiClient.setPermissionRights(eventName, rights, responseHandler.bind(node, {}));
         });
@@ -177,7 +172,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("set permission rights", SetPermissionNode);
 
     RED.httpAdmin.post("/catenis.setpermissionrights/:id", RED.auth.needsPermission("catenis.setpermissionrights"), function(req, res) {
-        var node = RED.nodes.getNode(req.params.id);
+        const node = RED.nodes.getNode(req.params.id);
         if (node != null) {
             try {
                 node.receive();

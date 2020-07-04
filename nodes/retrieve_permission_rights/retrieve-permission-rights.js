@@ -1,19 +1,14 @@
-/*
-* @Author: mahesh
-* @Date:   2018-01-13 21:22:38
-*/
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function RetrievePermissionNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
-            var trimmedStr;
-            var eventName = util.checkNonEmptyStr(trimmedStr = config.eventName.trim()) ? trimmedStr : undefined;
+            let trimmedStr;
+            let eventName = util.checkNonEmptyStr(trimmedStr = config.eventName.trim()) ? trimmedStr : undefined;
 
             if (util.checkNonBlankStr(msg.payload)) {
                 eventName = msg.payload.trim();
@@ -23,8 +18,8 @@ module.exports = function(RED) {
                 return node.error('Missing required parameter \'eventName\'', msg);
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             ctnApiClient.retrievePermissionRights(eventName, responseHandler.bind(node, {}));
         });
@@ -33,7 +28,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("retrieve permission rights", RetrievePermissionNode);
 
     RED.httpAdmin.post("/catenis.retrievepermissionright/:id", RED.auth.needsPermission("catenis.retrievepermissionright"), function(req, res) {
-        var node = RED.nodes.getNode(req.params.id);
+        const node = RED.nodes.getNode(req.params.id);
         if (node != null) {
             try {
                 node.receive();

@@ -4,7 +4,7 @@
         color: '#9f9fe4',
         defaults: {
             name: { value: "" },
-            device: { value: "", type: "catenis device", required: true },
+            connection: { value: "", type: "catenis api connection", required: true },
             eventName: { value: "" },
             deviceId: { value: "" },
             isProdUniqueId: { value: false }
@@ -13,7 +13,7 @@
         outputs:1,
         icon: "catenis-check-permission-rights.png",
         label: function () {
-            return this.name || "check effective permission right";
+            return this.name || "Check effective permission right";
         },
         button: {
             enabled: function() {
@@ -80,8 +80,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
-        <input type="text" id="node-input-device">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
     </div>
     <div class="form-row">
         <hr>
@@ -119,7 +119,7 @@
         <dd>A dictionary where the keys are the device IDs and the values their respective right (one of: <code>allow</code>, <code>deny</code>)</dd>
     </dl>
     <h3>Details</h3>
-    <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The configuration settings (except for Name and Connection) are used to set the default for the parameters of the corresponding Catenis API method.</p>
     <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API method is called using the default settings (as specified in the node’s configuration).</p>
     <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
     <h3>References</h3>

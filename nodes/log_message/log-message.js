@@ -1,19 +1,14 @@
-/*
-* @Author: mahesh
-* @Date:   2017-12-23 22:02:03
-*/
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function LogMessageNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
             // Get options from node's configuration
-            var options = {
+            const options = {
                 encoding: config.encoding,
                 encrypt: config.encrypt,
                 offChain: config.offChain,
@@ -21,7 +16,7 @@ module.exports = function(RED) {
                 async: config.async
             };
 
-            var message;
+            let message;
 
             if (util.checkNonEmptyStr(msg.payload)) {
                 // Assume that payload contains the message to log
@@ -57,8 +52,8 @@ module.exports = function(RED) {
                 }
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             // Call Catenis API to log message
             ctnApiClient.logMessage(message, options, responseHandler.bind(node, msg));

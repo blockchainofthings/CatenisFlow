@@ -4,7 +4,7 @@
         color: '#9f9fe4',
         defaults: {
             name: { value: "" },
-            device: { value: "", type: "catenis device", required: true },
+            connection: { value: "", type: "catenis api connection", required: true },
             encoding: { value: "utf8" },
             dataChunkSize: { value: "" },
             async: { value: false }
@@ -13,7 +13,7 @@
         outputs:1,
         icon: "catenis-read-message.png",
         label: function () {
-            return this.name || "read message";
+            return this.name || "Read message";
         }
     });
 </script>
@@ -24,8 +24,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
-        <input type="text" id="node-input-device">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
     </div>
     <div class="form-row">
         <hr>
@@ -89,7 +89,7 @@
         <dd style="margin-left:1.5em">ID of cached message used to retrieve asynchronous processing progress</dd>
     </dl>
     <h3>Details</h3>
-    <p>The configuration settings (except for Name and Device) are used to set the default for the corresponding parameters of the Catenis API method.</p>
+    <p>The configuration settings (except for Name and Connection) are used to set the default for the corresponding parameters of the Catenis API method.</p>
     <p>The payload of the received message can be either a string or an object. If it is a string, its contents is used as the ID of the message to read and the default settings (as specified in the node’s configuration) are used for the other parameters.</p>
     <p>In case an object is received, the ID of the message to read and the options parameters are gotten from it. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
     <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>

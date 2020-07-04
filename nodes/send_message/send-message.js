@@ -1,30 +1,25 @@
-/*
-* @Author: Mahesh J
-* @Date:   2018-01-02 17:41:33
-*/
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function SendMessageNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
             // Get target device from node's configuration
-            var targetDevice = {
+            let targetDevice = {
                 isProdUniqueId: config.isProdUniqueId
             };
 
-            var trimmedStr;
+            let trimmedStr;
 
             if (util.checkNonEmptyStr(trimmedStr = config.toDeviceId.trim())) {
                 targetDevice.id = trimmedStr;
             }
 
             // Get options from node's configuration
-            var options = {
+            const options = {
                 encoding: config.encoding,
                 encrypt: config.encrypt,
                 offChain: config.offChain,
@@ -33,7 +28,7 @@ module.exports = function(RED) {
                 async: config.async
             };
 
-            var message;
+            let message;
 
             if (util.checkNonEmptyStr(msg.payload)) {
                 // Assume that payload contains the message to log
@@ -83,8 +78,8 @@ module.exports = function(RED) {
                 }
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             ctnApiClient.sendMessage(message, targetDevice, options, responseHandler.bind(node, msg));
         });

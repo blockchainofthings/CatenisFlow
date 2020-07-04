@@ -1,18 +1,13 @@
-/*
-* @Author: Mahesh J
-* @Date:   2017-12-26 12:31:27
-*/
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function RetrieveMessageContainerNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
-            var messageId;
+            let messageId;
 
             if (util.checkNonBlankStr(msg.payload)) {
                 messageId = msg.payload.trim();
@@ -21,8 +16,8 @@ module.exports = function(RED) {
                 return node.error('Missing required parameter \'messageId\'', msg);
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
         	ctnApiClient.retrieveMessageContainer(messageId, responseHandler.bind(node, msg));
         });

@@ -4,7 +4,7 @@
         color: '#9f9fe4',
         defaults: {
             name: { value: "" },
-            device: { value: "", type: "catenis device", required: true },
+            connection: { value: "", type: "catenis api connection", required: true },
             assetId: { value: "" },
             startDate: { value: "" },
             endDate: { value: "" },
@@ -15,7 +15,7 @@
         outputs:1,
         icon: "asset_issuance_history.png",
         label: function () {
-            return this.name || "retrieve asset issuance history";
+            return this.name || "Retrieve asset issuance history";
         },
         button: {
             enabled: function() {
@@ -55,8 +55,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
-        <input type="text" id="node-input-device">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
     </div>
     <div class="form-row">
         <hr>
@@ -118,7 +118,7 @@
         <dd style="margin-left:1.5em">Indicates whether there are more asset issuance events that satisfy the search criteria yet to be returned</dd>
     </dl>
     <h3>Details</h3>
-    <p>The configuration settings (except for Name and Device) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The configuration settings (except for Name and Connection) are used to set the default for the parameters of the corresponding Catenis API method.</p>
     <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API method is called using the default settings (as specified in the node’s configuration).</p>
     <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
     <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>

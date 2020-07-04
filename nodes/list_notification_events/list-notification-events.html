@@ -4,13 +4,13 @@
         color: '#9f9fe4',
         defaults: {
             name: { value: "" },
-            device: { value: "", type: "catenis device" }
+            connection: { value: "", type: "catenis api connection" }
         },
         inputs: 0,
         outputs: 1,
         icon: "catenis-list-notification-events.png",
         label: function () {
-            return this.name || "list notification events";
+            return this.name || "List notification events";
         },
         button: {
             enabled: function() {
@@ -50,8 +50,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
-        <input type="text" id="node-input-device">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
     </div>
     <div class="form-row">
         <hr>

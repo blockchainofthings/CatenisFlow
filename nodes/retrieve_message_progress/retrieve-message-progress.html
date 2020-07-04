@@ -4,13 +4,13 @@
         color: '#9f9fe4',
         defaults: {
             name: { value: "" },
-            device: { value: "", type: "catenis device", required: true }
+            connection: { value: "", type: "catenis api connection", required: true }
         },
         inputs:1,
         outputs:1,
         icon: "retrieve_message_progress.png",
         label: function () {
-            return this.name || "retrieve message progress";
+            return this.name || "Retrieve message progress";
         }
     });
 </script>
@@ -21,8 +21,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-device"><i class="fa fa-microchip"></i> Device</label>
-        <input type="text" id="node-input-device">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
     </div>
     <div class="form-row">
         <hr>

@@ -1,30 +1,25 @@
-/*
-* @Author: Mahesh J
-* @Date:   2018-01-02 23:01:37
-*/
-
-var responseHandler = require('../../util/catenis-api-response-handler.js');
-var util = require('../../util');
+const responseHandler = require('../../util/catenis-api-response-handler.js');
+const util = require('../../util');
 
 module.exports = function(RED) {
     function ListMessagesNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        const node = this;
 
         node.on('input', function(msg) {
-            var selector = {
+            const selector = {
                 action: config.action,
                 direction: config.direction,
                 readState: config.readState
             };
-            var limit,
+            let limit,
                 skip;
 
-            var trimmedStr;
-            var fromDeviceIds;
-            var toDeviceIds;
-            var fromDeviceProdUniqueIds;
-            var toDeviceProdUniqueIds;
+            let trimmedStr;
+            let fromDeviceIds;
+            let toDeviceIds;
+            let fromDeviceProdUniqueIds;
+            let toDeviceProdUniqueIds;
 
             if (util.checkNonEmptyStr(trimmedStr = config.fromDeviceIds.trim())) {
                 fromDeviceIds = trimmedStr;
@@ -88,7 +83,7 @@ module.exports = function(RED) {
                 }
             }
 
-            var fromDevices = [];
+            let fromDevices = [];
 
             if (fromDeviceIds) {
                 fromDevices = fromDevices.concat(fromDeviceIds.split(',').map(function (id) {
@@ -110,7 +105,7 @@ module.exports = function(RED) {
                 selector.fromDevices = fromDevices;
             }
 
-            var toDevices = [];
+            let toDevices = [];
 
             if (toDeviceIds) {
                 toDevices = toDevices.concat(toDeviceIds.split(',').map(function (id) {
@@ -132,8 +127,8 @@ module.exports = function(RED) {
                 selector.toDevices = toDevices;
             }
 
-            var device = RED.nodes.getNode(config.device);
-            var ctnApiClient = device.ctnApiClient;
+            const connection = RED.nodes.getNode(config.connection);
+            const ctnApiClient = connection.ctnApiClient;
 
             ctnApiClient.listMessages(selector, limit, skip, responseHandler.bind(node, msg));
         });
@@ -142,7 +137,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("list messages", ListMessagesNode);
 
     RED.httpAdmin.post("/catenis.listmessages/:id", RED.auth.needsPermission("catenis.listmessages"), function(req, res) {
-        var node = RED.nodes.getNode(req.params.id);
+        const node = RED.nodes.getNode(req.params.id);
         if (node != null) {
             try {
                 node.receive();
