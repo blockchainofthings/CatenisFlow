@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.0] - 2020-07-06
+
+### Breaking changes
+- The global configuration setting `Device` has been replaced with the new global configuration setting `Connection`.
+ This will required that all Catenis nodes currently in use be reconfigured in order to select the appropriate
+ connection to be used with it.
+
+### New features
+- Added support for version 0.10 of the Catenis Enterprise API.
+
+### Changes
+- The default value of the 'version' field of the Catenis Device properties has changed to 0.9.
+
 ## [2.1.0] - 2020-01-25
 
 ### Changes
