@@ -1,6 +1,6 @@
 {
   "name": "catenis-flow",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Catenis Flow - A set of Node-RED nodes used to interact with the Bitcoin blockchain by means of the Catenis Enterprise API",
   "homepage": "https://github.com/blockchainofthings/CatenisFlow",
   "scripts": {
