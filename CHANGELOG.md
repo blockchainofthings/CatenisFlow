@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.1] - 2020-07-07
+
+### Fixes
+- Fixed issue that prevented the Retrieve Message Origin node's documentation from being displayed.
+
 ## [3.0.0] - 2020-07-06
 
 ### Breaking changes
