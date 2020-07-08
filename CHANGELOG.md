@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.2] - 2020-07-08
+
+### Fixes
+- Fixed description of `signature` property of data returned from Retrieve Message Origin node.
+
 ## [3.0.1] - 2020-07-07
 
 ### Fixes
