@@ -1,0 +1,117 @@
+<script type="text/javascript">
+    RED.nodes.registerType('asset migration outcome', {
+        category: 'Catenis Flow',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            connection: { value: "", type: "catenis api connection", required: true },
+            migrationId: { value: "" }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "asset_migration_outcome.png",
+        label: function () {
+            return this.name || "Asset migration outcome";
+        },
+        button: {
+            enabled: function() {
+                return !this.changed;
+            },
+            onclick: function() {
+                if (this.changed) {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                }
+                var node = this;
+                $.ajax({
+                    url: "catenis.assetmigrationoutcome/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="asset migration outcome">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <hr>
+    </div>
+    <div class="form-row">
+        <label for="node-input-migrationId"><i class="fa fa-tag"></i> Migration ID</label>
+        <input type="text" id="node-input-migrationId">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="asset migration outcome">
+    <p>Call Catenis API "Asset Migration Outcome" method to retrieve the current information about the outcome of an asset migration.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">migrationId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em"> ID of the asset migration</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the asset the amount of which has been migrated</dd>
+        <dt style="margin-left:1em">foreignBlockchain<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The key identifying the foreign blockchain to/from where the asset amount has been migrated. One of: <code>ethereum</code>, <code>binance</code>, <code>polygon</code></dd>
+        <dt style="margin-left:1em">direction<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The direction of the migration. One of: <code>outward</code>, <code>inward</code></dd>
+        <dt style="margin-left:1em">amount<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">The migrated asset amount</dd>
+        <dt style="margin-left:1em">catenisService<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">Information about the execution of the migrate asset Catenis service</dd>
+        <dt style="margin-left:2em">status<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The current state of the service's execution. One of: <code>awaiting</code>, <code>failure</code>, <code>fulfilled</code></dd>
+        <dt style="margin-left:2em" class="optional">txid<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of the Catenis transaction issued to fulfill the service</dd>
+        <dt style="margin-left:2em" class="optional">error<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">An error message describing what went wrong when executing the service</dd>
+        <dt style="margin-left:1em">foreignTransaction<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">Information about the transaction issued on the foreign blockchain to mint/burn the amount of the foreign token</dd>
+        <dt style="margin-left:2em">txid<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID (or hash) of the foreign blockchain transaction</dd>
+        <dt style="margin-left:2em">isPending<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the foreign blockchain transaction is yet to be executed</dd>
+        <dt style="margin-left:2em" class="optional">success<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the foreign blockchain transaction has been successfully executed or not</dd>
+        <dt style="margin-left:2em" class="optional">error<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">An error message describing what went wrong when executing the transaction</dd>
+        <dt style="margin-left:1em">status<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The current state of the asset migration. One of: <code>pending</code>, <code>interrupted</code>, <code>success</code>, <code>error</code></dd>
+        <dt style="margin-left:1em">date<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ISO 8601 formatted date and time when the asset amount has been migrated</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Connection) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API method is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/docs/api">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

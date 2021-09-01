@@ -1,0 +1,118 @@
+<script type="text/javascript">
+    RED.nodes.registerType('export asset', {
+        category: 'Catenis Flow',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            connection: { value: "", type: "catenis api connection", required: true },
+            assetId: { value: "" },
+            foreignBlockchain: { value: "" },
+            consumptionProfile: { value: "" },
+            estimateOnly: { value: false }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "export_asset.png",
+        label: function () {
+            return this.name || "Export asset";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="export asset">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <hr>
+    </div>
+    <div class="form-row">
+        <label for="node-input-assetId"><i class="fa fa-tag"></i> Asset ID</label>
+        <input type="text" id="node-input-assetId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-foreignBlockchain"><i class="fa fa-link"></i> Foreign blockchain</label>
+        <select id="node-input-foreignBlockchain">
+            <option value="ethereum" selected>Ethereum</option>
+            <option value="binance">Binance Smart Chain</option>
+            <option value="polygon">Polygon PoS Chain</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-consumptionProfile"><i class="fa fa-money"></i> Consumption profile</label>
+        <select id="node-input-consumptionProfile">
+            <option value="" selected></option>
+            <option value="fastest" selected>Fastest</option>
+            <option value="fast">Fast</option>
+            <option value="average">Average</option>
+            <option value="slow">Slow</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-estimateOnly"><i class="fa fa-question-circle-o"></i> Estimate only</label>
+        <input type="checkbox" id="node-input-estimateOnly">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="export asset">
+    <p>Call Catenis API "Export Asset" method to export an asset to a foreign blockchain.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the asset to export</dd>
+        <dt style="margin-left:1em" class="optional">foreignBlockchain<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The key identifying the foreign blockchain. One of: <code>ethereum</code>, <code>binance</code>, <code>polygon</code></dd>
+        <dt style="margin-left:1em">token<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em">name<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The name of the token to be created on the foreign blockchain</dd>
+        <dt style="margin-left:2em">symbol<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The symbol of the token to be created on the foreign blockchain</dd>
+        <dt style="margin-left:1em" class="optional">options<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em" class="optional">consumptionProfile<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">Name of the foreign blockchain's native coin consumption profile to use. One of: <code>fastest</code>, <code>fast</code>, <code>average</code>, <code>slow</code>. <b>Note:</b> should be set to <i>null</i> to force the use of the default consumption profile</dd>
+        <dt style="margin-left:2em" class="optional">estimateOnly<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">When set, indicates that no asset export should be executed but only the estimated price (in the foreign blockchain's native coin) to fulfill the operation should be returned</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">foreignTransaction<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">Information about the transaction issued on the foreign blockchain to create the resulting foreign token</dd>
+        <dt style="margin-left:2em">txid<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID (or hash) of the foreign blockchain transaction</dd>
+        <dt style="margin-left:2em">isPending<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the foreign blockchain transaction is yet to be executed</dd>
+        <dt style="margin-left:2em" class="optional">success<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the foreign blockchain transaction has been successfully executed or not</dd>
+        <dt style="margin-left:2em" class="optional">error<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">An error message describing what went wrong when executing the transaction</dd>
+        <dt style="margin-left:1em" class="optional">token<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">Information about the resulting foreign token</dd>
+        <dt style="margin-left:2em">name<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The token name</dd>
+        <dt style="margin-left:2em">symbol<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The token symbol</dd>
+        <dt style="margin-left:2em" class="optional">id<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID (or address) of the token on the foreign blockchain</dd>
+        <dt style="margin-left:1em" class="optional">status<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The current state of the asset export. One of: <code>pending</code>, <code>success</code>, <code>error</code></dd>
+        <dt style="margin-left:1em" class="optional">date<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ISO 8601 formatted date and time when the asset has been exported</dd>
+        <dt style="margin-left:1em" class="optional">estimatedPrice<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">A text value representing the price, in the foreign blockchain's native coin, required to execute the foreign blockchain transaction</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Connection) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The payload of the received message is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/docs/api">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

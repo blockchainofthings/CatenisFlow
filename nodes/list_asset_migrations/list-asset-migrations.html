@@ -1,0 +1,190 @@
+<script type="text/javascript">
+    RED.nodes.registerType('list asset migrations', {
+        category: 'Catenis Flow',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            connection: { value: "", type: "catenis api connection", required: true },
+            assetId: { value: "" },
+            foreignBlockchain: { value: "" },
+            direction: { value: "" },
+            status: { value: "" },
+            negateStatus: { value: false },
+            startDate: { value: "" },
+            endDate: { value: "" },
+            limit: { value: "" },
+            skip: { value: "" }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "list_asset_migrations.png",
+        label: function () {
+            return this.name || "List asset migrations";
+        },
+        button: {
+            enabled: function() {
+                return !this.changed;
+            },
+            onclick: function() {
+                if (this.changed) {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                }
+                var node = this;
+                $.ajax({
+                    url: "catenis.listassetmigrations/" + this.id,
+                    type:"POST",
+                    success: function(resp) {
+                        RED.notify("Success", "success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify("Error - please deploy", "error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify("Error - server error", "error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify("Error - no response", "error");
+                        } else {
+                            RED.notify("Error - unexpected response", "error");
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="list asset migrations">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <hr>
+    </div>
+    <div class="form-row">
+        <label for="node-input-assetId"><i class="fa fa-tag"></i> Asset ID</label>
+        <input type="text" id="node-input-assetId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-foreignBlockchain"><i class="fa fa-link"></i> Foreign blockchain</label>
+        <select id="node-input-foreignBlockchain">
+            <option value="" selected></option>
+            <option value="ethereum" selected>Ethereum</option>
+            <option value="binance">Binance Smart Chain</option>
+            <option value="polygon">Polygon PoS Chain</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-direction"><i class="fa fa-exchange"></i> Migration direction</label>
+        <select id="node-input-direction">
+            <option value="" selected></option>
+            <option value="outward" selected>Outward</option>
+            <option value="inward">Inward</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-status"><i class="fa fa-dashboard"></i> Status</label>
+        <input type="text" id="node-input-status">
+    </div>
+    <div class="form-row">
+        <label for="node-input-negateStatus"><i class="fa fa-toggle-on"></i> Negate status</label>
+        <input type="checkbox" id="node-input-negateStatus">
+    </div>
+    <div class="form-row">
+        <label for="node-input-startDate"><i class="fa fa-calendar"></i> Start date</label>
+        <input type="text" id="node-input-startDate" placeholder="YYYY-MM-dd HH:mm:ss">
+    </div>
+    <div class="form-row">
+        <label for="node-input-endDate"><i class="fa fa-calendar"></i> End date</label>
+        <input type="text" id="node-input-endDate" placeholder="YYYY-MM-dd HH:mm:ss">
+    </div>
+    <div class="form-row">
+        <label for="node-input-limit"><i class="fa fa-stop-circle"></i> Limit</label>
+        <input type="number" id="node-input-limit" step="1" min="1" max="500">
+    </div>
+    <div class="form-row">
+        <label for="node-input-skip"><i class="fa fa-fast-forward"></i> Skip</label>
+        <input type="number" id="node-input-skip" step="1" min="0">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="list asset migrations">
+    <p>Call Catenis API "List Asset Migrations" method to retrieve a list of issued asset migrations that satisfy a given search criteria.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">selector<span class="property-type">object</span></dt>
+        <dt style="margin-left:2em" class="optional">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of the asset the amount of which has been migrated. <b>Note:</b> should be set to <i>null</i> to force the search criteria not to include this parameter</dd>
+        <dt style="margin-left:2em" class="optional">foreignBlockchain<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The key identifying the foreign blockchain to/from where the asset amount has been migrated. One of: <code>ethereum</code>, <code>binance</code>, <code>polygon</code>. <b>Note:</b> should be set to <i>null</i> to force the search criteria not to include this parameter</dd>
+        <dt style="margin-left:2em" class="optional">direction<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The direction of the migration. One of: <code>outward</code>, <code>inward</code>. <b>Note:</b> should be set to <i>null</i> to force the search criteria not to include this parameter</dd>
+        <dt style="margin-left:2em" class="optional">status<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">A single status or a comma-separated list of statuses to include. One of: <code>pending</code>, <code>interrupted</code>, <code>success</code>, <code>error</code>. <b>Note:</b> should be set to <i>null</i> to force the search criteria not to include this parameter</dd>
+        <dt style="margin-left:2em" class="optional">negateStatus<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the specified statuses should be excluded instead</dd>
+        <dt style="margin-left:2em" class="optional">startDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ISO 8601 formatted date/time (<code>YYYY-MM-ddTHH:mm:ss</code>) specifying the inclusive lower bound of the time frame within which the asset amount has been migrated. <b>Note:</b> should be set to <i>null</i> to force the search criteria not to include this parameter</dd>
+        <dt style="margin-left:2em" class="optional">endDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ISO 8601 formatted date/time (<code>YYYY-MM-ddTHH:mm:ss</code>) specifying the inclusive upper bound of the time frame within which the asset amount has been migrated. <b>Note:</b> should be set to <i>null</i> to force the search criteria not to include this parameter</dd>
+        <dt style="margin-left:1em" class="optional">limit<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">Maximum number of asset migrations that should be returned</dd>
+        <dt style="margin-left:1em" class="optional">skip<span class="property-type">number</span></dt>
+        <dd style="margin-left:1.5em">Number of asset migrations that should be skipped (from beginning of list of matching asset migrations) and not returned</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">assetMigrations<span class="property-type">array</span></dt>
+        <dd style="margin-left:1.5em">The returned list of issued asset migrations that satisfy the search criteria</dd>
+        <dt style="margin-left:2em">[array.element]<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em">migrationId<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">ID of the asset migration</dd>
+        <dt style="margin-left:3em">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">ID of the asset the amount of which has been migrated</dd>
+        <dt style="margin-left:3em">foreignBlockchain<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">The key identifying the foreign blockchain to/from where the asset amount has been migrated. One of: <code>ethereum</code>, <code>binance</code>, <code>polygon</code></dd>
+        <dt style="margin-left:3em">direction<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">The direction of the migration. One of: <code>outward</code>, <code>inward</code></dd>
+        <dt style="margin-left:3em">amount<span class="property-type">number</span></dt>
+        <dd style="margin-left:3.5em">The migrated asset amount</dd>
+        <dt style="margin-left:1em">catenisService<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">Information about the execution of the migrate asset Catenis service</dd>
+        <dt style="margin-left:2em">status<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The current state of the service's execution. One of: <code>awaiting</code>, <code>failure</code>, <code>fulfilled</code></dd>
+        <dt style="margin-left:2em" class="optional">txid<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of the Catenis transaction issued to fulfill the service</dd>
+        <dt style="margin-left:2em" class="optional">error<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">An error message describing what went wrong when executing the service</dd>
+        <dt style="margin-left:3em">foreignTransaction<span class="property-type">object</span></dt>
+        <dd style="margin-left:3.5em">Information about the transaction issued on the foreign blockchain to mint/burn the amount of the foreign token</dd>
+        <dt style="margin-left:4em">txid<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">ID (or hash) of the foreign blockchain transaction</dd>
+        <dt style="margin-left:4em">isPending<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:4.5em">Indicates whether the foreign blockchain transaction is yet to be executed</dd>
+        <dt style="margin-left:4em" class="optional">success<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:4.5em">Indicates whether the foreign blockchain transaction has been successfully executed or not</dd>
+        <dt style="margin-left:4em" class="optional">error<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">An error message describing what went wrong when executing the transaction</dd>
+        <dt style="margin-left:3em">status<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">The current state of the asset migration. One of: <code>pending</code>, <code>interrupted</code>, <code>success</code>, <code>error</code></dd>
+        <dt style="margin-left:3em">date<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">ISO 8601 formatted date and time when the asset amount has been migrated</dd>
+        <dt style="margin-left:1em">hasMore<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">Indicates whether there are more asset migrations that satisfy the search criteria yet to be returned</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Connection) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The node can be used in two modes: interactive, and run-time. In interactive mode, the end user clicks on the action button and the Catenis API method is called using the default settings (as specified in the node’s configuration).</p>
+    <p>In run-time mode, the node receives a message the payload of which is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/docs/api">Catenis Enterprise API Docs</a> - complete information about Catenis Enterprise API</li>
+    </ul>
+</script>

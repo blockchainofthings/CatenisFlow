@@ -33,6 +33,12 @@
       "list issued assets": "nodes/list_issued_assets/list-issued-assets.js",
       "retrieve asset issuance history": "nodes/retrieve_asset_issuance_history/retrieve-asset-issuance-history.js",
       "list asset holders": "nodes/list_asset_holders/list-asset-holders.js",
+      "export asset": "nodes/export_asset/export-asset.js",
+      "migrate asset": "nodes/migrate_asset/migrate-asset.js",
+      "asset export outcome": "nodes/asset_export_outcome/asset-export-outcome.js",
+      "asset migration outcome": "nodes/asset_migration_outcome/asset-migration-outcome.js",
+      "list exported assets": "nodes/list_exported_assets/list-exported-assets.js",
+      "list asset migrations": "nodes/list_asset_migrations/list-asset-migrations.js",
       "list permission events": "nodes/list_permission_events/list-permission-events.js",
       "retrieve permission rights": "nodes/retrieve_permission_rights/retrieve-permission-rights.js",
       "set permission rights": "nodes/set_permission_rights/set-permission-rights.js",
@@ -45,7 +51,7 @@
   "author": "MJ",
   "license": "MIT",
   "dependencies": {
-    "catenis-api-client": "~5.1.0"
+    "catenis-api-client": "~6.0"
   },
   "repository": {
     "type": "git",
