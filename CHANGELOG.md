@@ -18,7 +18,7 @@
  connection to be used with it.
 
 ### New features
-- Added support for version 0.10 of the Catenis Enterprise API.
+- Added support for version 0.10 of the Catenis API.
 
 ### Changes
 - The default value of the 'version' field of the Catenis Device properties has changed to 0.9.
@@ -29,7 +29,7 @@
 - The default value of the 'version' field of the Catenis Device properties has changed to 0.9.
 
 ### New features
-- As a consequence for targeting version 0.9 of the Catenis Enterprise API, the new features introduced by that version
+- As a consequence for targeting version 0.9 of the Catenis API, the new features introduced by that version
  are supported: log, send, read and retrieve container info of Catenis off-chain messages.
 
 ## [2.0.3] - 2019-12-18
@@ -58,7 +58,7 @@
  been replaced with a new property named `hasMore`.
 
 ### New features
-- Added support for version 0.8 of the Catenis Enterprise API.
+- Added support for version 0.8 of the Catenis API.
 - Added new Retrieve Message Progress node.
 - Added options to send/receive compressed data when calling the Catenis API methods.
 
@@ -66,5 +66,5 @@
 - The default value of the 'version' field of the Catenis Device properties has changed to 0.8.
 - Inputs and outputs of nodes Log Message, Send Message, Read Message, List Messages and Retrieve Asset Issuance History
  have changed to comply with the changes introduced in the corresponding API methods by versions 0.7 and 0.8 of the
- Catenis Enterprise API. 
+ Catenis API. 
 - Added CHANGELOG (this) file.
