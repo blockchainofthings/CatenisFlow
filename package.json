@@ -31,7 +31,7 @@
       "get asset balance": "nodes/get_asset_balance/get-asset-balance.js",
       "list owned assets": "nodes/list_owned_assets/list-owned-assets.js",
       "list issued assets": "nodes/list_issued_assets/list-issued-assets.js",
-      "reetrieve asset issuance history": "nodes/retrieve_asset_issuance_history/retrieve-asset-issuance-history.js",
+      "retrieve asset issuance history": "nodes/retrieve_asset_issuance_history/retrieve-asset-issuance-history.js",
       "list asset holders": "nodes/list_asset_holders/list-asset-holders.js",
       "list permission events": "nodes/list_permission_events/list-permission-events.js",
       "retrieve permission rights": "nodes/retrieve_permission_rights/retrieve-permission-rights.js",
