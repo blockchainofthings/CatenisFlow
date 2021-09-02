@@ -2,7 +2,7 @@
 
 A set of Node-RED nodes used to interact with the Bitcoin blockchain by means of the Catenis API.
 
-This version (3.0.2) is compliant with Catenis API version 0.10.
+This version (4.0.0) is compliant with Catenis API version 0.11.
 
 # Installation
 
