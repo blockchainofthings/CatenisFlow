@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.0] - 2021-09-02
+
+### New features
+- Added support for version 0.11 of the Catenis API, including the following new nodes: export asset, migrate asset,
+ asset export outcome, asset migration outcome, list exported assets, and list asset migrations.
+
 ## [3.0.2] - 2020-07-08
 
 ### Fixes
