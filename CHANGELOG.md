@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.0] - 2022-09-16
+
+### New features
+- Added support for version 0.12 of the Catenis API, including the following new nodes: issue non-fungible asset,
+ reissue non-fungible asset, retrieve non-fungible asset issuance progress, retrieve non-fungible token, retrieve
+ non-fungible token retrieval progress, transfer non-fungible token, retrieve non-fungible token transfer progress.
+
 ## [4.0.0] - 2021-09-02
 
 ### New features
