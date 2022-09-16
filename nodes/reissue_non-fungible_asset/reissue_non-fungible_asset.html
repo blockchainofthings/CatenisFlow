@@ -1,0 +1,123 @@
+<script type="text/javascript">
+    RED.nodes.registerType('reissue non-fungible asset', {
+        category: 'Catenis Flow',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            connection: { value: "", type: "catenis api connection", required: true },
+            assetId: { value: "" },
+            encryptNFTContents: { value: true },
+            holdingDeviceId: { value: "" },
+            isProdUniqueId: { value: false },
+            async: { value: false }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "reissue_non-fungible_asset.svg",
+        label: function () {
+            return this.name || "Reissue non-fungible asset";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="reissue non-fungible asset">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <hr>
+    </div>
+    <div class="form-row">
+        <label for="node-input-assetId"><i class="fa fa-tag"></i> Asset ID</label>
+        <input type="text" id="node-input-assetId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-encryptNFTContents"><i class="fa fa-key"></i> Encrypt NFT contents</label>
+        <input type="checkbox" id="node-input-encryptNFTContents">
+    </div>
+    <div class="form-row">
+        <label for="node-input-holdingDeviceId"><i class="fa fa-microchip"></i> Holding device ID</label>
+        <input type="text" id="node-input-holdingDeviceId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-isProdUniqueId"><i class="fa fa-tag"></i> Product unique ID</label>
+        <input type="checkbox" id="node-input-isProdUniqueId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-async"><i class="fa fa-refresh"></i> Async</label>
+        <input type="checkbox" id="node-input-async">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="reissue non-fungible asset">
+    <p>Call Catenis API "Reissue Non-Fungible Asset" method to issue more non-fungible tokens for a previously created non-fungible asset.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">ID of the non-fungible asset for which more non-fungible tokens should be issued</dd>
+        <dt style="margin-left:1em" class="optional">encryptNFTContents<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">Indicates whether the contents of the non-fungible tokens being issued should be encrypted before being stored</dd>
+        <dt style="margin-left:1em" class="optional">holdingDevices<span class="property-type">array | object</span></dt>
+        <dd style="margin-left:1.5em">A single virtual device or a list of virtual devices that will hold the issued non-fungible tokens. <b>Note:</b> should be set to <i>null</i> to force no holding devices to be specified</dd>
+        <dt style="margin-left:2em">[array.element]<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em">id<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">ID of holding device. Should be a virtual device ID unless isProdUniqueId is true</dd>
+        <dt style="margin-left:3em" class="optional">isProdUniqueId<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:3.5em">Indicates whether the supplied ID is a product unique ID</dd>
+        <dt style="margin-left:1em" class="optional">async<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">Indicates whether processing should be done asynchronously</dd>
+        <dt style="margin-left:1em" class="optional">continuationToken<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">This signals a continuation call of the asset issuance. It should be filled with the continuation token returned by the previous call. <b>Note:</b> when set, all the other parameters, except for <code>assetId</code>, <code>nonFungibleTokens</code> and <code>isFinal</code>, are disregarded</dd>
+        <dt style="margin-left:1em" class="optional">nonFungibleTokens<span class="property-type">array</span></dt>
+        <dd style="margin-left:1.5em">List with the properties of the non-fungible tokens to be issued</dd>
+        <dt style="margin-left:2em">[array.element]<span class="property-type">object</span></dt>
+        <dt style="margin-left:3em" class="optional">metadata<span class="property-type">object</span></dt>
+        <dd style="margin-left:3.5em">The properties of the non-fungible token to issue</dd>
+        <dt style="margin-left:4em">name<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">The name of the non-fungible token</dd>
+        <dt style="margin-left:4em" class="optional">description<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">A description of the non-fungible token</dd>
+        <dt style="margin-left:4em" class="optional">custom<span class="property-type">object</span></dt>
+        <dd style="margin-left:4.5em">User defined, custom properties of the non-fungible token</dd>
+        <dt style="margin-left:5em" class="optional">sensitiveProps<span class="property-type">object</span></dt>
+        <dd style="margin-left:5.5em">User defined, sensitive properties of the non-fungible token. Sensitive properties are encrypted before being stored</dd>
+        <dt style="margin-left:6em">&lt;prop_name&gt;<span class="property-type">*</span></dt>
+        <dd style="margin-left:6.5em">A custom, sensitive property identified by <code>prop_name</code></dd>
+        <dt style="margin-left:5em">&lt;prop_name&gt;<span class="property-type">*</span></dt>
+        <dd style="margin-left:5.5em">A custom property identified by <code>prop_name</code></dd>
+        <dt style="margin-left:3em" class="optional">contents<span class="property-type">object</span></dt>
+        <dd style="margin-left:3.5em">The contents of the non-fungible token to issue</dd>
+        <dt style="margin-left:4em">data<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">An additional chunk of data of the non-fungible token's contents</dd>
+        <dt style="margin-left:4em">encoding<span class="property-type">string</span></dt>
+        <dd style="margin-left:4.5em">The encoding of the contents data chunk. One of: <code>utf8</code>, <code>base64</code>, <code>hex</code></dd>
+        <dt style="margin-left:1em" class="optional">isFinal<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">Indicates whether this is the final call of the asset issuance. There should be no more continuation calls after this is set</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">continuationToken<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The continuation token to be used in the next continuation call</dd>
+        <dt style="margin-left:1em" class="optional">assetIssuanceId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The asset issuance ID. Used for retrieving the progress of an asynchronous non-fungible asset issuance</dd>
+        <dt style="margin-left:1em" class="optional">nfTokenIds<span class="property-type">array</span></dt>
+        <dd style="margin-left:1.5em">A list of the IDs of the issued non-fungible tokens</dd>
+        <dt style="margin-left:2em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ID of the newly issued non-fungible token</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Connection) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The payload is an object from where the parameters are gotten. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/docs/api">Catenis API Docs</a> - complete information about Catenis API</li>
+    </ul>
+</script>

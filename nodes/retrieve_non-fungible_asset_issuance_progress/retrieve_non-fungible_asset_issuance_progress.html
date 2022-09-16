@@ -1,0 +1,76 @@
+<script type="text/javascript">
+    RED.nodes.registerType('retrieve non-fungible asset issuance progress', {
+        category: 'Catenis Flow',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            connection: { value: "", type: "catenis api connection", required: true }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "non-fungible_asset_issuance_progress.svg",
+        label: function () {
+            return this.name || "Retrieve non-fungible asset issuance progress";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="retrieve non-fungible asset issuance progress">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <hr>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="retrieve non-fungible asset issuance progress">
+    <p>Call Catenis API "Retrieve Non-Fungible Asset Issuance Progress" method to retrieve the current progress of an asynchronous non-fungible asset issuance.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">string</span></dt>
+        <dd>The ID of the non-fungible asset issuance the processing progress of which should be retrieved</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The ID of the non-fungible asset for which more non-fungible tokens are being issued</dd>
+        <dt style="margin-left:1em">progress<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">Current processing status</dd>
+        <dt style="margin-left:2em">percentProcessed<span class="property-type">number</span></dt>
+        <dd style="margin-left:2.5em">The percentage of the total processing that has been already completed</dd>
+        <dt style="margin-left:2em">done<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the processing has been finished</dd>
+        <dt style="margin-left:2em" class="optional">success<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the asset issuance has been successfully completed</dd>
+        <dt style="margin-left:2em" class="optional">error<span class="property-type">object</span></dt>
+        <dd style="margin-left:2.5em">Information about the error that took place while processing the asset issuance</dd>
+        <dt style="margin-left:3em">code<span class="property-type">number</span></dt>
+        <dd style="margin-left:3.5em">Numeric code — equivalent to an HTML status code — of the error</dd>
+        <dt style="margin-left:3em">message<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">Text describing the error</dd>
+        <dt style="margin-left:2em" class="optional">finishDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ISO 8601 formatted date and time when processing has been finalized</dd>
+        <dt style="margin-left:1em" class="optional">result<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">The result of the asset issuance</dd>
+        <dt style="margin-left:2em" class="optional">assetId<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The ID of the newly created Catenis non-fungible asset</dd>
+        <dt style="margin-left:2em">nfTokenIds<span class="property-type">array</span></dt>
+        <dd style="margin-left:2.5em">List of the IDs of the newly issued non-fungible tokens</dd>
+        <dt style="margin-left:3em">[array.element]<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">ID of the newly issued non-fungible token</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The payload of the received message is a string containing the ID of the non-fungible asset issuance for which to return the processing progress.</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/docs/api">Catenis API Docs</a> - complete information about Catenis API</li>
+    </ul>
+</script>

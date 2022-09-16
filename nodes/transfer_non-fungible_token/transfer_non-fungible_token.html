@@ -1,0 +1,84 @@
+<script type="text/javascript">
+    RED.nodes.registerType('transfer non-fungible token', {
+        category: 'Catenis Flow',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            connection: { value: "", type: "catenis api connection", required: true },
+            receivingDeviceId: { value: "" },
+            isProdUniqueId: { value: false },
+            async: { value: false }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "transfer_non-fungible_token.svg",
+        label: function () {
+            return this.name || "Transfer non-fungible token";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="transfer non-fungible token">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <hr>
+    </div>
+    <div class="form-row">
+        <label for="node-input-receivingDeviceId"><i class="fa fa-microchip"></i> Receiving device ID</label>
+        <input type="text" id="node-input-receivingDeviceId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-isProdUniqueId"><i class="fa fa-tag"></i> Product unique ID</label>
+        <input type="checkbox" id="node-input-isProdUniqueId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-async"><i class="fa fa-refresh"></i> Async</label>
+        <input type="checkbox" id="node-input-async">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="transfer non-fungible token">
+    <p>Call Catenis API "Transfer Non-Fungible Token" method to transfer a non-fungible token to a virtual device.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">string</span></dt>
+        <dd>The ID of the non-fungible token to transfer</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">tokenId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The ID of the non-fungible token to transfer</dd>
+        <dt style="margin-left:1em">receivingDevice<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">Virtual device to which the non-fungible token is to be transferred</dd>
+        <dt style="margin-left:2em">id<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">The ID of the receiving device. Should be a device ID unless isProdUniqueId is set</dd>
+        <dt style="margin-left:2em" class="optional">isProdUniqueId<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the supplied ID is a product unique ID</dd>
+        <dt style="margin-left:1em" class="optional">async<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">Indicates whether processing should be done asynchronously</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em" class="optional">tokenTransferId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The non-fungible token transfer ID. Used for retrieving the progress of an asynchronous non-fungible token transfer</dd>
+        <dt style="margin-left:1em" class="optional">success<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:1.5em">The value <code>true</code>, indicating that the non-fungible token has been successfully transferred</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Connection) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The payload of the received message can be either a string or an object. If it is a string, it specifies the ID of the non-fungible token to transfer, and the default settings (as specified in the node’s configuration) are used for the other parameters.</p>
+    <p>In case an object is received, the non-fungible token ID and the other parameters are gotten from it. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/docs/api">Catenis API Docs</a> - complete information about Catenis API</li>
+    </ul>
+</script>

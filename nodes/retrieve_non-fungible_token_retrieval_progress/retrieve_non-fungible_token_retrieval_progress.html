@@ -1,0 +1,82 @@
+<script type="text/javascript">
+    RED.nodes.registerType('retrieve non-fungible token retrieval progress', {
+        category: 'Catenis Flow',
+        color: '#9f9fe4',
+        defaults: {
+            name: { value: "" },
+            connection: { value: "", type: "catenis api connection", required: true },
+            tokenId: { value: "" }
+        },
+        inputs:1,
+        outputs:1,
+        icon: "non-fungible_token_retrieval_progress.svg",
+        label: function () {
+            return this.name || "Retrieve non-fungible token retrieval progress";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="retrieve non-fungible token retrieval progress">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-exchange"></i> Connection</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <hr>
+    </div>
+    <div class="form-row">
+        <label for="node-input-tokenId"><i class="fa fa-tag"></i> Token ID</label>
+        <input type="text" id="node-input-tokenId">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="retrieve non-fungible token retrieval progress">
+    <p>Call Catenis API "Retrieve Non-Fungible Token Retrieval Progress" method to retrieve the current progress of an asynchronous non-fungible token retrieval.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">string</span></dt>
+        <dd>The ID of the non-fungible token retrieval the processing progress of which should be retrieved</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">tokenId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The ID of the non-fungible token whose data is being retrieved</dd>
+        <dt style="margin-left:1em">retrievalId<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The ID of the non-fungible token retrieval the processing progress of which should be retrieved</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">object</span></dt>
+        <dt style="margin-left:1em">progress<span class="property-type">object</span></dt>
+        <dd style="margin-left:1.5em">Current processing status</dd>
+        <dt style="margin-left:2em">bytesRetrieved<span class="property-type">number</span></dt>
+        <dd style="margin-left:2.5em">Number of bytes of non-fungible token data that have been retrieved</dd>
+        <dt style="margin-left:2em">done<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether the processing has been finished</dd>
+        <dt style="margin-left:2em" class="optional">success<span class="property-type">boolean</span></dt>
+        <dd style="margin-left:2.5em">Indicates whether all the non-fungible token data has been successfully retrieved</dd>
+        <dt style="margin-left:2em" class="optional">error<span class="property-type">object</span></dt>
+        <dd style="margin-left:2.5em">Information about the error that took place while retrieving the non-fungible token data</dd>
+        <dt style="margin-left:3em">code<span class="property-type">number</span></dt>
+        <dd style="margin-left:3.5em">Numeric code — equivalent to an HTML status code — of the error</dd>
+        <dt style="margin-left:3em">message<span class="property-type">string</span></dt>
+        <dd style="margin-left:3.5em">Text describing the error</dd>
+        <dt style="margin-left:2em" class="optional">finishDate<span class="property-type">string</span></dt>
+        <dd style="margin-left:2.5em">ISO 8601 formatted date and time when the data retrieval has been finalized</dd>
+        <dt style="margin-left:1em">continuationToken<span class="property-type">string</span></dt>
+        <dd style="margin-left:1.5em">The token that should be used to complete the retrieval of the non-fungible token</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>The configuration settings (except for Name and Connection) are used to set the default for the parameters of the corresponding Catenis API method.</p>
+    <p>The payload of the received message can be either a string or an object. If it is a string, it specifies the ID of the non-fungible token retrieval for which to return the processing progress, and the default settings (as specified in the node’s configuration) are used for the other parameters.</p>
+    <p>In case an object is received, the non-fungible token retrieval ID and the other parameters are gotten from it. Any parameter present in the message payload supersedes the default settings (as specified in the node’s configuration).</p>
+    <p>The data returned from a successful call to the Catenis API method are passed through the node’s single output.</p>
+    <h3>References</h3>
+    <ul>
+        <li><a target="catenis_docs" href="https://catenis.com/docs/api">Catenis API Docs</a> - complete information about Catenis API</li>
+    </ul>
+</script>
